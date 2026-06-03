@@ -11,7 +11,7 @@ import { AuthService } from '../../Services/auth.service';
 })
 export class AdminPanelComponent implements OnInit {
   username: string = 'Admin';
-  email: string = 'admin@QuickMartNexa.com';
+  email: string = 'admin@QickmartNexa.com';
 
   constructor(private authService: AuthService, private router: Router) {}
 

@@ -23,8 +23,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.seoService.setSeoData({
-      title: 'QuickMartNexa - Best Online Shopping Platform',
-      description: 'Discover the best deals on electronics, fashion, home goods, and more at QuickMartNexa.',
+      title: 'QickmartNexa - Best Online Shopping Platform',
+      description: 'Discover the best deals on electronics, fashion, home goods, and more at QickmartNexa.',
       keywords: 'shopping, electronics, fashion, deals, quickmart',
       type: 'website'
     });
@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit {
     this.seoService.setJsonLdSchema({
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "QuickMartNexa",
-      "url": "https://quickmartnexa.com/"
+      "name": "QickmartNexa",
+      "url": "https://qickmartnexa.com/"
     });
   }
 }

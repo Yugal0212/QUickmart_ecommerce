@@ -35,7 +35,7 @@ exports.updateSettings = async (req, res) => {
 exports.getSitemap = async (req, res) => {
   try {
     const settings = await SeoSettings.findOne();
-    const baseUrl = settings ? settings.canonicalUrl : "https://quickmartnexa.com";
+    const baseUrl = settings ? settings.canonicalUrl : "https://qickmartnexa.com";
 
     const products = await Product.find({ approvalStatus: 'approved' }).select('seo.slug updatedAt').lean();
     const categories = await Category.find().select('seo.slug updatedAt').lean();
@@ -89,7 +89,7 @@ exports.getSitemap = async (req, res) => {
 exports.getRobotsTxt = async (req, res) => {
   try {
     const settings = await SeoSettings.findOne();
-    const baseUrl = settings ? settings.canonicalUrl : "https://quickmartnexa.com";
+    const baseUrl = settings ? settings.canonicalUrl : "https://qickmartnexa.com";
     
     let robots = `User-agent: *\nAllow: /\nDisallow: /admin-dashboard/\nDisallow: /sheller-dashboard/\nDisallow: /order/\nDisallow: /cart\n\nSitemap: ${baseUrl}/api/seo/sitemap.xml`;
     

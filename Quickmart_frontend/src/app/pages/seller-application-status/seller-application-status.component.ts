@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
           <div class="relative z-10">
             <i class="fas fa-clipboard-check text-5xl mb-4 opacity-90"></i>
             <h2 class="text-3xl font-extrabold tracking-tight">Application Status</h2>
-            <p class="mt-2 text-green-100 text-lg">Track your journey to becoming a QuickMartNexa seller.</p>
+            <p class="mt-2 text-green-100 text-lg">Track your journey to becoming a QickmartNexa seller.</p>
           </div>
         </div>
 

@@ -43,7 +43,7 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
           
           // Dynamic SEO Generation
           this.seoService.setSeoData({
-            title: this.product.seo?.title || `${this.product.name} | QuickMartNexa`,
+            title: this.product.seo?.title || `${this.product.name} | QickmartNexa`,
             description: this.product.seo?.description || this.product.description,
             keywords: this.product.seo?.keywords || this.product.category?.name,
             image: this.product.images?.[0] || '',

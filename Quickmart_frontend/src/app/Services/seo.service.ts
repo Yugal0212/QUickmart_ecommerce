@@ -26,8 +26,8 @@ export class SeoService {
     type?: string;
     canonicalUrl?: string;
   }) {
-    const defaultAuthor = 'QuickMartNexa';
-    const baseUrl = 'https://quickmartnexa.com';
+    const defaultAuthor = 'QickmartNexa';
+    const baseUrl = 'https://qickmartnexa.com';
     const url = config.slug ? `${baseUrl}${config.slug}` : baseUrl;
 
     // Title
