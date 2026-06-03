@@ -7,7 +7,7 @@ const SeoSettingsSchema = new mongoose.Schema(
     keywords: { type: String, default: "ecommerce, shopping, online store" },
     author: { type: String, default: "QickmartNexa" },
     language: { type: String, default: "en" },
-    canonicalUrl: { type: String, default: "https://qickmartnexa.com" },
+    canonicalUrl: { type: String, default: "https://quickmartnexa.vercel.app" },
     logo: { type: String, default: "" },
     favicon: { type: String, default: "" },
     googleSearchConsoleId: { type: String, default: "" },

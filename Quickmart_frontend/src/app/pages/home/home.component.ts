@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "QickmartNexa",
-      "url": "https://qickmartnexa.com/"
+      "url": "https://quickmartnexa.vercel.app/"
     });
   }
 }

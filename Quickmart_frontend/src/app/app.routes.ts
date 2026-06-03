@@ -98,7 +98,6 @@ export const routes: Routes = [
       { path: '', redirectTo: 'overview', pathMatch: 'full' }, 
     ],
   },
-  { path: '', redirectTo: '/sheller-dashboard', pathMatch: 'full' },
 
 
   {
@@ -130,7 +129,6 @@ export const routes: Routes = [
       { path: '', redirectTo: 'overview', pathMatch: 'full' }, 
     ],
   },
-  { path: '', redirectTo: '/admin-dashboard', pathMatch: 'full' },
 
 
   {path:'become-seller',loadComponent: () => import('./components/become-seller/become-seller.component').then(c => c.BecomeSellerComponent)},
@@ -138,7 +136,8 @@ export const routes: Routes = [
   {path:'allproducts', loadComponent: () => import('./components/allproducts/allproducts.component').then(c => c.AllproductsComponent)},
   {path:'productdetails/:id', loadComponent: () => import('./components/productdetails/productdetails.component').then(c => c.ProductdetailsComponent)},
   {path:'cart',loadComponent: () => import('./components/cart/cart.component').then(c => c.CartComponent)},
-  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent),canActivate: [AuthService] }, // Home route
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent) }, // Home route
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
 
 
 
