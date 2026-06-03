@@ -1,8 +1,6 @@
 export const environment = {
     production: true,
-    // apiUrl: 'https://QuickMartNexa-ecommerce.onrender.com/api',
-    apiUrl: 'http://localhost:5000/api',
-
+    apiUrl: 'https://QuickMartNexa-ecommerce.onrender.com/api',
     encryptionKey: ""
   };
   
