@@ -1,0 +1,269 @@
+.address-selector {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .header h2 {
+    font-size: 1.8rem;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+  }
+  
+  .address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  .address-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    min-height: 150px;
+    transition: all 0.3s ease;
+    position: relative;
+    background: #ffffff;
+  }
+  
+  .address-card:hover {
+    border-color: #4299e1;
+  }
+  
+  .address-card.selected {
+    border-color: #4299e1;
+    background: #f8fafc;
+  }
+  
+  .radio-indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e0;
+    border-radius: 50%;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  input[type="radio"]:checked + .radio-indicator {
+    border-color: #e53e3e;
+    background: #e53e3e;
+  }
+  
+  input[type="radio"]:checked + .radio-indicator::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .action-icons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+    color: #2d3748;
+    margin: 0;
+    white-space: nowrap;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  .edit-btn {
+    color: #4299e1;
+  }
+  
+  .delete-btn {
+    color: #e53e3e;
+  }
+  
+  .edit-btn:hover,
+  .delete-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .address-details p {
+    margin: 0.1rem 0;
+    color: #4a5568;
+    font-size: 0.9rem;
+  }
+  
+  .phone {
+    margin-top: 1rem !important;
+    color: #48bb78 !important;
+    font-weight: 500;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .add-address {
+    flex: 1;
+    padding: 1rem;
+    background: #f7fafc;
+    border: 2px dashed #cbd5e0;
+    border-radius: 10px;
+    color: #718096;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .add-address:hover {
+    background: #ebf8ff;
+    border-color: #4299e1;
+    color: #4299e1;
+  }
+  
+  .deliver-btn {
+    flex: 2;
+    padding: 1rem;
+    background: linear-gradient(135deg, #48bb78, #38a169);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .deliver-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .address-selector {
+      padding: 0.9rem;
+      margin: 1rem;
+    }
+  
+    .action-buttons {
+      flex-direction: column;
+    }
+  
+    .address-card {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.6rem;
+      min-height: auto;
+    }
+  
+    .address-details p {
+      font-size: 0.85rem;
+      margin: 0.1rem 0;
+    }
+  
+    .action-icons {
+      gap: 0.3rem;
+    }
+  
+    .edit-btn,
+    .delete-btn {
+      padding: 0.4rem;
+      font-size: 0.9rem;
+    }
+  }
+
+/* Skeleton Loading Effect */
+.skeleton-loading {
+    animation: skeleton-loading 1.5s infinite ease-in-out;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    border-radius: 4px;
+  }
+  
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  .skeleton-text {
+    height: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .skeleton-button {
+    width: 80px;
+    height: 30px;
+    margin: 4px;
+  }
+  
+  .skeleton-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .skeleton-address-card {
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .error-message {
+    color: #ff0000;
+    margin-top: 16px;
+    text-align: center;
+  }
+  
+  .no-address-message {
+    color: #666;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 16px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }

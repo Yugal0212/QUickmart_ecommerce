@@ -1,0 +1,101 @@
+<div class="container">
+  <h1 class="page-title">User Details</h1>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- User Details Section -->
+  <div *ngIf="isLoading; else userContent">
+    <!-- Shimmer Effect for User Details -->
+    <div class="skeleton-loader card">
+      <div class="skeleton-user-name"></div>
+      <div class="skeleton-user-info">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #userContent>
+    <div *ngIf="user; else noUserFound" class="user-details card">
+      <h2 class="user-name">{{ user.username }}</h2>
+      <div class="user-info">
+        <p><strong>User ID:</strong> {{ user._id }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Role:</strong> {{ user.role }}</p>
+      </div>
+    </div>
+
+    <ng-template #noUserFound>
+      <div class="no-user-found">
+        No user found with the provided ID.
+      </div>
+    </ng-template>
+  </ng-template>
+
+  <!-- Orders Section -->
+  <h2 class="section-title">Orders Placed</h2>
+  <div *ngIf="isLoading; else ordersContent">
+    <!-- Shimmer Effect for Orders -->
+    <div class="skeleton-loader card">
+      <div class="skeleton-order-list">
+        <div class="skeleton-order-item"></div>
+        <div class="skeleton-order-item"></div>
+        <div class="skeleton-order-item"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #ordersContent>
+    <div *ngIf="orders.length > 0; else noOrdersFound" class="orders-table card">
+      <div class="order-list">
+        <div *ngFor="let order of orders" class="order-item">
+          <p><strong>Order ID:</strong> {{ order._id }}</p>
+          <p><strong>Total Amount:</strong> {{ order.totalAmount | currency }}</p>
+          <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
+          <p><strong>Order Status:</strong> {{ order.orderStatus }}</p>
+          <p><strong>Date:</strong> {{ order.createdAt | date }}</p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noOrdersFound>
+      <div class="no-orders">
+        No orders found for this user.
+      </div>
+    </ng-template>
+  </ng-template>
+
+  <!-- Login History Section -->
+  <h2 class="section-title">Login History</h2>
+  <div *ngIf="isLoading; else loginHistoryContent">
+    <!-- Shimmer Effect for Login History -->
+    <div class="skeleton-loader card">
+      <div class="skeleton-login-history-list">
+        <div class="skeleton-login-history-item"></div>
+        <div class="skeleton-login-history-item"></div>
+        <div class="skeleton-login-history-item"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loginHistoryContent>
+    <div *ngIf="loginHistory.length > 0; else noLoginHistoryFound" class="login-history-table card">
+      <div class="login-history-list">
+        <div *ngFor="let history of loginHistory" class="login-history-item">
+          <p><strong>Login Time:</strong> {{ history.loginTime | date: 'medium' }}</p>
+          <p><strong>Logout Time:</strong> {{ history.logoutTime ? (history.logoutTime | date: 'medium') : 'Still logged in' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noLoginHistoryFound>
+      <div class="no-login-history">
+        No login history found for this user.
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

@@ -1,0 +1,115 @@
+<div class="container my-5">
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1200;">
+    <div id="payToast" class="toast align-items-center border-0" role="alert"
+         [class]="toastType === 'success' ? 'bg-success text-white' : 'bg-danger text-white'"
+         aria-live="assertive" aria-atomic="true" #payToast>
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">{{ toastMessage }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="hideToast()" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Payment Methods -->
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0" style="border-radius: 16px;">
+        <div class="card-body p-4">
+          <h2 class="mb-4 text-center fw-bold" style="font-family: 'Fraunces', Georgia, serif; color: #1f2937;">Select Payment Method</h2>
+
+          <!-- Skeleton Loader for Payment Methods -->
+          <div *ngIf="!orderSummary" class="skeleton-loader">
+            <div class="skeleton-line shimmer"></div>
+            <div class="skeleton-line shimmer"></div>
+            <div class="skeleton-line shimmer"></div>
+            <div class="skeleton-line shimmer"></div>
+          </div>
+
+          <!-- Payment Methods (Visible when data is loaded) -->
+          <div *ngIf="orderSummary">
+            <!-- Cash on Delivery (Active) -->
+            <div class="payment-method active">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="cod" checked>
+              <label class="form-check-label ms-2" for="cod">
+                <strong>Cash on Delivery</strong> - Pay when you receive
+              </label>
+            </div>
+
+            <!-- Credit/Debit Card (Disabled) -->
+            <div class="payment-method disabled" data-tooltip="Coming Soon">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="card" disabled>
+              <label class="form-check-label ms-2" for="card">
+                <strong>Credit/Debit Card</strong> - <span class="text-danger">Coming Soon</span>
+              </label>
+            </div>
+
+            <!-- UPI (Disabled) -->
+            <div class="payment-method disabled" data-tooltip="Coming Soon">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="upi" disabled>
+              <label class="form-check-label ms-2" for="upi">
+                <strong>UPI</strong> - <span class="text-danger">Coming Soon</span>
+              </label>
+            </div>
+
+            <!-- Bank Transfer (Disabled) -->
+            <div class="payment-method disabled" data-tooltip="Coming Soon">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="bank" disabled>
+              <label class="form-check-label ms-2" for="bank">
+                <strong>Bank Transfer</strong> - <span class="text-danger">Coming Soon</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Summary -->
+    <div class="col-lg-4">
+      <div class="card shadow-lg border-0 sticky-top" style="border-radius: 16px; top: 110px;">
+        <div class="card-body p-4">
+          <h4 class="mb-4 fw-bold" style="font-family: 'Fraunces', Georgia, serif; color: #1f2937;">
+            <i class="fas fa-wallet me-2 text-success"></i>Payment Summary
+          </h4>
+
+          <!-- Skeleton Loader for Order Items -->
+          <div *ngIf="!orderSummary" class="skeleton-loader">
+            <div class="skeleton-line shimmer"></div>
+            <div class="skeleton-line shimmer"></div>
+            <div class="skeleton-line shimmer"></div>
+          </div>
+
+          <!-- Order Items (Visible when data is loaded) -->
+          <div *ngIf="orderSummary" class="mb-4" style="max-height: 250px; overflow-y: auto;">
+            <div *ngFor="let item of orderSummary.items" class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <p class="mb-0 fw-semibold text-dark">{{ item.name }}</p>
+                <small class="text-muted">Quantity: {{ item.quantity }}</small>
+              </div>
+              <span class="fw-bold text-dark">₹{{ item.totalPrice }}</span>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <hr style="border-color: #e5e7eb;">
+          <div class="d-flex justify-content-between align-items-center fw-bold fs-5">
+            <span style="color: #4b5563;">Total Payable</span>
+            <span *ngIf="orderSummary" class="text-success">₹{{ orderSummary.totalAmount }}</span>
+            <span *ngIf="!orderSummary" class="skeleton-line shimmer" style="width: 80px; height: 20px;"></span>
+          </div>
+
+          <!-- Confirm & Pay Button -->
+          <button class="btn btn-success w-100 mt-4 py-3 fw-bold rounded-3 shadow-sm btn-pay"
+                  (click)="confirmAndPay()" [disabled]="!orderSummary">
+            Confirm & Pay
+          </button>
+          <p class="text-muted text-center mt-3 small">
+            By clicking "Pay", you agree to our terms and conditions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-preloader *ngIf="isLoading"></app-preloader>

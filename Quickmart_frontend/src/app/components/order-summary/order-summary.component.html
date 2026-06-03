@@ -1,0 +1,84 @@
+<div class="container mt-5">
+    <div class="row">
+      <!-- Left Section (Shipping Address & Order Items) -->
+      <div class="col-lg-8">
+        <div class="card shadow-lg p-4">
+          <!-- Order Summary Header -->
+          <h2 class="text-primary border-bottom pb-2">
+            <i class="fas fa-receipt"></i> Order Summary
+          </h2>
+  
+          <!-- Skeleton Loader for Shipping Address -->
+          <div *ngIf="isLoading" class="bg-light p-3 rounded mt-3">
+            <div class="skeleton-loader"></div>
+          </div>
+  
+          <!-- Shipping Address Section -->
+          <div *ngIf="selectedAddress && !isLoading" class="bg-light p-3 rounded mt-3 d-flex justify-content-between align-items-start">
+            <div>
+              <h4 class="text-dark"><i class="fas fa-map-marker-alt"></i> Shipping Address</h4>
+              <p class="mb-1"><strong>{{ selectedAddress.fullName }}</strong></p>
+              <p class="mb-1">{{ selectedAddress.addressLine1 }}</p>
+              <p class="mb-1">{{ selectedAddress.addressLine2 }}</p>
+              <p class="mb-1">{{ selectedAddress.city }}, {{ selectedAddress.state }} - {{ selectedAddress.zipCode }}</p>
+              <p><i class="fas fa-phone"></i> <strong>{{ selectedAddress.phone }}</strong></p>
+            </div>
+            <!-- Change Address Button (Right-Aligned) -->
+            <button class="btn btn-outline-primary" routerLink="/order/address">
+              <i class="fas fa-edit"></i> Change
+            </button>
+          </div>
+  
+          <!-- Skeleton Loader for Order Items -->
+          <div *ngIf="isLoading" class="mt-4">
+            <div class="skeleton-loader"></div>
+          </div>
+  
+          <!-- Order Items -->
+          <div *ngIf="!isLoading" class="mt-4">
+            <h4 class="border-bottom pb-2"><i class="fas fa-box"></i> Your Order</h4>
+  
+            <!-- Product List -->
+            <div *ngFor="let item of cart.items" class="d-flex align-items-center justify-content-between p-3 border-bottom">
+              <div class="d-flex align-items-center">
+                <img [src]="item.images[0]" alt="{{ item.name }}" class="rounded" style="width: 80px; height: 80px;">
+                <div class="ms-3">
+                  <h5 class="mb-1">{{ item.name }}</h5>
+                  <p class="mb-1 text-muted">Price: ₹{{ item.price }} | Qty: {{ item.quantity }}</p>
+                </div>
+              </div>
+              <h5 class="text-primary">₹{{ item.totalPrice }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Right Section (Payment Summary & Place Order Button) -->
+      <div class="col-lg-4">
+        <div class="card shadow-lg p-4">
+          <h4><i class="fas fa-wallet"></i> Payment Summary</h4>
+          
+          <!-- Product Details -->
+          <div *ngFor="let item of cart.items" class="d-flex justify-content-between mt-2">
+            <p>{{ item.name }} (x{{ item.quantity }})</p>
+            <p>₹{{ item.totalPrice }}</p>
+          </div>
+          
+          <hr>
+          
+          <!-- Total Price -->
+          <div class="d-flex justify-content-between text-dark font-weight-bold">
+            <h5>Total:</h5>
+            <h5>₹{{ getTotal() }}</h5>
+          </div>
+          
+          <!-- Place Order Button -->
+          <div class="text-center mt-4">
+            <button class="btn btn-primary btn-lg w-100" (click)="placeOrder()">
+              <i class="fas fa-shopping-cart"></i> Place Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

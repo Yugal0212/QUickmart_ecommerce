@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "buildCommand": "ng build --configuration production",
+  "outputDirectory": "dist/Quickmart_frontend",
+  "framework": "angular",
+  "installCommand": "npm install"
+}

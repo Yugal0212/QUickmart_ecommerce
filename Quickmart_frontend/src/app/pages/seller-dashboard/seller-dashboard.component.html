@@ -1,0 +1,144 @@
+<div class="flex h-screen bg-gray-50 font-sans overflow-hidden">
+  
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm hidden lg:flex transition-all duration-300 z-10 shrink-0">
+    <div class="h-16 flex items-center justify-center border-b border-gray-100 shrink-0">
+      <h2 class="text-xl font-black text-gray-800 tracking-tight flex items-center gap-2">
+        <i class="fas fa-store text-green-600"></i>
+        Quick<span class="text-green-600">Mart</span> <span class="text-xs text-gray-400 font-normal uppercase tracking-widest ml-1 mt-1">Seller</span>
+      </h2>
+    </div>
+    
+    <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
+      
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-2 px-4">Main</div>
+      
+      <a routerLink="/sheller-dashboard/overview" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-border-all w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-4">Catalog</div>
+      
+      <a routerLink="/sheller-dashboard/products" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-box-open w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Products</span>
+      </a>
+
+      <a routerLink="/sheller-dashboard/add-product" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group pl-8">
+        <i class="fas fa-plus w-4 text-center text-xs group-hover:scale-110 transition-transform"></i>
+        <span>Add Product</span>
+      </a>
+      
+      <a routerLink="/sheller-dashboard/categories" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-tags w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Categories</span>
+      </a>
+
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-4">Sales</div>
+      
+      <a routerLink="/sheller-dashboard/orders" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-shopping-cart w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Orders</span>
+      </a>
+
+      <a routerLink="/sheller-dashboard/inventory" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-warehouse w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Inventory</span>
+      </a>
+
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-4">Customers</div>
+      
+      <a routerLink="/sheller-dashboard/customers" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-users w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Customers</span>
+      </a>
+
+      <a routerLink="/sheller-dashboard/reviews" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-star w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Reviews</span>
+      </a>
+
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-4">Financials</div>
+      
+      <a routerLink="/sheller-dashboard/wallet" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-wallet w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Wallet</span>
+      </a>
+
+      <a routerLink="/sheller-dashboard/reports" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-file-invoice-dollar w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Reports</span>
+      </a>
+
+      <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-4">Settings</div>
+      
+      <a routerLink="/sheller-dashboard/profile" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-user-circle w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Seller Profile</span>
+      </a>
+
+      <a routerLink="/sheller-dashboard/settings" routerLinkActive="bg-gradient-to-r from-green-50 to-green-100/50 text-green-700 font-bold border-r-4 border-green-500" 
+         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-green-600 transition-all group">
+        <i class="fas fa-cog w-5 text-center group-hover:scale-110 transition-transform"></i>
+        <span>Store Settings</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50 relative">
+    
+    <!-- Top Header -->
+    <header class="h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-6 lg:px-10 shadow-sm shrink-0 z-20 absolute top-0 w-full">
+      <div class="flex items-center gap-4">
+        <!-- Mobile Menu Toggle -->
+        <button class="lg:hidden text-gray-500 hover:text-green-600 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        <h3 class="text-xl font-bold text-gray-800 m-0 hidden sm:block">Dashboard</h3>
+      </div>
+      
+      <div class="flex items-center gap-5">
+        <!-- Notifications -->
+        <button routerLink="/sheller-dashboard/notifications" class="relative text-gray-500 hover:text-green-600 transition-colors p-2">
+          <i class="fas fa-bell text-xl"></i>
+          <span class="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+        </button>
+
+        <div class="h-6 w-px bg-gray-200"></div>
+
+        <div class="flex items-center gap-3 cursor-pointer group">
+          <div class="h-9 w-9 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-all">
+            {{ username.charAt(0).toUpperCase() }}
+          </div>
+          <div class="flex flex-col hidden sm:flex">
+            <span class="text-sm font-bold text-gray-800 group-hover:text-green-600 transition-colors">{{ username }}</span>
+            <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verified Seller</span>
+          </div>
+        </div>
+
+        <button (click)="logout()" class="ml-2 flex items-center justify-center h-9 w-9 bg-red-50 text-red-600 hover:bg-red-500 hover:text-white rounded-full transition-all duration-300 shadow-sm hover:shadow-md" title="Logout">
+          <i class="fas fa-sign-out-alt"></i> 
+        </button>
+      </div>
+    </header>
+    
+    <!-- Dynamic Content Area -->
+    <div class="flex-1 overflow-y-auto mt-16 pt-2 pb-10">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+</div>

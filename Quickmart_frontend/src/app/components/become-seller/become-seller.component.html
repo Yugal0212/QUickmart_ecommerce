@@ -1,0 +1,139 @@
+<!-- Hero Section -->
+<header class="bg-green-600 text-white pt-24 pb-16 px-4 relative overflow-hidden">
+  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+  <div class="max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4" data-aos="fade-down">
+      Start Selling on QuickMart
+    </h1>
+    <p class="text-lg md:text-xl text-green-100 max-w-2xl mb-8" data-aos="fade-up">
+      Join thousands of successful sellers. Reach millions of customers and grow your business with our world-class marketplace tools.
+    </p>
+    <a href="#application-form" class="bg-white text-green-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in">
+      Apply Now
+    </a>
+  </div>
+</header>
+
+<div class="bg-gray-50 py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      
+      <!-- Left Column: Info & Benefits -->
+      <div data-aos="fade-right">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Why Sell on QuickMart?</h2>
+        
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-green-100 p-3 rounded-xl text-green-600">
+              <i class="fas fa-chart-line text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-xl font-bold text-gray-900">Reach Millions</h3>
+              <p class="mt-1 text-gray-600">Instantly tap into our massive active customer base. More visibility means more sales.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-xl text-blue-600">
+              <i class="fas fa-truck-fast text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-xl font-bold text-gray-900">Fulfillment Made Easy</h3>
+              <p class="mt-1 text-gray-600">Take advantage of our nationwide logistics network. We pick up, pack, and deliver.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-yellow-100 p-3 rounded-xl text-yellow-600">
+              <i class="fas fa-shield-halved text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-xl font-bold text-gray-900">Secure & Fast Payments</h3>
+              <p class="mt-1 text-gray-600">Get paid securely directly to your bank account every week. No hidden fees.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <h3 class="text-xl font-bold text-gray-900 mb-4">How it works</h3>
+          <ul class="space-y-4">
+            <li class="flex items-center text-gray-600">
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 font-bold text-gray-900 mr-3">1</span>
+              Submit your application with business details.
+            </li>
+            <li class="flex items-center text-gray-600">
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 font-bold text-gray-900 mr-3">2</span>
+              Our team reviews and approves within 24 hours.
+            </li>
+            <li class="flex items-center text-gray-600">
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 font-bold text-gray-900 mr-3">3</span>
+              List your products and start receiving orders!
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Right Column: Form -->
+      <div id="application-form" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 p-8" data-aos="fade-left">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Seller Application</h2>
+        
+        <form (ngSubmit)="onSubmit()" #form="ngForm" class="space-y-5">
+          <!-- Store Name -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Store Name *</label>
+            <input type="text" [(ngModel)]="sellerDetails.storeName" name="storeName" required
+                   class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
+                   placeholder="Your public store name">
+          </div>
+          
+          <!-- Business Name -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Legal Business Name *</label>
+            <input type="text" [(ngModel)]="sellerDetails.businessName" name="businessName" required
+                   class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
+                   placeholder="Registered company name">
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Contact Number -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number *</label>
+              <input type="tel" [(ngModel)]="sellerDetails.phone" name="phone" required
+                     class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
+                     placeholder="+1 (555) 000-0000">
+            </div>
+            
+            <!-- GST Number -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">GST/Tax Number *</label>
+              <input type="text" [(ngModel)]="sellerDetails.gstNumber" name="gstNumber" required
+                     class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
+                     placeholder="Tax Identification">
+            </div>
+          </div>
+          
+          <!-- Pickup Address -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Pickup Address *</label>
+            <textarea [(ngModel)]="sellerDetails.pickupAddress" name="pickupAddress" required rows="3"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
+                      placeholder="Full address where logistics should pick up orders"></textarea>
+          </div>
+          
+          <div class="pt-4">
+            <button type="submit" [disabled]="form.invalid" 
+                    class="w-full bg-green-600 text-white font-bold py-4 rounded-xl shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+              Submit Application
+            </button>
+          </div>
+          <p class="text-xs text-gray-500 text-center mt-4">
+            By submitting, you agree to QuickMart's Seller Terms & Conditions.
+          </p>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<app-preloader *ngIf="showPreloader"></app-preloader>

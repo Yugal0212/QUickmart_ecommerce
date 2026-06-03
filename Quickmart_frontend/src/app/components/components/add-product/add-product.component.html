@@ -1,0 +1,137 @@
+<div class="p-6 lg:p-12 max-w-4xl mx-auto">
+  <app-preloader *ngIf="showPreloader"></app-preloader>
+
+  <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 overflow-hidden relative">
+    
+    <!-- Decorative background elements -->
+    <div class="absolute -top-24 -right-24 w-48 h-48 bg-green-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+    <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+
+    <div class="p-8 lg:p-10 relative z-10">
+      <div class="mb-8 text-center">
+        <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-blue-600 tracking-tight">
+          {{ isEditMode ? 'Edit Product' : 'Add New Product' }}
+        </h2>
+        <p class="text-gray-500 mt-2 text-sm">Provide details and high-quality images for your product listing.</p>
+      </div>
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <!-- Two Column Grid for Name & Category -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Product Name -->
+          <div class="relative group">
+            <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Product Name</label>
+            <input type="text" id="name" formControlName="name" placeholder="E.g., Wireless Noise-Cancelling Headphones"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur-sm focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all outline-none text-gray-800 placeholder-gray-400 shadow-sm" />
+            <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="text-red-500 text-xs mt-1 absolute -bottom-5 left-0">
+              Product name is required.
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="relative group">
+            <label for="category" class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
+            <div class="relative">
+              <select id="category" formControlName="category"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur-sm focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all outline-none text-gray-800 appearance-none shadow-sm cursor-pointer">
+                <option value="" disabled selected>Select a category</option>
+                <option *ngFor="let category of categories" [value]="category._id || category.id">
+                  {{ category.name }}
+                </option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                <i class="fas fa-chevron-down text-sm"></i>
+              </div>
+            </div>
+            <div *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched" class="text-red-500 text-xs mt-1 absolute -bottom-5 left-0">
+              Category is required.
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column Grid for Price & Stock -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Price -->
+          <div class="relative group">
+            <label for="price" class="block text-sm font-semibold text-gray-700 mb-1">Price ($)</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <span class="text-gray-500 font-medium">$</span>
+              </div>
+              <input type="number" id="price" formControlName="price" placeholder="0.00" min="0" step="0.01"
+                class="w-full pl-8 pr-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur-sm focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all outline-none text-gray-800 placeholder-gray-400 shadow-sm" />
+            </div>
+            <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" class="text-red-500 text-xs mt-1 absolute -bottom-5 left-0">
+              Valid positive price is required.
+            </div>
+          </div>
+
+          <!-- Stock Quantity -->
+          <div class="relative group">
+            <label for="stockQuantity" class="block text-sm font-semibold text-gray-700 mb-1">Stock Quantity</label>
+            <input type="number" id="stockQuantity" formControlName="stockQuantity" placeholder="0" min="0"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur-sm focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all outline-none text-gray-800 placeholder-gray-400 shadow-sm" />
+            <div *ngIf="productForm.get('stockQuantity')?.invalid && productForm.get('stockQuantity')?.touched" class="text-red-500 text-xs mt-1 absolute -bottom-5 left-0">
+              Valid stock quantity is required.
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="relative group pt-2">
+          <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Product Description</label>
+          <textarea id="description" formControlName="description" placeholder="Describe your product's features, specifications, and benefits..." rows="4"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur-sm focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all outline-none text-gray-800 placeholder-gray-400 shadow-sm resize-none"></textarea>
+          <div *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched" class="text-red-500 text-xs mt-1 absolute -bottom-5 left-0">
+            Description is required.
+          </div>
+        </div>
+
+        <!-- Image Upload Section -->
+        <div class="pt-4 border-t border-gray-100">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Product Images (Up to 5)</label>
+          
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <!-- Custom Upload Button -->
+            <div class="relative group cursor-pointer w-full sm:w-auto shrink-0">
+              <input type="file" id="images" (change)="onFileChange($event)" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+              <div class="flex flex-col items-center justify-center w-full sm:w-32 h-32 rounded-2xl border-2 border-dashed border-green-300 bg-green-50/50 group-hover:bg-green-100/50 group-hover:border-green-400 transition-all duration-300">
+                <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <i class="fas fa-cloud-upload-alt text-green-600 text-lg"></i>
+                </div>
+                <span class="text-xs font-semibold text-green-700">Browse Files</span>
+              </div>
+            </div>
+
+            <!-- Previews -->
+            <div class="flex-1 w-full overflow-x-auto pb-2">
+              <div class="flex gap-3 min-h-[8rem]">
+                <div *ngIf="uploadedImages.length === 0" class="flex items-center justify-center w-full h-32 rounded-2xl border border-dashed border-gray-200 bg-gray-50/50 text-gray-400 text-sm">
+                  <i class="fas fa-image mr-2"></i> No images selected
+                </div>
+                
+                <div *ngFor="let image of uploadedImages; let i = index" class="relative group w-32 h-32 shrink-0 rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
+                  <img [src]="image" alt="Preview {{i}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="text-white text-xs font-bold bg-black/50 px-2 py-1 rounded">Image {{i+1}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-6">
+          <button type="submit" [disabled]="productForm.invalid"
+            class="w-full flex items-center justify-center py-4 px-8 border border-transparent rounded-2xl shadow-lg text-lg font-bold text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transform transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+            <i class="fas" [ngClass]="isEditMode ? 'fa-save' : 'fa-plus-circle'"></i>
+            <span class="ml-2">{{ isEditMode ? 'Save Changes' : 'Publish Product' }}</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

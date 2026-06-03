@@ -1,0 +1,108 @@
+<div class="p-6 lg:p-8 max-w-7xl mx-auto">
+  <div class="mb-8 flex justify-between items-end">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Your Wallet</h1>
+      <p class="text-gray-500 mt-1">Manage your earnings and request payouts.</p>
+    </div>
+    <button (click)="requestWithdrawal()" [disabled]="withdrawing || !wallet || wallet.availableBalance <= 0" 
+            class="hidden md:flex items-center bg-gray-900 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/20 disabled:opacity-50">
+      <i class="fas fa-money-bill-wave mr-2" *ngIf="!withdrawing"></i>
+      <i class="fas fa-spinner fa-spin mr-2" *ngIf="withdrawing"></i>
+      Request Payout
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-pulse">
+    <div class="h-32 bg-gray-200 rounded-3xl" *ngFor="let i of [1,2,3]"></div>
+  </div>
+
+  <div *ngIf="errorMessage" class="bg-red-50 text-red-700 p-4 rounded-xl mb-6 flex items-center">
+    <i class="fas fa-exclamation-circle mr-2"></i> {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && wallet">
+    <!-- Balances Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      
+      <!-- Available Balance -->
+      <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-3xl p-6 text-white shadow-xl shadow-green-900/20 relative overflow-hidden group">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+        <p class="text-green-100 font-medium uppercase tracking-wider text-xs mb-1 relative z-10">Available to Withdraw</p>
+        <h2 class="text-4xl font-black relative z-10">${{ wallet.availableBalance | number:'1.2-2' }}</h2>
+        <div class="absolute bottom-4 right-4 opacity-50">
+           <i class="fas fa-check-circle text-4xl"></i>
+        </div>
+      </div>
+
+      <!-- Pending Clearance -->
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+        <p class="text-gray-400 font-bold uppercase tracking-wider text-xs mb-1">Pending Clearance</p>
+        <h2 class="text-4xl font-black text-gray-900">${{ wallet.pendingClearance | number:'1.2-2' }}</h2>
+        <p class="text-xs text-yellow-600 mt-2 font-medium flex items-center">
+          <i class="fas fa-clock mr-1"></i> Funds from un-delivered orders
+        </p>
+      </div>
+
+      <!-- Total Earned -->
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+        <p class="text-gray-400 font-bold uppercase tracking-wider text-xs mb-1">Total Lifetime Earnings</p>
+        <h2 class="text-4xl font-black text-gray-900">${{ wallet.totalEarned | number:'1.2-2' }}</h2>
+        <p class="text-xs text-blue-600 mt-2 font-medium flex items-center">
+          <i class="fas fa-chart-line mr-1"></i> Since account creation
+        </p>
+      </div>
+    </div>
+
+    <!-- Mobile Withdraw Button -->
+    <button (click)="requestWithdrawal()" [disabled]="withdrawing || wallet.availableBalance <= 0" 
+            class="md:hidden w-full flex justify-center items-center bg-gray-900 text-white px-5 py-3.5 rounded-xl font-bold mb-8 hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/20 disabled:opacity-50">
+      <i class="fas fa-money-bill-wave mr-2" *ngIf="!withdrawing"></i>
+      <i class="fas fa-spinner fa-spin mr-2" *ngIf="withdrawing"></i>
+      Request Payout
+    </button>
+
+    <!-- Transaction History -->
+    <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden">
+      <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">Recent Transactions</h3>
+        <button class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">View All</button>
+      </div>
+      
+      <div class="p-6" *ngIf="wallet.transactions.length === 0">
+        <p class="text-center text-gray-500 py-8">No transactions found.</p>
+      </div>
+
+      <div class="overflow-x-auto" *ngIf="wallet.transactions.length > 0">
+        <table class="min-w-full divide-y divide-gray-100">
+          <tbody class="divide-y divide-gray-100">
+            <tr *ngFor="let tx of wallet.transactions" class="hover:bg-gray-50/50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4"
+                       [ngClass]="{'bg-green-100 text-green-600': tx.status === 'Cleared', 'bg-yellow-100 text-yellow-600': tx.status === 'Pending', 'bg-red-100 text-red-600': tx.status === 'Cancelled'}">
+                    <i class="fas" [ngClass]="{'fa-arrow-down': tx.status === 'Cleared', 'fa-hourglass-half': tx.status === 'Pending', 'fa-times': tx.status === 'Cancelled'}"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-gray-900">Order Payment</p>
+                    <p class="text-xs text-gray-500">Ref: {{ tx.orderId | slice:0:8 }}...</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right">
+                <p class="text-sm font-black text-gray-900">+${{ tx.amount | number:'1.2-2' }}</p>
+                <p class="text-xs font-semibold mt-1"
+                   [ngClass]="{'text-green-600': tx.status === 'Cleared', 'text-yellow-600': tx.status === 'Pending', 'text-red-600': tx.status === 'Cancelled'}">
+                  {{ tx.status }}
+                </p>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                {{ tx.date | date:'mediumDate' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

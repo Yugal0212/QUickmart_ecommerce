@@ -1,0 +1,89 @@
+<div class="p-6 lg:p-8 max-w-7xl mx-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Stock Management</h1>
+      <p class="text-gray-500 mt-1">Quickly adjust stock levels and monitor low inventory.</p>
+    </div>
+    
+    <div class="mt-4 md:mt-0 relative w-full md:w-72">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <i class="fas fa-search text-gray-400"></i>
+      </div>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Search products..." 
+             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl bg-white/70 backdrop-blur-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all shadow-sm">
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 p-6">
+    <div class="animate-pulse space-y-4">
+      <div class="h-10 bg-gray-200 rounded w-full" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+  </div>
+
+  <!-- Glassmorphism Table -->
+  <div *ngIf="!isLoading && filteredProducts.length > 0" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50/50">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Product</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Price</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Stock Level</th>
+            <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Quick Update</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 bg-transparent">
+          <tr *ngFor="let p of filteredProducts" class="hover:bg-green-50/30 transition-colors">
+            
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 shadow-sm border border-gray-200 shrink-0">
+                  <img [src]="p.images && p.images.length ? p.images[0] : 'assets/placeholder.jpg'" class="w-full h-full object-cover">
+                </div>
+                <div>
+                  <div class="font-bold text-gray-900 truncate w-48">{{ p.name }}</div>
+                  <div class="text-xs text-gray-500">ID: {{ p._id | slice:0:8 }}...</div>
+                </div>
+              </div>
+            </td>
+            
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
+              ${{ p.price }}
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-3 py-1 inline-flex text-xs font-bold rounded-full shadow-sm"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': p.stockQuantity > 10,
+                      'bg-yellow-100 text-yellow-800': p.stockQuantity > 0 && p.stockQuantity <= 10,
+                      'bg-red-100 text-red-800': p.stockQuantity === 0
+                    }">
+                {{ p.stockQuantity > 10 ? 'In Stock' : (p.stockQuantity === 0 ? 'Out of Stock' : 'Low Stock') }}
+              </span>
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap">
+              <!-- Inline Edit Input -->
+              <div class="relative w-24">
+                <input type="number" [(ngModel)]="p.stockQuantity" min="0" 
+                       class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-white transition-colors text-sm font-bold text-gray-700">
+              </div>
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <button (click)="updateStock(p._id, p.stockQuantity)" [disabled]="updatingId === p._id"
+                      class="bg-green-50 text-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors shadow-sm disabled:opacity-50">
+                <i class="fas fa-save mr-1" *ngIf="updatingId !== p._id"></i>
+                <i class="fas fa-spinner fa-spin mr-1" *ngIf="updatingId === p._id"></i>
+                Save
+              </button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

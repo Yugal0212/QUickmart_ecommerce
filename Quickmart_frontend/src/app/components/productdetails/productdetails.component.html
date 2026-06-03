@@ -1,0 +1,130 @@
+<!-- src/app/productdetails/productdetails.component.html -->
+<div class="container my-5">
+
+  <div class="row">
+    <!-- Left Side: Thumbnails & Main Image -->
+    <div class="col-md-6 product-images-container">
+      <!-- Skeleton Loader for Thumbnails -->
+      <div *ngIf="isLoading" class="thumbnail-container">
+        <div class="skeleton-thumbnail shimmer" *ngFor="let item of [].constructor(4)"></div>
+      </div>
+      <!-- Actual Thumbnails -->
+      <div *ngIf="!isLoading" class="thumbnail-container">
+        <img
+          *ngFor="let img of imageSources; let i = index"
+          [src]="img"
+          class="thumbnail"
+          [class.active]="i === currentIndex"
+          (click)="changeImage(i)"
+        />
+      </div>
+
+      <!-- Skeleton Loader for Main Image -->
+      <div *ngIf="isLoading" class="main-image-container">
+        <div class="skeleton-main-image shimmer"></div>
+      </div>
+      <!-- Actual Main Image -->
+      <div *ngIf="!isLoading" class="main-image-container">
+        <img
+          [src]="imageSources[currentIndex]"
+          class="main-product-image"
+          alt="Product Image"
+        />
+      </div>
+    </div>
+
+    <!-- Right Side: Product Details -->
+    <div class="col-md-6 product-details">
+      <!-- Skeleton Loader for Product Title -->
+      <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
+      <h1 *ngIf="!isLoading" class="product-title">{{ product?.name }}</h1>
+
+      <!-- Skeleton Loader for Product Category -->
+      <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
+      <p *ngIf="!isLoading" class="product-category">{{ product?.category?.name }}</p>
+
+      <!-- Skeleton Loader for Product Description -->
+      <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
+      <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
+      <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
+      <p *ngIf="!isLoading" class="product-description" [innerHTML]="product?.description"></p>
+
+      <!-- Skeleton Loader for Product Price -->
+      <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
+      <p *ngIf="!isLoading" class="product-price">${{ product?.price | number: '1.2-2' }}</p>
+
+      <!-- Skeleton Loader for Key Features -->
+      <div *ngIf="isLoading" class="product-specifications">
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+      </div>
+      <!-- Actual Key Features -->
+      <div *ngIf="!isLoading" class="product-specifications">
+        <h3>Key Features:</h3>
+        <ul>
+          <li *ngFor="let feature of product?.features">
+            <i class="fas fa-check-circle"></i> {{ feature }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Skeleton Loader for QuickMart Policies -->
+      <div *ngIf="isLoading" class="quick-mart-policies">
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+      </div>
+      <!-- Actual QuickMart Policies -->
+      <div *ngIf="!isLoading" class="quick-mart-policies">
+        <h3>Why Shop at QuickMart?</h3>
+        <ul>
+          <li><i class="fas fa-shield-alt"></i> 100% Secure Payments</li>
+          <li><i class="fas fa-truck"></i> Fast & Free Shipping on Orders Above $50</li>
+          <li><i class="fas fa-undo"></i> Easy 30-Day Returns & Refunds</li>
+          <li><i class="fas fa-headset"></i> 24/7 Customer Support</li>
+        </ul>
+      </div>
+
+      <!-- Skeleton Loader for Quantity Selector -->
+      <div *ngIf="isLoading" class="quantity-container">
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+      </div>
+      <div *ngIf="!isLoading" class="quantity-container">
+        <span class="quantity-label">Quantity:</span>
+        <div class="quantity-selector">
+          <button class="quantity-btn decrease-btn" (click)="decreaseQuantity()">-</button>
+          <input
+            type="number"
+            name="quantity"
+            class="form-control quantity-input"
+            [(ngModel)]="quantity"
+            min="1"
+            (change)="onQuantityChange()"
+          />
+          <button class="quantity-btn increase-btn" (click)="increaseQuantity()">+</button>
+        </div>
+        <span class="total-price">Total: ${{ getTotalPrice() | number: '1.2-2' }}</span>
+      </div>
+      
+      <div *ngIf="!isLoading" class="button-group">
+        <button class="btn btn-add-to-cart" (click)="addToCart(product._id)" [disabled]="addingToCart">
+          <ng-container *ngIf="!addingToCart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </ng-container>
+          <ng-container *ngIf="addingToCart">
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            Adding...
+          </ng-container>
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!product && !isLoading">
+  <p>Product not found. Please check the product ID.</p>
+</div>

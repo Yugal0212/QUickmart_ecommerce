@@ -1,0 +1,5 @@
+<app-navbar *ngIf="!hideHeaderFooter"></app-navbar> <!-- Navbar visible only if not on auth/dashboard page -->
+<div class="content" [class.has-navbar]="!hideHeaderFooter">
+  <router-outlet></router-outlet>
+</div>
+<app-footer *ngIf="!hideHeaderFooter"></app-footer> <!-- Footer visible only if not on auth/dashboard page -->

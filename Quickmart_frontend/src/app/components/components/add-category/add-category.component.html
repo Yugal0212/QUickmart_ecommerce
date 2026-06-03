@@ -1,0 +1,72 @@
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">{{ isEditMode ? 'Edit Category' : 'Add New Category' }}</h2>
+    <hr class="mb-4" />
+  
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+      <!-- Category Name -->
+      <div class="form-group mb-4">
+        <label for="name" class="form-label">Category Name</label>
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="name"
+          formControlName="name"
+          required
+          placeholder="Enter category name"
+        />
+        <div *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" class="invalid-feedback">
+          Category name is required.
+        </div>
+      </div>
+  
+      <!-- Category Description -->
+      <div class="form-group mb-4">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control form-control-lg"
+          id="description"
+          formControlName="description"
+          required
+          placeholder="Enter category description"
+          rows="4"
+        ></textarea>
+        <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched" class="invalid-feedback">
+          Description is required.
+        </div>
+      </div>
+  
+      <!-- Image Upload -->
+      <div class="form-group mb-4">
+        <label for="image" class="form-label">Upload Image</label>
+        <!-- Display existing image in edit mode -->
+        <div *ngIf="isEditMode && existingImage" class="mb-3">
+          <img [src]="existingImage" alt="Existing Image" class="img-thumbnail" width="150" />
+        </div>
+        <input
+          type="file"
+          class="form-control form-control-lg"
+          id="image"
+          (change)="onFileChange($event)"
+          accept="image/*"
+        />
+        <small class="form-text text-muted">Upload a single image for the category.</small>
+        <div *ngIf="categoryForm.get('image')?.invalid && categoryForm.get('image')?.touched" class="invalid-feedback">
+          Image is required.
+        </div>
+      </div>
+  
+      <!-- Submit Button -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="categoryForm.invalid || isLoading">
+          <span *ngIf="!isLoading">{{ isEditMode ? 'Update Category' : 'Add Category' }}</span>
+          <span *ngIf="isLoading">
+            <i class="fas fa-spinner fa-spin"></i> {{ isEditMode ? 'Updating...' : 'Adding...' }}
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+
+  <app-preloader *ngIf="showPreloader"></app-preloader>

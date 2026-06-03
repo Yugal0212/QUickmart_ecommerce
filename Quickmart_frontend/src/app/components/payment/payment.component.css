@@ -1,0 +1,176 @@
+/* Global Styles */
+body {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Soft gradient */
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+/* Card Styling */
+.card {
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease-in-out;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px); /* Glassmorphism effect */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+/* Payment Method Styling */
+.payment-method {
+  padding: 20px;
+  border: 2px solid #d1d9e6;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f3f6 100%);
+}
+
+.payment-method input {
+  margin-right: 14px;
+}
+
+.payment-method:hover:not(.disabled) {
+  border-color: #2f7d32; /* Quickmart Green */
+  box-shadow: 0px 0px 14px rgba(47, 125, 50, 0.25);
+}
+
+/* Active Payment Method */
+.payment-method.active {
+  border-color: #2f7d32;
+  background: linear-gradient(135deg, rgba(47,125,50,0.06) 0%, rgba(67,160,71,0.08) 100%);
+}
+
+/* Disabled Payment Methods */
+.payment-method.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #9ca3af;
+  border-color: #e5e7eb;
+}
+
+/* Tooltip for "Coming Soon" */
+.payment-method.disabled:hover::after {
+  content: "Coming Soon!";
+  position: absolute;
+  top: -40px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Card Details Form */
+.card-details {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-details input {
+  padding: 12px;
+  border: 1px solid #bcc3d6;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+/* Disabled Inputs */
+.card-details input:disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+}
+
+/* Payment Button */
+.btn-pay {
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  border: none;
+  transition: all 0.25s ease;
+}
+
+.btn-pay:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(47, 125, 50, 0.3);
+}
+
+.btn-pay:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Sticky Summary Box */
+.sticky-top {
+  top: 24px;
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 14px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-method {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+
+/* Skeleton Loader Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-loader {
+  width: 100%;
+}
+
+.skeleton-line {
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* Adjust skeleton height for different elements */
+.skeleton-line.short {
+  height: 15px;
+  width: 50%;
+}
+
+.skeleton-line.medium {
+  height: 20px;
+  width: 75%;
+}
+
+.skeleton-line.long {
+  height: 25px;
+  width: 100%;
+}

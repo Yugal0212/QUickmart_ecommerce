@@ -1,0 +1,214 @@
+/* General Styles */
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #444;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* User Details Section */
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.user-name {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.user-info {
+  font-size: 1rem;
+  color: #555;
+}
+
+.user-info p {
+  margin: 8px 0;
+}
+
+/* Orders Section */
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.order-item p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+/* Login History Section */
+.login-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-history-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.login-history-item p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+/* Error Message */
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* No Data Messages */
+.no-orders, .no-login-history {
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* Skeleton Loader */
+/* Shimmer Effect */
+.skeleton-loader {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.skeleton-user-name {
+  height: 24px;
+  width: 50%;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.skeleton-line {
+  height: 16px;
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-order-item, .skeleton-login-history-item {
+  height: 80px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+/* No Data Messages */
+.no-user-found, .no-orders, .no-login-history {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .user-name {
+    font-size: 1.25rem;
+  }
+
+  .user-info {
+    font-size: 0.9rem;
+  }
+
+  .order-item, .login-history-item {
+    padding: 10px;
+  }
+
+  .order-item p, .login-history-item p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .user-name {
+    font-size: 1rem;
+  }
+
+  .user-info {
+    font-size: 0.8rem;
+  }
+
+  .order-item, .login-history-item {
+    padding: 8px;
+  }
+
+  .order-item p, .login-history-item p {
+    font-size: 0.75rem;
+  }
+}

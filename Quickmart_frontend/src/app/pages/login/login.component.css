@@ -1,0 +1,155 @@
+/* General Layout */
+.login-page {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Image Slider */
+.image-slider {
+    flex: 1 1 65%;
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+    /* Ensure carousel is behind the form */
+    pointer-events: none;
+}
+
+.carousel-inner {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+/* Form Section */
+.form {
+    flex: 0 1 35%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Logo and Name Top-Left Alignment */
+.form-header {
+    position: absolute;
+    top: 5px;
+    /* Adjusted for closer top position */
+    left: 20px;
+    /* Adjusted left position */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Space between logo and text */
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Animated Logo */
+.form-logo {
+    width: 250px;
+    /* Adjust logo size */
+    height: auto;
+    animation: bounceIn 1.5s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-page {
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .image-slider {
+        flex: 0 0 100%;
+        height: 220px;
+        /* Reduced image height for mobile */
+    }
+
+    .carousel-inner img {
+        height: 200px;
+        /* Ensure image scaling */
+    }
+
+    .form {
+        flex: 0 0 100%;
+        height: auto;
+        padding: 20px 16px 32px;
+        justify-content: flex-start;
+        /* Align form to the top */
+    }
+
+    .form-header {
+        position: static;
+        margin-bottom: 16px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .form-logo {
+        width: 150px;
+        /* Smaller logo for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .image-slider {
+        height: 150px;
+        /* Further reduced image height */
+    }
+
+    .carousel-inner img {
+        height: 150px;
+    }
+
+    .form {
+        padding: 16px 14px 28px;
+    }
+
+    .form-header {
+        margin-bottom: 12px;
+    }
+
+    .form-logo {
+        width: 100px;
+        /* Even smaller logo for very small screens */
+    }
+}
+
+@media (max-width: 320px) {
+    .image-slider {
+        height: 120px;
+        /* Very small image height */
+    }
+
+    .carousel-inner img {
+        height: 120px;
+    }
+
+    .form {
+        padding: 12px 12px 24px;
+    }
+
+    .form-header {
+        margin-bottom: 10px;
+    }
+
+    .form-logo {
+        width: 80px;
+        /* Smallest logo for very small screens */
+    }
+}

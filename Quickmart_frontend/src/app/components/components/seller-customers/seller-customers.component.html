@@ -1,0 +1,59 @@
+<div class="p-6 lg:p-8 max-w-7xl mx-auto">
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Your Customers</h1>
+    <p class="text-gray-500 mt-1">People who have purchased products from your store.</p>
+  </div>
+
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-sm border border-gray-100 p-6 animate-pulse" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 bg-gray-200 rounded-full mb-4"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+        <div class="h-3 bg-gray-200 rounded w-1/3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && customers.length === 0" class="text-center bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 py-16">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4 text-blue-500">
+      <i class="fas fa-users text-2xl"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900">No customers yet</h3>
+    <p class="mt-1 text-gray-500">Once people start buying your products, they will appear here.</p>
+  </div>
+
+  <div *ngIf="!isLoading && customers.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    
+    <div *ngFor="let customer of customers" class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden group">
+      <!-- Decorative background -->
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
+      
+      <div class="relative z-10 flex flex-col items-center text-center">
+        <!-- Avatar -->
+        <div class="w-20 h-20 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-2xl shadow-sm border-2 border-white mb-3">
+          {{ customer.username.charAt(0).toUpperCase() }}
+        </div>
+        
+        <h3 class="text-lg font-bold text-gray-900">{{ customer.username }}</h3>
+        <p class="text-sm text-gray-500 mb-4">{{ customer.email }}</p>
+
+        <div class="w-full bg-gray-50 rounded-2xl p-4 flex justify-between items-center border border-gray-100">
+          <div>
+            <p class="text-xs font-bold text-gray-400 uppercase">Orders</p>
+            <p class="text-lg font-black text-gray-900">{{ customer.totalOrders }}</p>
+          </div>
+          <div class="w-px h-8 bg-gray-200"></div>
+          <div>
+            <p class="text-xs font-bold text-gray-400 uppercase">Spent</p>
+            <p class="text-lg font-black text-green-600">${{ customer.totalSpent | number:'1.2-2' }}</p>
+          </div>
+        </div>
+
+        <div class="mt-4 text-xs font-semibold text-gray-400">
+          Customer since {{ customer.joined | date:'MMM yyyy' }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

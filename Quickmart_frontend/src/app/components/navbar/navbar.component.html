@@ -1,0 +1,396 @@
+<!-- ========= OFFCANVAS MOBILE MENU ========= -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+  <!-- Header -->
+  <div class="offcanvas-header">
+    <div class="offcanvas-brand">
+      <img src="images/quickmart-logo1.png" alt="QuickMart">
+      <span id="offcanvasNavbarLabel" class="fw-bold" style="font-size:15px;">QuickMart</span>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <!-- Search -->
+  <div class="offcanvas-search">
+    <form class="search-bar" (ngSubmit)="onSearchSubmit()">
+      <div class="search-input-wrap">
+        <input
+          type="text"
+          placeholder="Search products…"
+          [formControl]="searchControl"
+          aria-label="Search"
+        />
+      </div>
+      <div class="search-submit">
+        <button type="submit" class="search-button" aria-label="Submit search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Body -->
+  <div class="offcanvas-body">
+
+    <!-- Main links -->
+    <div class="mobile-nav-item">
+      <a class="mobile-nav-link" routerLink="/home" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">🏠</span>
+        Home
+      </a>
+    </div>
+    <div class="mobile-nav-item">
+      <a class="mobile-nav-link" routerLink="/allproducts" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">🛍️</span>
+        All Products
+      </a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="username">
+      <a class="mobile-nav-link" routerLink="/cart" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">🛒</span>
+        My Cart
+        <span class="mobile-cart-badge ms-auto" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="username">
+      <a class="mobile-nav-link" routerLink="/history" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">📦</span>
+        My Orders
+      </a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="authService.getUserRoles().includes('seller')">
+      <a class="mobile-nav-link" routerLink="/sheller-dashboard" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">🏪</span>
+        Seller Dashboard
+      </a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="authService.getUserRoles().includes('admin')">
+      <a class="mobile-nav-link" routerLink="/admin-dashboard" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">⚙️</span>
+        Admin Dashboard
+      </a>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="mobile-nav-section">Browse by Category</div>
+
+    <div *ngIf="!categories.length" class="mobile-cat-item">
+      <span class="mobile-cat-dot"></span>
+      <span style="color:#9ca3af;">Loading categories…</span>
+    </div>
+
+    <a
+      class="mobile-cat-item"
+      routerLink="/allproducts"
+      data-bs-dismiss="offcanvas"
+    >
+      <span class="mobile-cat-dot"></span>
+      All Products
+    </a>
+
+    <a
+      class="mobile-cat-item"
+      *ngFor="let category of categories"
+      [routerLink]="['/category-details', category._id]"
+      data-bs-dismiss="offcanvas"
+    >
+      <span class="mobile-cat-dot"></span>
+      {{ category.name }}
+    </a>
+
+    <!-- Auth section -->
+    <div class="mobile-nav-section">Account</div>
+
+    <div class="mobile-nav-item" *ngIf="!username">
+      <a class="mobile-nav-link" routerLink="/login" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">👤</span>
+        Sign In
+      </a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="username">
+      <button class="mobile-nav-link mobile-logout" (click)="logout()">
+        <span class="mobile-nav-icon">🚪</span>
+        Logout
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========= TOP STRIP (Desktop only) ========= -->
+<div class="top-strip">
+  <div class="container-fluid">
+    <div class="top-strip-inner">
+      <div class="top-strip-left">
+        <span class="top-pill">🚚 Free delivery over $50</span>
+        <span class="top-text">Fresh picks delivered in 45-60 mins</span>
+      </div>
+      <div class="top-strip-right">
+        <div class="dropdown top-dropdown">
+          <button class="top-link dropdown-toggle" id="supportMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            Support
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="supportMenu">
+            <li><a class="dropdown-item" routerLink="/history">Order History</a></li>
+            <li><a class="dropdown-item" routerLink="/cart">Cart</a></li>
+            <li><a class="dropdown-item" routerLink="/allproducts">Shop Help</a></li>
+          </ul>
+        </div>
+        <div class="dropdown top-dropdown">
+          <button class="top-link dropdown-toggle" id="localeMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            EN / USD
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="localeMenu">
+            <li><button class="dropdown-item" type="button">English</button></li>
+            <li><button class="dropdown-item" type="button">Hindi</button></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item" type="button">USD ($)</button></li>
+            <li><button class="dropdown-item" type="button">INR (₹)</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========= MAIN HEADER ========= -->
+<header class="site-header">
+  <div class="container-fluid px-3">
+    <div class="row nav-row align-items-center justify-content-between flex-nowrap">
+
+      <!-- LEFT: Toggler + Logo -->
+      <div class="col-auto d-flex align-items-center gap-2">
+        <!-- Mobile hamburger (visible below lg) -->
+        <button
+          class="navbar-toggler d-lg-none"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Open navigation"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+
+        <!-- Logo -->
+        <a routerLink="/home" class="brand">
+          <img src="images/quickmart-logo1.png" alt="QuickMart logo">
+        </a>
+      </div>
+
+      <!-- CENTER: Search (sm and up, inside header) -->
+      <div class="col header-search d-none d-sm-block" style="max-width:400px;">
+        <div class="search-wrapper" #searchWrapper>
+          <form class="search-bar" (ngSubmit)="onSearchSubmit()">
+            <div class="search-input-wrap">
+              <input
+                type="text"
+                placeholder="Search products or categories…"
+                [formControl]="searchControl"
+                (focus)="openSearchResults()"
+                (keydown.escape)="closeSearchResults()"
+                aria-label="Search"
+              />
+            </div>
+            <div class="search-submit">
+              <button type="submit" class="search-button" aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Live Search Results -->
+          <div class="search-results" *ngIf="showSearchResults">
+            <div class="search-loading" *ngIf="isSearching">Searching…</div>
+
+            <div class="search-section" *ngIf="productResults.length">
+              <div class="search-title">Products</div>
+              <button
+                class="search-item"
+                type="button"
+                *ngFor="let product of productResults"
+                (click)="navigateToProduct(product)"
+              >
+                <span class="search-item-name">{{ product.name }}</span>
+                <span class="search-item-meta">${{ product.price | number:'1.0-0' }}</span>
+              </button>
+            </div>
+
+            <div class="search-section" *ngIf="categoryResults.length">
+              <div class="search-title">Categories</div>
+              <button
+                class="search-item"
+                type="button"
+                *ngFor="let category of categoryResults"
+                (click)="navigateToCategory(category)"
+              >
+                <span class="search-item-name">{{ category.name }}</span>
+                <span class="search-item-meta">Category</span>
+              </button>
+            </div>
+
+            <div class="search-empty" *ngIf="!isSearching && !productResults.length && !categoryResults.length">
+              No results found
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER-RIGHT: Desktop Nav (visible lg+) -->
+      <div class="col d-none d-lg-flex justify-content-center">
+        <ul class="q-nav-list">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/allproducts">Shop</a>
+          </li>
+          <li class="nav-item" *ngIf="authService.getUserRoles().includes('seller')">
+            <a class="nav-link" routerLink="/sheller-dashboard">🏪 Seller Dashboard</a>
+          </li>
+          <li class="nav-item" *ngIf="authService.getUserRoles().includes('admin')">
+            <a class="nav-link" routerLink="/admin-dashboard">⚙️ Admin Panel</a>
+          </li>
+
+          <!-- Categories Dropdown -->
+          <li class="nav-item dropdown category-dropdown">
+            <button
+              class="nav-link category-trigger dropdown-toggle"
+              id="categoriesDropdown"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="true"
+              aria-expanded="false"
+              type="button"
+            >
+              Categories
+            </button>
+            <div class="dropdown-menu category-menu" aria-labelledby="categoriesDropdown">
+              <a class="dropdown-item category-item" routerLink="/allproducts">
+                <span class="cat-dot"></span>All Products
+              </a>
+              <a
+                class="dropdown-item category-item"
+                *ngFor="let category of categories"
+                [routerLink]="['/category-details', category._id]"
+              >
+                <span class="cat-dot"></span>{{ category.name }}
+              </a>
+              <div class="category-item text-muted px-3 py-2" *ngIf="!categories.length" style="font-size:12px;">
+                Loading categories…
+              </div>
+            </div>
+          </li>
+
+          <!-- Browse Dropdown -->
+          <li class="nav-item dropdown" *ngIf="authService.getUserRoles().includes('customer')">
+            <a class="nav-link dropdown-toggle" role="button" id="browseMenu"
+               data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+              Browse
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="browseMenu">
+              <li><a class="dropdown-item" routerLink="/allproducts">🛍️ Shop Now</a></li>
+              <li><a class="dropdown-item" routerLink="/cart">🛒 My Cart</a></li>
+              <li><a class="dropdown-item" routerLink="/history">📦 My Orders</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT: Account + Cart + Seller -->
+      <div class="col-auto nav-actions">
+
+        <!-- Role Switcher -->
+        <div class="dropdown me-3 d-none d-lg-block" *ngIf="authService.getUserRoles().includes('seller')">
+          <button class="btn btn-outline-success dropdown-toggle rounded-pill px-3 py-1.5 fw-bold" type="button" id="roleSwitcher" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-exchange-alt me-1"></i> Switch Role
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="roleSwitcher">
+            <li><a class="dropdown-item py-2" routerLink="/home"><i class="fas fa-user-circle me-2 text-primary"></i>Customer View</a></li>
+            <li><a class="dropdown-item py-2" routerLink="/sheller-dashboard"><i class="fas fa-store me-2 text-success"></i>Seller Dashboard</a></li>
+          </ul>
+        </div>
+
+        <!-- Account Dropdown -->
+        <div class="dropdown account-dropdown">
+          <button
+            class="account-trigger dropdown-toggle"
+            id="accountMenu"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="true"
+            aria-expanded="false"
+            type="button"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span class="account-text">
+              <span class="account-greeting">Hi, {{ username || 'Guest' }}</span>
+              <span class="account-action">Account</span>
+            </span>
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end account-menu" aria-labelledby="accountMenu">
+            <li *ngIf="!username">
+              <a class="dropdown-item" routerLink="/login">👤 Sign In</a>
+            </li>
+            <li *ngIf="username"><a class="dropdown-item" routerLink="/history">📦 My Orders</a></li>
+            <li *ngIf="username"><a class="dropdown-item" routerLink="/cart">🛒 Cart</a></li>
+            <li *ngIf="authService.getUserRoles().includes('seller')">
+              <a class="dropdown-item" routerLink="/sheller-dashboard">🏪 Seller Dashboard</a>
+            </li>
+            <li *ngIf="authService.getUserRoles().includes('admin')">
+              <a class="dropdown-item" routerLink="/admin-dashboard">⚙️ Admin Dashboard</a>
+            </li>
+            <li *ngIf="username"><hr class="dropdown-divider"></li>
+            <li *ngIf="username">
+              <button class="dropdown-item text-danger" type="button" (click)="logout()">🚪 Logout</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Cart Button -->
+        <a class="cart-btn" routerLink="/cart" aria-label="View cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="d-none d-md-inline">Cart</span>
+          <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+        </a>
+
+        <!-- Become a Seller (Desktop only) -->
+        <a
+          *ngIf="!authService.getUserRoles().includes('seller') && !authService.getUserRoles().includes('admin')"
+          class="seller-btn d-none d-xl-flex"
+          routerLink="/become-seller"
+        >
+          <span>🏪</span>
+          <span>Become a Seller</span>
+        </a>
+
+        <!-- Visible Logout Button -->
+        <button
+          *ngIf="username"
+          (click)="logout()"
+          class="btn btn-outline-danger ms-3 d-none d-lg-flex align-items-center"
+          style="border-radius: 20px; font-weight: bold; padding: 0.5rem 1.2rem;"
+          title="Logout"
+        >
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<app-preloader *ngIf="showPreloader"></app-preloader>

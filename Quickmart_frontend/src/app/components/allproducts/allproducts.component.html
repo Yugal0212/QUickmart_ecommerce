@@ -1,0 +1,172 @@
+<!-- All Products Page -->
+<section class="product-showcase">
+
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast align-items-center border-0"
+         role="alert"
+         [class]="toastType === 'success' ? 'bg-success text-white' : 'bg-danger text-white'"
+         aria-live="assertive"
+         aria-atomic="true"
+         #cartToast>
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">{{ toastMessage }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                (click)="hideToast()" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container-lg">
+      <h1 class="page-title">Explore Our Products</h1>
+      <p class="page-subtitle">Fresh groceries &amp; daily essentials — filter by category or browse all.</p>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="container-lg py-4">
+    <div class="row g-4">
+
+      <!-- ── Category Sidebar ── -->
+      <div class="col-12 col-md-3 col-lg-2">
+        <div class="category-sidebar">
+          <h6 class="sidebar-title">Categories</h6>
+
+          <div class="sidebar-list">
+            <!-- All -->
+            <button class="sidebar-item" [class.active]="selectedCategoryId === null"
+                    (click)="filterByCategory(null)">
+              <span class="cat-dot"></span>
+              All Products
+              <svg *ngIf="selectedCategoryId === null" class="ms-auto check-icon" width="13" height="13"
+                   viewBox="0 0 24 24"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </button>
+
+            <!-- Loading skeleton -->
+            <ng-container *ngIf="categoriesLoading">
+              <div class="sidebar-skel shimmer" *ngFor="let s of [1,2,3,4]"></div>
+            </ng-container>
+
+            <!-- Categories -->
+            <button
+              class="sidebar-item"
+              *ngFor="let cat of categories"
+              [class.active]="selectedCategoryId === cat._id"
+              (click)="filterByCategory(cat._id)"
+            >
+              <span class="cat-dot"></span>
+              {{ cat.name }}
+              <svg *ngIf="selectedCategoryId === cat._id" class="ms-auto check-icon" width="13" height="13"
+                   viewBox="0 0 24 24"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Products Grid ── -->
+      <div class="col-12 col-md-9 col-lg-10">
+
+        <!-- Result label -->
+        <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+          <h2 class="results-label mb-0">{{ selectedCategoryName || 'All Products' }}</h2>
+          <span class="results-badge" *ngIf="!isLoading">{{ filteredProducts.length }} items</span>
+        </div>
+
+        <!-- Product grid -->
+        <div class="product-grid row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+
+          <!-- Skeletons while loading -->
+          <ng-container *ngIf="isLoading">
+            <div class="col" *ngFor="let s of [1,2,3,4,5,6,7,8,9,10,11,12]">
+              <div class="skeleton-card">
+                <div class="skeleton-img shimmer"></div>
+                <div class="skeleton-line shimmer" style="width:80%;"></div>
+                <div class="skeleton-line shimmer" style="width:55%;"></div>
+                <div class="skeleton-line shimmer" style="width:65%; height:32px; border-radius:8px;"></div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Empty state -->
+          <div class="col-12" *ngIf="!isLoading && filteredProducts.length === 0">
+            <div class="empty-state">
+              <div class="empty-icon">🛒</div>
+              <h4>No products found</h4>
+              <p>Try a different category or search term.</p>
+              <button class="btn btn-primary rounded-pill px-4" (click)="filterByCategory(null)">
+                View All Products
+              </button>
+            </div>
+          </div>
+
+          <!-- Product Cards -->
+          <div class="col" *ngFor="let product of filteredProducts">
+            <div class="product-card">
+
+              <!-- Image -->
+              <a class="product-img-wrap" [routerLink]="['/productdetails', product._id]" [title]="product.name">
+                <img
+                  [src]="product.images?.[0] || 'assets/default-product.png'"
+                  [alt]="product.name"
+                  loading="lazy"
+                  class="product-img"
+                >
+              </a>
+
+              <!-- Info -->
+              <div class="product-info">
+                <a [routerLink]="['/productdetails', product._id]" class="product-name">{{ product.name }}</a>
+
+                <!-- Stars -->
+                <div class="stars-row">
+                  <span *ngFor="let star of getStars(product.rating)">
+                    <svg width="13" height="13" [class]="star === 'full' ? 'star-full' : 'star-empty'">
+                      <use [attr.xlink:href]="star === 'full' ? '#star-full' : '#star-empty'"></use>
+                    </svg>
+                  </span>
+                  <span class="review-count">({{ product.reviewCount }})</span>
+                </div>
+
+                <!-- Price -->
+                <div class="price-row">
+                  <del class="old-price">${{ product.price * 1.2 | number:'1.2-2' }}</del>
+                  <span class="cur-price">${{ product.price | number:'1.2-2' }}</span>
+                  <span class="off-badge">{{ product.discount }}% OFF</span>
+                </div>
+
+                <!-- Add to cart -->
+                <div class="cart-row">
+                  <input
+                    type="number" min="1" value="1"
+                    class="qty-input"
+                    #qtyInput
+                    aria-label="Quantity"
+                  >
+                  <button
+                    class="btn-add-cart"
+                    [class.loading]="addingToCart[product._id]"
+                    [disabled]="addingToCart[product._id]"
+                    (click)="addToCart(product._id, +qtyInput.value)"
+                    type="button"
+                  >
+                    <!-- Spinner while adding -->
+                    <span *ngIf="addingToCart[product._id]" class="btn-spinner"></span>
+                    <!-- Icon when idle -->
+                    <svg *ngIf="!addingToCart[product._id]" width="14" height="14">
+                      <use xlink:href="#cart"></use>
+                    </svg>
+                    <span>{{ addingToCart[product._id] ? 'Adding…' : 'Add to Cart' }}</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

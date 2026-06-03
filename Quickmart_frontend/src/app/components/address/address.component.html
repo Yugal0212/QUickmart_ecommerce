@@ -1,0 +1,81 @@
+<div class="address-selector">
+  <!-- Header -->
+  <div class="header">
+    <h2>Select Delivery Address</h2>
+  </div>
+
+  <!-- Address List -->
+  <div class="address-list">
+    <!-- Skeleton Loading Placeholder -->
+    <div *ngIf="isLoading" class="skeleton-address-card">
+      <div class="skeleton-radio"></div>
+      <div class="content">
+        <div class="top-row">
+          <div class="skeleton-text" style="width: 60%;"></div>
+          <div class="action-icons">
+            <div class="skeleton-button"></div>
+            <div class="skeleton-button"></div>
+          </div>
+        </div>
+        <div class="address-details">
+          <div class="skeleton-text" style="width: 80%;"></div>
+          <div class="skeleton-text" style="width: 70%;"></div>
+          <div class="skeleton-text" style="width: 50%;"></div>
+          <div class="skeleton-text" style="width: 40%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loop through addresses -->
+    <label class="address-card" [class.selected]="selectedAddress?._id === address._id" *ngFor="let address of addresses">
+      <input type="radio" name="address" [checked]="selectedAddress?._id === address._id" (change)="onAddressSelect(address)">
+      <div class="radio-indicator"></div>
+      <div class="content">
+        <div class="top-row">
+          <h3>{{ address.fullName }} ({{ address.isDefault ? 'HOME' : 'WORK' }})</h3>
+          <div class="action-icons">
+            <button class="edit-btn" title="Edit address" aria-label="Edit address" (click)="editAddress(address._id)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="delete-btn" title="Delete address" aria-label="Delete address" (click)="deleteAddress(address._id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="address-details">
+          <p class="address-line">{{ address.addressLine1 }}</p>
+          <p class="address-line">{{ address.addressLine2 }}</p>
+          <div class="location-info">
+            <span class="city">{{ address.city }}</span>,
+            <span class="state">{{ address.state }}</span> -
+            <span class="zip">{{ address.zipCode }}</span>
+          </div>
+          <p class="phone">
+            <i class="fas fa-phone"></i>
+            <span class="phone-number">{{ address.phone }}</span>
+          </p>
+        </div>
+      </div>
+    </label>
+
+    <!-- No Address Message -->
+    <div *ngIf="!isLoading && addresses.length === 0" class="no-address-message">
+      <p>No addresses found. Please add a new address.</p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="add-address" routerLink="/order/Add-address">
+      <i class="fas fa-plus-circle"></i> Add New Address
+    </button>
+    <button class="deliver-btn" (click)="onDeliverClick()" >
+      <i class="fas fa-truck-moving"></i> Deliver Here
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="showError" class="error-message">
+    <p>Please select a delivery address before proceeding.</p>
+  </div>
+</div>

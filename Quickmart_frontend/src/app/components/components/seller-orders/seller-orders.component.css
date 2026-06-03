@@ -1,0 +1,27 @@
+.orders-container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table thead {
+  background-color: #34495e;
+  color: #ffffff;
+}
+
+.table th {
+  font-weight: 600;
+  padding: 15px;
+}
+
+.table td {
+  padding: 12px;
+  vertical-align: middle;
+}

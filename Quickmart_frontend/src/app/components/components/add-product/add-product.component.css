@@ -1,0 +1,136 @@
+/* Container Styling */
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Horizontal Line */
+hr {
+  border: 0;
+  height: 1px;
+  background: #ddd;
+  margin-bottom: 30px;
+}
+
+/* Dropdown Wrapper */
+.dropdown-wrapper {
+  position: relative;
+}
+
+/* Dropdown Select Input */
+.dropdown-select {
+  max-height: 200px;
+  appearance: none; /* Remove default arrow */
+  padding-right: 40px; /* Space for custom icon */
+  cursor: pointer;
+  position: relative;
+  width: 100%; /* Ensure it takes full width */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  font-size: 1em;
+  background-color: #fff;
+}
+
+/* Dropdown Icon */
+.dropdown-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Ensure clicks go to the select element */
+  color: #6c757d;
+}
+
+/* Dropdown Menu Options */
+.dropdown-select option {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+
+/* Ensure the dropdown menu has a fixed height and scrollbar */
+.dropdown-select {
+  max-height: 200px; /* Adjust this value as needed */
+  overflow-y: auto; /* Vertical scrollbar */
+}
+
+/* Hover effect for dropdown options */
+.dropdown-select option:hover {
+  background-color: #f8f9fa;
+}
+
+/* Focus effect for dropdown */
+.dropdown-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  outline: none; /* Remove default outline */
+}
+
+/* Form Group Styling */
+.form-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.form-control-lg {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control-lg:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+}
+
+/* Invalid Feedback */
+.invalid-feedback {
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+/* Button Styling */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-primary:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Image Hover Effect */
+.hover-zoom {
+  transition: transform 0.3s ease;
+}
+
+.hover-zoom:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .form-control-lg {
+    font-size: 1em;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}

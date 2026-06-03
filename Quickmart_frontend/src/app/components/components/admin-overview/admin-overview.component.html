@@ -1,0 +1,83 @@
+<div class="overview-container animate__animated animate__fadeIn">
+  <h2 class="mb-4">Admin Dashboard Overview</h2>
+  
+  <div *ngIf="isLoading" class="d-flex justify-content-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && analytics" class="row">
+    <!-- Total Users Card -->
+    <div class="col-md-3 mb-4">
+      <div class="card bg-primary text-white shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Customers</div>
+              <div class="h5 mb-0 font-weight-bold">{{ analytics.totalUsers }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-users fa-2x text-white-50"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Sellers Card -->
+    <div class="col-md-3 mb-4">
+      <div class="card bg-info text-white shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Sellers</div>
+              <div class="h5 mb-0 font-weight-bold">{{ analytics.totalSellers }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-store fa-2x text-white-50"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Products Card -->
+    <div class="col-md-3 mb-4">
+      <div class="card bg-success text-white shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Products</div>
+              <div class="h5 mb-0 font-weight-bold">{{ analytics.totalProducts }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-box fa-2x text-white-50"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Revenue Card -->
+    <div class="col-md-3 mb-4">
+      <div class="card bg-warning text-white shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Platform Revenue</div>
+              <div class="h5 mb-0 font-weight-bold">${{ analytics.totalRevenue | number:'1.2-2' }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-dollar-sign fa-2x text-white-50"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

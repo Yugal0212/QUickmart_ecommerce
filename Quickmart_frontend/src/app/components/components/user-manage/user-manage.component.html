@@ -1,0 +1,117 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">User Management</h1>
+    
+    <!-- Search Bar -->
+    <div class="mt-4 md:mt-0 relative w-full md:w-72">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <i class="fas fa-search text-gray-400"></i>
+      </div>
+      <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="currentPage = 1" placeholder="Search users..." 
+             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl leading-5 bg-white/70 backdrop-blur-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm">
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="bg-red-50 text-red-700 p-4 rounded-xl mb-6 shadow-sm border border-red-100 flex items-center">
+    <i class="fas fa-exclamation-circle mr-3 text-lg"></i>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+    <div class="animate-pulse flex space-x-4 p-6" *ngFor="let i of [1,2,3]">
+      <div class="flex-1 space-y-4 py-1">
+        <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+        <div class="space-y-2">
+          <div class="h-4 bg-gray-200 rounded"></div>
+          <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glassmorphism Table -->
+  <div *ngIf="!isLoading && users.length > 0" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50/50">
+          <tr>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">User ID</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Username</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Roles</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Email</th>
+            <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-transparent">
+          <tr *ngFor="let user of paginatedUsers" class="hover:bg-green-50/30 transition-colors duration-200">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user._id }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-green-400 to-blue-500 flex items-center justify-center text-white font-bold shadow-md">
+                  {{ user.username.charAt(0).toUpperCase() }}
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ user.username }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 shadow-sm">
+                {{ user.roles?.join(', ') || user.role || 'customer' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.email }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end gap-2">
+                <button (click)="viewUserDetails(user._id)" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition-colors">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button (click)="deleteUser(user._id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Pagination Controls -->
+    <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex items-center justify-between sm:px-6">
+      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-gray-700">
+            Showing <span class="font-medium">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> to 
+            <span class="font-medium">{{ Math.min(currentPage * itemsPerPage, filteredUsers.length) }}</span> of 
+            <span class="font-medium">{{ filteredUsers.length }}</span> results
+          </p>
+        </div>
+        <div>
+          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <button (click)="prevPage()" [disabled]="currentPage === 1" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
+              <span class="sr-only">Previous</span>
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+              Page {{ currentPage }} of {{ totalPages }}
+            </span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
+              <span class="sr-only">Next</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredUsers.length === 0" class="text-center bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 py-16">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+      <i class="fas fa-users-slash text-gray-400 text-2xl"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900">No users found</h3>
+    <p class="mt-1 text-gray-500">Try adjusting your search criteria.</p>
+  </div>
+</div>

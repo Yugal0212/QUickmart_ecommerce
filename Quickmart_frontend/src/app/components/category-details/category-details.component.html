@@ -1,0 +1,151 @@
+<!-- Category Details Page -->
+<div class="category-page">
+
+
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100;">
+    <div id="catToast" class="toast align-items-center border-0" role="alert"
+         [class]="toastType === 'success' ? 'bg-success text-white' : 'bg-danger text-white'"
+         aria-live="assertive" aria-atomic="true" #catToast>
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">{{ toastMessage }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="hideToast()" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Banner / Info -->
+  <div class="category-banner">
+    <div class="container-lg">
+
+      <!-- Skeleton Banner -->
+      <div *ngIf="isLoading" class="d-flex gap-4 align-items-center">
+        <div class="skeleton-circle shimmer"></div>
+        <div style="flex:1;">
+          <div class="skeleton-text shimmer" style="width:40%; height:28px; margin-bottom:12px;"></div>
+          <div class="skeleton-text shimmer" style="width:70%; height:14px;"></div>
+          <div class="skeleton-text shimmer" style="width:55%; height:14px;"></div>
+        </div>
+      </div>
+
+      <!-- Actual Category Info -->
+      <div *ngIf="!isLoading" class="category-info">
+        <div class="category-thumb">
+          <img [src]="category?.image || 'assets/default-category.png'" [alt]="category?.name" class="img-fluid">
+        </div>
+        <div class="category-meta">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+              <li class="breadcrumb-item"><a routerLink="/home" class="text-white-50">Home</a></li>
+              <li class="breadcrumb-item text-white active">{{ category?.name }}</li>
+            </ol>
+          </nav>
+          <h1 class="category-title">{{ category?.name }}</h1>
+          <p class="category-desc" [innerHTML]="category?.description"></p>
+          <span class="cat-count-badge">{{ products.length }} Products</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="container-lg py-4">
+    <div class="row g-4">
+
+      <!-- Products Grid -->
+      <div class="col-12">
+        <!-- No Products -->
+        <div *ngIf="!isLoading && products.length === 0" class="empty-state">
+          <div class="empty-icon">🛒</div>
+          <h4>No Products in This Category</h4>
+          <p>This category is currently empty. Please check back later or explore other categories.</p>
+          <a class="btn btn-primary rounded-pill px-4" routerLink="/home">← Back to Home</a>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3">
+
+          <!-- Skeleton Loaders -->
+          <ng-container *ngIf="isLoading">
+            <div class="col" *ngFor="let item of [].constructor(10)">
+              <div class="skeleton-loader">
+                <div class="skeleton-image shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+                <div class="skeleton-text shimmer" style="width:70%;"></div>
+                <div class="skeleton-text shimmer" style="width:50%;"></div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Product Cards -->
+          <div class="col" *ngFor="let product of products">
+            <div class="product-card h-100">
+              <figure class="product-image">
+                <a (click)="navigateToProductDetails(product._id)" style="cursor:pointer;" [title]="product.name">
+                  <img
+                    [src]="product.images[0] || 'assets/default-product.png'"
+                    [alt]="product.name"
+                    class="w-100"
+                    loading="lazy"
+                  >
+                </a>
+              </figure>
+              <div class="product-info">
+                <h3 class="product-name">{{ product.name }}</h3>
+
+                <!-- Star Rating -->
+                <div class="d-flex align-items-center gap-1 justify-content-center mb-1">
+                  <span class="rating">
+                    <span *ngFor="let star of getStars(product.rating)">
+                      <svg width="13" height="13" [ngClass]="{'text-warning': star === 'full', 'text-muted': star === 'empty'}">
+                        <use [attr.xlink:href]="star === 'full' ? '#star-full' : '#star-empty'"></use>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="review-count">({{ product.reviewCount }})</span>
+                </div>
+
+                <!-- Price -->
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                  <del class="text-muted small">${{ product.price * 1.2 | number: '1.2-2' }}</del>
+                  <span class="fw-bold">${{ product.price | number: '1.2-2' }}</span>
+                  <span class="discount-badge">{{ product.discount }}% OFF</span>
+                </div>
+
+                <!-- Add to Cart -->
+                <div class="cart-area">
+                  <div class="row g-1 mt-2 align-items-center">
+                    <div class="col-4">
+                      <input
+                        type="number"
+                        min="1"
+                        name="quantity"
+                        class="form-control form-control-sm text-center"
+                        value="1"
+                        #quantityInput
+                      />
+                    </div>
+                    <div class="col-8">
+                      <button
+                        class="btn btn-primary w-100 btn-sm btn-cart"
+                        [class.loading]="addingToCart[product._id]"
+                        [disabled]="addingToCart[product._id]"
+                        (click)="addToCart(product._id, +quantityInput.value)"
+                        type="button"
+                      >
+                        <span *ngIf="addingToCart[product._id]" class="btn-spinner"></span>
+                        <svg *ngIf="!addingToCart[product._id]" width="14" height="14"><use xlink:href="#cart"></use></svg>
+                        <span>{{ addingToCart[product._id] ? 'Adding…' : 'Add to Cart' }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

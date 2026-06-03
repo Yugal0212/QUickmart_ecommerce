@@ -1,0 +1,153 @@
+/* Custom Styles for Order History Page */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #0d6efd; /* Primary border color */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2); /* Primary color shadow */
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0d6efd; /* Primary color for titles */
+}
+
+.badge {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5em 0.75em;
+  border-radius: 20px;
+}
+
+.badge.bg-primary {
+  background-color: #0d6efd !important; /* Primary color for badges */
+  color: white !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important; /* Danger color for canceled orders */
+  color: white !important;
+}
+
+.img-thumbnail {
+  border-radius: 8px;
+  border: 1px solid #dee2e6; /* Light border for images */
+}
+
+.btn-outline-danger {
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545; /* Danger color for hover */
+  color: white;
+}
+
+/* Flexbox adjustments for horizontal layout */
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .card-body {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Adjust button layout for small screens */
+@media (max-width: 767.98px) {
+  .card-body {
+    flex-direction: column;
+  }
+
+  .card-body .ms-md-4 {
+    margin-left: 0 !important;
+    margin-top: 1rem;
+  }
+
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .d-flex.justify-content-between .ms-2 {
+    margin-left: 0 !important;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Text Colors */
+.text-primary {
+  color: #0d6efd !important; /* Primary color for headings */
+}
+
+.text-secondary {
+  color: #6c757d !important; /* Secondary color for text */
+}
+
+.text-muted {
+  color: #6c757d !important; /* Muted color for less important text */
+}
+
+/* Skeleton Loader Styles */
+.skeleton-loader {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton-text {
+  width: 100%;
+  height: 12px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-image {
+  width: 60px;
+  height: 60px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+}
+
+/* Shimmer Animation */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}

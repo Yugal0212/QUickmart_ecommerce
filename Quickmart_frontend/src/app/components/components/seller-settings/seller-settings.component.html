@@ -1,0 +1,126 @@
+<div class="p-6 lg:p-8 max-w-5xl mx-auto">
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Store Settings</h1>
+    <p class="text-gray-500 mt-1">Manage your store details, payment methods, and preferences.</p>
+  </div>
+
+  <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+    
+    <!-- Sidebar Navigation -->
+    <div class="w-full md:w-64 bg-gray-50/50 border-r border-gray-100 p-6">
+      <nav class="space-y-2">
+        <button (click)="activeTab = 'profile'" 
+                [ngClass]="activeTab === 'profile' ? 'bg-white text-green-600 shadow-sm font-bold' : 'text-gray-600 hover:bg-gray-100 font-medium'"
+                class="w-full text-left px-4 py-3 rounded-xl transition-all flex items-center">
+          <i class="fas fa-store mr-3 w-5 text-center"></i> Store Profile
+        </button>
+        <button (click)="activeTab = 'payment'" 
+                [ngClass]="activeTab === 'payment' ? 'bg-white text-green-600 shadow-sm font-bold' : 'text-gray-600 hover:bg-gray-100 font-medium'"
+                class="w-full text-left px-4 py-3 rounded-xl transition-all flex items-center">
+          <i class="fas fa-credit-card mr-3 w-5 text-center"></i> Payment Details
+        </button>
+        <button (click)="activeTab = 'notifications'" 
+                [ngClass]="activeTab === 'notifications' ? 'bg-white text-green-600 shadow-sm font-bold' : 'text-gray-600 hover:bg-gray-100 font-medium'"
+                class="w-full text-left px-4 py-3 rounded-xl transition-all flex items-center">
+          <i class="fas fa-bell mr-3 w-5 text-center"></i> Notifications
+        </button>
+        <button (click)="activeTab = 'security'" 
+                [ngClass]="activeTab === 'security' ? 'bg-white text-green-600 shadow-sm font-bold' : 'text-gray-600 hover:bg-gray-100 font-medium'"
+                class="w-full text-left px-4 py-3 rounded-xl transition-all flex items-center">
+          <i class="fas fa-shield-alt mr-3 w-5 text-center"></i> Security
+        </button>
+      </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 p-6 md:p-10">
+      
+      <div *ngIf="isLoading" class="animate-pulse space-y-6">
+        <div class="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
+        <div class="flex gap-6 mb-8">
+          <div class="w-24 h-24 bg-gray-200 rounded-full"></div>
+          <div class="h-10 bg-gray-200 rounded w-32 mt-4"></div>
+        </div>
+        <div class="h-12 bg-gray-200 rounded w-full"></div>
+        <div class="h-32 bg-gray-200 rounded w-full"></div>
+        <div class="h-12 bg-gray-200 rounded w-full"></div>
+      </div>
+
+      <div *ngIf="!isLoading">
+        <!-- Profile Tab -->
+        <div *ngIf="activeTab === 'profile'" class="animate__animated animate__fadeIn">
+          <h2 class="text-xl font-bold text-gray-900 mb-6">Store Profile</h2>
+          
+          <div class="mb-8 flex items-center gap-6">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-3xl font-bold shadow-lg">
+              {{ storeData.storeName ? storeData.storeName.charAt(0).toUpperCase() : 'S' }}
+            </div>
+            <div>
+              <button class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors mb-2 shadow-sm">Change Logo</button>
+              <p class="text-xs text-gray-500">JPG, GIF or PNG. Max size 2MB.</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Store Name</label>
+              <input type="text" [(ngModel)]="storeData.storeName" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium">
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Store Description</label>
+              <textarea [(ngModel)]="storeData.description" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium resize-none"></textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Support Email</label>
+                <input type="email" [(ngModel)]="storeData.email" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Support Phone</label>
+                <input type="text" [(ngModel)]="storeData.phone" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Details Tab -->
+        <div *ngIf="activeTab === 'payment'" class="animate__animated animate__fadeIn">
+          <h2 class="text-xl font-bold text-gray-900 mb-6">Payment & Payouts</h2>
+          
+          <div class="bg-blue-50 border border-blue-100 p-5 rounded-2xl flex items-start gap-4 mb-8">
+            <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+            <div>
+              <h4 class="font-bold text-blue-900">Secure Payouts</h4>
+              <p class="text-sm text-blue-700 mt-1">These details are used to transfer funds from your wallet to your bank account. Changes take 24-48 hours to verify.</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Bank Name</label>
+              <input type="text" [(ngModel)]="paymentData.bankName" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium">
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Account Number</label>
+              <input type="text" [(ngModel)]="paymentData.accountNumber" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium tracking-widest">
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Routing Number</label>
+              <input type="password" [(ngModel)]="paymentData.routingNumber" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all bg-gray-50 focus:bg-white text-gray-900 font-medium">
+            </div>
+          </div>
+        </div>
+
+        <!-- Save Button Footer -->
+        <div class="mt-10 pt-6 border-t border-gray-100 flex justify-end">
+          <button (click)="saveSettings()" [disabled]="isSaving"
+                  class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-lg shadow-green-600/20 disabled:opacity-50 flex items-center">
+            <i class="fas fa-spinner fa-spin mr-2" *ngIf="isSaving"></i>
+            {{ isSaving ? 'Saving...' : 'Save Changes' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

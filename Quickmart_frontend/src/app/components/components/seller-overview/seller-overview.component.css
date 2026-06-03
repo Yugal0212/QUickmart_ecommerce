@@ -1,0 +1,32 @@
+.overview-container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.bg-info {
+  background-color: #36b9cc !important;
+}
+
+.bg-success {
+  background-color: #1cc88a !important;
+}
+
+.bg-warning {
+  background-color: #f6c23e !important;
+}

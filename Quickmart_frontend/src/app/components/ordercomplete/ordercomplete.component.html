@@ -1,0 +1,25 @@
+<div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-labelledby="orderSuccessLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderSuccessLabel">🎉 Order Placed Successfully!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="navigateToHome()"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h4 class="mt-3">Thank you for your purchase!</h4>
+        <p>Your order has been placed successfully. You can track your order in the order history section.</p>
+      </div>
+      <div class="modal-footer d-flex justify-content-between">
+        <button class="btn btn-outline-primary" (click)="navigateToOrderHistory()">
+          <i class="fas fa-history"></i> View Order History
+        </button>
+        <button class="btn btn-primary" (click)="navigateToHome()" >
+          <i class="fas fa-shopping-bag"></i> Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

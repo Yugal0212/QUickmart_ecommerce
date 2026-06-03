@@ -1,0 +1,113 @@
+<div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+  <div class="p-6 lg:p-8 border-b border-gray-200 flex flex-col md:flex-row justify-between items-center bg-gray-50/50">
+    <div class="mb-4 md:mb-0">
+      <h3 class="text-xl font-bold text-gray-900">Pending Seller Requests</h3>
+      <p class="text-sm text-gray-500 mt-1">Review and approve applications to join QuickMart as a seller.</p>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+      <div class="relative w-full sm:w-64">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="currentPage = 1" placeholder="Search requests..." 
+               class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl leading-5 bg-white/70 backdrop-blur-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm">
+      </div>
+      <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold shadow-sm whitespace-nowrap">
+        {{ requests.length }} Pending
+      </div>
+    </div>
+  </div>
+
+  <div class="p-0 lg:p-0">
+    <div *ngIf="isLoading" class="flex justify-center py-16">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-4 border-green-600"></div>
+    </div>
+
+    <div *ngIf="!isLoading && filteredRequests.length === 0" class="text-center py-16">
+      <i class="fas fa-inbox text-5xl text-gray-300 mb-4"></i>
+      <h4 class="text-lg font-bold text-gray-700">No Pending Requests</h4>
+      <p class="text-gray-500">Either no requests match your search, or all applications have been processed.</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredRequests.length > 0" class="overflow-x-auto">
+      <table class="min-w-full text-left border-collapse">
+        <thead class="bg-gray-50/50">
+          <tr class="border-b border-gray-200">
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">User</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Store Name</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Business Details</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-transparent">
+          <tr *ngFor="let req of paginatedRequests" class="hover:bg-green-50/30 transition-colors duration-200">
+            <td class="py-4 px-6 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md">
+                  {{ (req.userId?.username || 'U').charAt(0).toUpperCase() }}
+                </div>
+                <div class="ml-4">
+                  <div class="font-semibold text-gray-900">{{ req.userId?.username }}</div>
+                  <div class="text-xs text-gray-500">{{ req.userId?.email }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap">
+              <div class="font-bold text-gray-900">{{ req.storeName }}</div>
+              <div class="text-xs text-gray-500">{{ req.createdAt | date:'shortDate' }}</div>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap">
+              <div class="text-sm text-gray-900">{{ req.businessName }}</div>
+              <div class="text-xs text-gray-500">GST: {{ req.gstNumber }}</div>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 shadow-sm">
+                <i class="fas fa-circle text-[8px] mr-1.5 animate-pulse"></i> Pending
+              </span>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button (click)="approve(req._id)" class="text-green-600 hover:text-white bg-green-50 hover:bg-green-500 border border-green-200 hover:border-green-500 p-2 rounded-lg transition-colors shadow-sm" title="Approve">
+                  <i class="fas fa-check"></i>
+                </button>
+                <button (click)="reject(req._id)" class="text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 hover:border-red-500 p-2 rounded-lg transition-colors shadow-sm" title="Reject">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Pagination Controls -->
+      <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex items-center justify-between sm:px-6">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-700">
+              Showing <span class="font-medium">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> to 
+              <span class="font-medium">{{ Math.min(currentPage * itemsPerPage, filteredRequests.length) }}</span> of 
+              <span class="font-medium">{{ filteredRequests.length }}</span> requests
+            </p>
+          </div>
+          <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <button (click)="prevPage()" [disabled]="currentPage === 1" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
+                <span class="sr-only">Previous</span>
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                Page {{ currentPage }} of {{ totalPages }}
+              </span>
+              <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
+                <span class="sr-only">Next</span>
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

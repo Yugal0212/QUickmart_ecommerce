@@ -1,0 +1,187 @@
+<section class="hero">
+  <div class="hero-slider" aria-hidden="true">
+    <span class="hero-slide slide-1"></span>
+    <span class="hero-slide slide-2"></span>
+    <span class="hero-slide slide-3"></span>
+  </div>
+  <div class="container-lg hero-inner">
+    <div class="row align-items-center">
+      <div class="col-lg-6 pt-4 pt-lg-5">
+        <!-- Skeleton Loader for Title and Buttons -->
+        <div *ngIf="isLoading" class="shimmer hero-skeleton">
+          <div class="skeleton-text" style="width: 80%; height: 60px; margin-bottom: 20px;"></div>
+          <div class="d-flex gap-3">
+            <div class="skeleton-text" style="width: 150px; height: 50px;"></div>
+            <div class="skeleton-text" style="width: 150px; height: 50px;"></div>
+          </div>
+          <div class="row my-5">
+            <div class="col">
+              <div class="skeleton-text" style="width: 100%; height: 60px;"></div>
+            </div>
+            <div class="col">
+              <div class="skeleton-text" style="width: 100%; height: 60px;"></div>
+            </div>
+            <div class="col">
+              <div class="skeleton-text" style="width: 100%; height: 60px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actual Content -->
+        <div *ngIf="!isLoading" class="hero-content">
+          <span class="hero-tag">Fresh groceries in under an hour</span>
+          <h1 class="hero-title">Quick Mart brings the market to your door.</h1>
+          <p class="hero-subtitle">Stock up on everyday essentials, curated produce, and local favorites with fast, reliable delivery.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3" routerLink="/allproducts">Start Shopping</a>
+            <a class="btn btn-outline-dark text-uppercase fs-6 rounded-pill px-4 py-3" routerLink="/allproducts">Explore Deals</a>
+          </div>
+          <div class="row hero-metrics">
+            <div class="col">
+              <div class="metric-card">
+                <p class="metric-value">14k+</p>
+                <p class="metric-label">Product varieties</p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <p class="metric-value">50k+</p>
+                <p class="metric-label">Happy customers</p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <p class="metric-value">10+</p>
+                <p class="metric-label">Store locations</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-aside">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <span class="hero-chip">Today</span>
+              <span class="hero-card-title">Your quick basket</span>
+            </div>
+            <p class="hero-card-text">Bundle essentials, schedule delivery, and get real-time updates from checkout to doorstep.</p>
+            <div class="hero-card-list">
+              <div class="hero-card-item">
+                <span class="hero-dot"></span>
+                Curated bundles and weekly staples
+              </div>
+              <div class="hero-card-item">
+                <span class="hero-dot"></span>
+                Live tracking with smart ETA alerts
+              </div>
+              <div class="hero-card-item">
+                <span class="hero-dot"></span>
+                Easy returns, no questions asked
+              </div>
+            </div>
+            <a routerLink="/allproducts" class="hero-card-link">Build my basket</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skeleton Loader for Cards -->
+    <div *ngIf="isLoading" class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center hero-panels">
+      <div class="col">
+        <div class="card border-0 bg-primary rounded-0 p-4 text-light shimmer">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <div class="skeleton-image" style="width: 60px; height: 60px;"></div>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <div class="skeleton-text" style="width: 80%; height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton-text" style="width: 100%; height: 16px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-0 bg-secondary rounded-0 p-4 text-light shimmer">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <div class="skeleton-image" style="width: 60px; height: 60px;"></div>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <div class="skeleton-text" style="width: 80%; height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton-text" style="width: 100%; height: 16px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-0 bg-danger rounded-0 p-4 text-light shimmer">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <div class="skeleton-image" style="width: 60px; height: 60px;"></div>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <div class="skeleton-text" style="width: 80%; height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton-text" style="width: 100%; height: 16px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual Cards -->
+    <div *ngIf="!isLoading" class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center hero-panels">
+      <div class="col">
+        <div class="card border-0 bg-primary rounded-0 p-4 text-light">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <svg width="60" height="60"><use xlink:href="#fresh"></use></svg>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <h5 class="text-light">Fresh from farm</h5>
+                <p class="card-text">Get fresh, high-quality produce delivered to your doorstep daily.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-0 bg-secondary rounded-0 p-4 text-light">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <svg width="60" height="60"><use xlink:href="#organic"></use></svg>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <h5 class="text-light">Everyday Essentials</h5>
+                <p class="card-text">Shop for groceries, household items, and more.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-0 bg-danger rounded-0 p-4 text-light">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <svg width="60" height="60"><use xlink:href="#delivery"></use></svg>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <h5 class="text-light">Fast Delivery</h5>
+                <p class="card-text">Enjoy quick, reliable, and hassle-free delivery services anytime, anywhere.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

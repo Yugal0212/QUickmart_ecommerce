@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <div class="progress-steps">
+    
+    <!-- Animated Progress Line -->
+    <div class="progress-line">
+      <div class="progress-fill" [style.width]="progressWidth"></div>
+    </div>
+
+    <!-- Step 1: Address -->
+    <div class="step text-center" [ngClass]="{'active': currentStep === 1, 'completed': currentStep > 1}">
+        <div class="step-circle">
+            <i *ngIf="currentStep > 1" class="fas fa-check"></i>
+            <i *ngIf="currentStep === 1" class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="step-label">Address</div>
+    </div>
+
+    <!-- Step 2: Order Summary -->
+    <div class="step text-center" [ngClass]="{'active': currentStep === 2, 'completed': currentStep > 2}">
+        <div class="step-circle">
+            <i *ngIf="currentStep > 2" class="fas fa-check"></i>
+            <i *ngIf="currentStep === 2" class="fas fa-box"></i>
+        </div>
+        <div class="step-label">Order Summary</div>
+    </div>
+
+    <!-- Step 3: Payment -->
+    <div class="step text-center" [ngClass]="{'active': currentStep === 3, 'completed': currentStep > 3}">
+        <div class="step-circle">
+            <i *ngIf="currentStep > 3" class="fas fa-check"></i>
+            <i *ngIf="currentStep === 3" class="fas fa-credit-card"></i>
+        </div>
+        <div class="step-label">Payment</div>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div class="step text-center" [ngClass]="{'active': currentStep === 4}">
+        <div class="step-circle">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="step-label">Success</div>
+    </div>
+
+  </div>
+</div>

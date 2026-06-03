@@ -1,0 +1,41 @@
+<div class="flex h-screen bg-white font-sans overflow-hidden">
+  
+  <!-- Left Side: Image Slider (Hidden on small screens) -->
+  <div class="hidden lg:block lg:w-1/2 relative bg-gray-900 h-full overflow-hidden">
+    <!-- Overlay for better text contrast if we had text -->
+    <div class="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+    
+    <!-- Bootstrap Carousel -->
+    <div id="carouselExample" class="carousel slide carousel-fade h-full w-full" data-bs-ride="carousel" data-bs-interval="3000" data-bs-wrap="true" data-bs-pause="false">
+      <div class="carousel-inner h-full w-full">
+        <div class="carousel-item active h-full w-full">
+          <img src="images/login-3.jpg" class="object-cover h-full w-full" alt="Slide 1">
+        </div>
+        <div class="carousel-item h-full w-full">
+          <img src="images/login-2.jpg" class="object-cover h-full w-full" alt="Slide 2">
+        </div>
+        <div class="carousel-item h-full w-full">
+          <img src="images/login-1.jpg" class="object-cover h-full w-full" alt="Slide 3">
+        </div>
+        <div class="carousel-item h-full w-full">
+          <img src="images/login-4.jpg" class="object-cover h-full w-full" alt="Slide 4">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Form Area -->
+  <div class="w-full lg:w-1/2 flex flex-col items-center justify-center p-8 sm:p-12 lg:p-24 bg-white relative h-full overflow-y-auto">
+    
+    <!-- Header Logo -->
+    <div class="w-full max-w-md flex justify-center lg:justify-start mb-8">
+      <img src="images/quickmart-logo1.png" alt="QuickMart Logo" class="h-12 object-contain" />
+    </div>
+
+    <!-- The actual form routes (Login/Signup) will load here -->
+    <div class="w-full max-w-md">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </div>
+</div>
