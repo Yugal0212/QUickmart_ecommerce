@@ -109,6 +109,12 @@
         Sign In
       </a>
     </div>
+    <div class="mobile-nav-item" *ngIf="!username">
+      <a class="mobile-nav-link" routerLink="/login/sign-up" data-bs-dismiss="offcanvas">
+        <span class="mobile-nav-icon">📝</span>
+        Register
+      </a>
+    </div>
     <div class="mobile-nav-item" *ngIf="username">
       <button class="mobile-nav-link mobile-logout" (click)="logout()">
         <span class="mobile-nav-icon">🚪</span>
@@ -341,6 +347,9 @@
           <ul class="dropdown-menu dropdown-menu-end account-menu" aria-labelledby="accountMenu">
             <li *ngIf="!username">
               <a class="dropdown-item" routerLink="/login">👤 Sign In</a>
+            </li>
+            <li *ngIf="!username">
+              <a class="dropdown-item" routerLink="/login/sign-up">📝 Register</a>
             </li>
             <li *ngIf="username"><a class="dropdown-item" routerLink="/history">📦 My Orders</a></li>
             <li *ngIf="username"><a class="dropdown-item" routerLink="/cart">🛒 Cart</a></li>

@@ -1,4 +1,5 @@
 import { Component, DestroyRef, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { AuthService } from '../../Services/auth.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Product, ProductService } from '../../Services/product/products.service';
 import { CartService } from '../../Services/Cart/cart.service';
@@ -41,7 +42,8 @@ export class AllproductsComponent implements OnInit {
     private cartService: CartService,
     private categoriesService: CategoriesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -128,6 +130,12 @@ export class AllproductsComponent implements OnInit {
 
   /** Add to cart — fast inline spinner, no full-page loader, instant redirect */
   addToCart(productId: string, quantity: number): void {
+    if (!this.authService.getAccessToken()) {
+      alert('You must register or login first before shopping!');
+      this.router.navigate(['/login/sign-up']);
+      return;
+    }
+
     if (!productId || quantity < 1) {
       this.showToast('Please select a valid quantity.', 'error');
       return;

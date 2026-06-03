@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AuthService } from '../../Services/auth.service';
 import { ProductService } from '../../Services/product/products.service';
 import { CommonModule, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -22,8 +23,10 @@ export class FeaturedProductComponent implements OnInit, AfterViewInit {
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService, // Inject CartService
-    private router: Router
+    private cartService: CartService,
+    // Inject CartService
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -125,6 +128,12 @@ export class FeaturedProductComponent implements OnInit, AfterViewInit {
   }
 
   addToCart(productId: string, quantity: number): void {
+    if (!this.authService.getAccessToken()) {
+      alert('You must register or login first before shopping!');
+      this.router.navigate(['/login/sign-up']);
+      return;
+    }
+
     if (!productId || quantity < 1) {
       alert('Invalid product or quantity.');
       return;

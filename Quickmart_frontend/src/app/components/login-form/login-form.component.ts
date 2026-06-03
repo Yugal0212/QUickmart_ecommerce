@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { finalize, take } from 'rxjs/operators';
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
   showPassword: boolean = false;
   loading: boolean = false;
@@ -30,6 +30,20 @@ export class LoginFormComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       terms: [false, Validators.requiredTrue],
     });
+  }
+
+  ngOnInit(): void {
+    const roles = this.authService.getUserRoles();
+    if (roles && roles.length > 0 && this.authService.getAccessToken()) {
+      // User is already logged in, redirect them
+      if (roles.includes('admin')) {
+        this.router.navigate(['/admin-dashboard']);
+      } else if (roles.includes('seller')) {
+        this.router.navigate(['/sheller-dashboard']);
+      } else {
+        this.router.navigate(['/home']);
+      }
+    }
   }
 
   get f() {

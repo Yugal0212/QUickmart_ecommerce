@@ -1,5 +1,5 @@
-import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Routes, RouterModule, ExtraOptions, Router } from '@angular/router';
+import { NgModule, inject } from '@angular/core';
 
 
 
@@ -137,8 +137,20 @@ export const routes: Routes = [
   {path:'productdetails/:id', loadComponent: () => import('./components/productdetails/productdetails.component').then(c => c.ProductdetailsComponent)},
   {path:'cart',loadComponent: () => import('./components/cart/cart.component').then(c => c.CartComponent)},
   { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent) }, // Home route
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
-
+  { 
+    path: '', 
+    pathMatch: 'full',
+    canActivate: [() => {
+      const auth = inject(AuthService);
+      const router = inject(Router);
+      const roles = auth.getUserRoles();
+      if (roles && roles.length > 0 && auth.getAccessToken()) {
+        if (roles.includes('admin')) return router.parseUrl('/admin-dashboard');
+        if (roles.includes('seller')) return router.parseUrl('/sheller-dashboard');
+      }
+      return router.parseUrl('/home');
+    }]
+  },
 
 
   {path:'category-details/:id', loadComponent: () => import('./components/category-details/category-details.component').then(c => c.CategoryDetailsComponent)},

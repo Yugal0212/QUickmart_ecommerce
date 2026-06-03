@@ -5,6 +5,7 @@ import { CartService } from '../../Services/Cart/cart.service';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { CommonModule, NgIf } from '@angular/common';
 import { SeoService } from '../../Services/seo.service';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-productdetails',
@@ -24,10 +25,11 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router, // Inject Router
+    private router: Router,
     private productService: ProductService,
-    private cartService: CartService, // Inject CartService
-    private seoService: SeoService // Inject SEO Service
+    private cartService: CartService,
+    private seoService: SeoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -122,6 +124,12 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
 
   // Add product to cart
   addToCart(productId: string): void {
+    if (!this.authService.getAccessToken()) {
+      alert('You must register or login first before shopping!');
+      this.router.navigate(['/login/sign-up']);
+      return;
+    }
+
     if (!productId || this.quantity < 1) {
       alert('Invalid product or quantity.');
       return;

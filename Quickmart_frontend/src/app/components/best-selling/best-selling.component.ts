@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../Services/auth.service';
 import { Router, RouterLink } from '@angular/router'; // Import Router
 import { Product, ProductService } from '../../Services/product/products.service';
 import { CommonModule, NgIf } from '@angular/common';
@@ -19,8 +20,11 @@ export class BestSellingComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService, // Inject CartService
-    private router: Router // Inject Router
+    private cartService: CartService,
+    // Inject CartService
+    private router: Router ,
+    // Inject Router
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +99,12 @@ export class BestSellingComponent implements OnInit {
 
   // Method to handle "Add to Cart" button click
   addToCart(productId: string, quantity: number): void {
+    if (!this.authService.getAccessToken()) {
+      alert('You must register or login first before shopping!');
+      this.router.navigate(['/login/sign-up']);
+      return;
+    }
+
     if (!productId || quantity < 1) {
       alert('Invalid product or quantity.');
       return;
