@@ -16,7 +16,6 @@ const BlogSchema = new mongoose.Schema(
 );
 
 // Performance Indexes for SEO and Search
-BlogSchema.index({ slug: 1 });
 BlogSchema.index({ title: "text", content: "text" });
 
 module.exports = mongoose.model("Blog", BlogSchema);

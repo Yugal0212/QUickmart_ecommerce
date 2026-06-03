@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
       token = req.cookies.refreshToken; // Fallback to refreshToken in cookies
     }
 
-    if (!token) {
+    if (!token || token === "null" || token === "undefined") {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
