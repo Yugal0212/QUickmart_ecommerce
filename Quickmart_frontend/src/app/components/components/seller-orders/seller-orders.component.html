@@ -1,4 +1,4 @@
-<div class="p-6 lg:p-8 max-w-7xl mx-auto">
+﻿<div class="p-6 lg:p-8 max-w-7xl mx-auto">
   <div class="flex flex-col md:flex-row justify-between items-center mb-8">
     <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Order Management</h1>
     
@@ -78,7 +78,7 @@
             <td class="px-6 py-4 whitespace-nowrap">
               <span class="text-sm font-bold text-green-600">
                 <ng-container *ngIf="order.items">
-                  ${{ order.items[0]?.totalPrice || (order.items[0]?.price * order.items[0]?.quantity) || order.totalAmount }}
+                  ₹{{ order.items[0]?.totalPrice || (order.items[0]?.price * order.items[0]?.quantity) || order.totalAmount }}
                 </ng-container>
               </span>
             </td>
@@ -158,3 +158,4 @@
     </div>
   </div>
 </div>
+

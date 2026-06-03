@@ -1,4 +1,5 @@
-import { Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SeoService } from '../../Services/seo.service';
 import { CardsAndAdvantagesComponent } from "../../components/cards-and-advantages/cards-and-advantages.component";
 import { PeopleAreLookingComponent } from "../../components/people-are-looking/people-are-looking.component";
 import { PreloaderComponent } from "../../components/preloader/preloader.component";
@@ -17,7 +18,22 @@ import { HeroComponent } from "../../components/hero/hero.component";
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  constructor(private seoService: SeoService) {}
 
-  
+  ngOnInit() {
+    this.seoService.setSeoData({
+      title: 'QuickMartNexa - Best Online Shopping Platform',
+      description: 'Discover the best deals on electronics, fashion, home goods, and more at QuickMartNexa.',
+      keywords: 'shopping, electronics, fashion, deals, quickmart',
+      type: 'website'
+    });
+    
+    this.seoService.setJsonLdSchema({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "QuickMartNexa",
+      "url": "https://quickmartnexa.com/"
+    });
+  }
 }

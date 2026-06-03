@@ -4,8 +4,8 @@
   <!-- Header -->
   <div class="offcanvas-header">
     <div class="offcanvas-brand">
-      <img src="images/quickmart-logo1.png" alt="QuickMart">
-      <span id="offcanvasNavbarLabel" class="fw-bold" style="font-size:15px;">QuickMart</span>
+      <img loading="lazy" src="images/QuickmartNexa_proper.png" alt="QuickMartNexa" style="height: 45px; width: auto; object-fit: contain;">
+      <span id="offcanvasNavbarLabel" class="fw-bold" style="font-size:15px; margin-left: 8px;">QuickMartNexa</span>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
@@ -124,7 +124,7 @@
   <div class="container-fluid">
     <div class="top-strip-inner">
       <div class="top-strip-left">
-        <span class="top-pill">🚚 Free delivery over $50</span>
+        <span class="top-pill">🚚 Free delivery over ₹50</span>
         <span class="top-text">Fresh picks delivered in 45-60 mins</span>
       </div>
       <div class="top-strip-right">
@@ -140,13 +140,13 @@
         </div>
         <div class="dropdown top-dropdown">
           <button class="top-link dropdown-toggle" id="localeMenu" data-bs-toggle="dropdown" aria-expanded="false">
-            EN / USD
+            EN / INR
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="localeMenu">
             <li><button class="dropdown-item" type="button">English</button></li>
             <li><button class="dropdown-item" type="button">Hindi</button></li>
             <li><hr class="dropdown-divider"></li>
-            <li><button class="dropdown-item" type="button">USD ($)</button></li>
+            <li><button class="dropdown-item" type="button">INR (₹)</button></li>
             <li><button class="dropdown-item" type="button">INR (₹)</button></li>
           </ul>
         </div>
@@ -180,7 +180,7 @@
 
         <!-- Logo -->
         <a routerLink="/home" class="brand">
-          <img src="images/quickmart-logo1.png" alt="QuickMart logo">
+          <img loading="lazy" src="images/QuickmartNexa_proper.png" alt="QuickMartNexa logo" style="height: 50px; width: auto; object-fit: contain;">
         </a>
       </div>
 
@@ -220,7 +220,7 @@
                 (click)="navigateToProduct(product)"
               >
                 <span class="search-item-name">{{ product.name }}</span>
-                <span class="search-item-meta">${{ product.price | number:'1.0-0' }}</span>
+                <span class="search-item-meta">₹{{ product.price | number:'1.0-0' }}</span>
               </button>
             </div>
 
@@ -394,3 +394,4 @@
 </header>
 
 <app-preloader *ngIf="showPreloader"></app-preloader>
+

@@ -40,7 +40,7 @@
         <label for="image" class="form-label">Upload Image</label>
         <!-- Display existing image in edit mode -->
         <div *ngIf="isEditMode && existingImage" class="mb-3">
-          <img [src]="existingImage" alt="Existing Image" class="img-thumbnail" width="150" />
+          <img loading="lazy" [src]="existingImage" alt="Existing Image" class="img-thumbnail" width="150" />
         </div>
         <input
           type="file"
@@ -70,3 +70,4 @@
 
 
   <app-preloader *ngIf="showPreloader"></app-preloader>
+

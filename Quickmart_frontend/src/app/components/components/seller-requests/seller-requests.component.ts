@@ -19,16 +19,23 @@ export class SellerRequestsComponent implements OnInit {
   searchQuery: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 5;
+  activeTab: 'pending' | 'approved' | 'rejected' = 'pending';
+
+  selectedRequest: any = null;
+  showModal: boolean = false;
 
   get filteredRequests() {
-    if (!this.searchQuery) return this.requests;
-    const query = this.searchQuery.toLowerCase();
-    return this.requests.filter(req => 
-      req.userId?.username?.toLowerCase().includes(query) || 
-      req.userId?.email?.toLowerCase().includes(query) ||
-      req.storeName?.toLowerCase().includes(query) ||
-      req.businessName?.toLowerCase().includes(query)
-    );
+    let list = this.requests;
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      list = list.filter(req => 
+        req.fullName?.toLowerCase().includes(query) || 
+        req.email?.toLowerCase().includes(query) ||
+        req.storeName?.toLowerCase().includes(query) ||
+        req.businessName?.toLowerCase().includes(query)
+      );
+    }
+    return list;
   }
 
   get paginatedRequests() {
@@ -51,7 +58,14 @@ export class SellerRequestsComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadRequests();
+    this.loadRequests(this.activeTab);
+  }
+
+  setTab(tab: 'pending' | 'approved' | 'rejected') {
+    this.activeTab = tab;
+    this.currentPage = 1;
+    this.searchQuery = '';
+    this.loadRequests(tab);
   }
 
   getHeaders() {
@@ -60,9 +74,9 @@ export class SellerRequestsComponent implements OnInit {
     });
   }
 
-  loadRequests() {
+  loadRequests(status: string) {
     this.isLoading = true;
-    this.http.get<any[]>(`${this.apiUrl}/admin/seller-requests`, { headers: this.getHeaders() })
+    this.http.get<any[]>(`${this.apiUrl}/admin/seller-request/${status}`, { headers: this.getHeaders() })
       .subscribe({
         next: (data) => {
           this.requests = data;
@@ -75,24 +89,42 @@ export class SellerRequestsComponent implements OnInit {
       });
   }
 
-  approve(id: string) {
-    if (confirm('Approve this seller application?')) {
-      this.http.put(`${this.apiUrl}/admin/approve-seller/${id}`, {}, { headers: this.getHeaders() })
+  openModal(request: any) {
+    this.selectedRequest = request;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.selectedRequest = null;
+  }
+
+  approve() {
+    if (confirm('Are you sure you want to approve this seller application?')) {
+      this.http.put(`${this.apiUrl}/admin/seller-request/approve/${this.selectedRequest._id}`, {}, { headers: this.getHeaders() })
         .subscribe({
-          next: () => this.loadRequests(),
+          next: () => {
+            this.closeModal();
+            this.loadRequests(this.activeTab);
+          },
           error: (err) => alert('Error approving seller.')
         });
     }
   }
 
-  reject(id: string) {
-    const reason = prompt('Reason for rejection:');
-    if (reason !== null) {
-      this.http.put(`${this.apiUrl}/admin/reject-seller/${id}`, { reason }, { headers: this.getHeaders() })
+  reject() {
+    const reason = prompt('Reason for rejection (will be emailed to the seller):');
+    if (reason !== null && reason.trim() !== '') {
+      this.http.put(`${this.apiUrl}/admin/seller-request/reject/${this.selectedRequest._id}`, { adminRemark: reason }, { headers: this.getHeaders() })
         .subscribe({
-          next: () => this.loadRequests(),
+          next: () => {
+            this.closeModal();
+            this.loadRequests(this.activeTab);
+          },
           error: (err) => alert('Error rejecting seller.')
         });
+    } else if (reason !== null) {
+      alert("A reason is required to reject a seller.");
     }
   }
 }

@@ -5,13 +5,13 @@ const {
   getSellerAnalytics,
   getSellerOrders,
   getSellerCustomers,
-  applyToBeSeller,
-  getApplicationStatus,
-  updateApplication,
   getSellerProfile,
   updateSellerProfile,
   updateSellerPayment
 } = require("../controllers/sellerController");
+const { applyToBeSeller, getMyApplicationStatus } = require("../controllers/sellerRequestController");
+const multer = require("multer");
+const upload = multer();
 
 const router = express.Router();
 
@@ -26,8 +26,12 @@ router.put("/profile", authMiddleware, roleMiddleware("seller"), updateSellerPro
 router.put("/payment", authMiddleware, roleMiddleware("seller"), updateSellerPayment);
 
 // Application Routes (Can be customer)
-router.post("/apply", authMiddleware, applyToBeSeller);
-router.get("/application-status", authMiddleware, getApplicationStatus);
-router.put("/update-application", authMiddleware, updateApplication);
+router.post("/apply", authMiddleware, upload.fields([
+  { name: 'aadhaarCard', maxCount: 1 },
+  { name: 'panCard', maxCount: 1 },
+  { name: 'gstCertificate', maxCount: 1 },
+  { name: 'businessLicense', maxCount: 1 }
+]), applyToBeSeller);
+router.get("/application-status", authMiddleware, getMyApplicationStatus);
 
 module.exports = router;

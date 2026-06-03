@@ -20,14 +20,16 @@ const createProduct = async (req, res) => {
       }
     }
 
+    const isAdmin = req.user && req.user.role === 'admin';
     const product = await Product.create({
       name,
       description,
       price,
       stockQuantity,
       category,
-      seller: req.user._id, // Attach the seller's ID
+      seller: req.user._id,
       images: uploadedImages,
+      approvalStatus: isAdmin ? 'approved' : 'pending'
     });
 
     res.status(201).json({ message: "Product created", product });
@@ -42,9 +44,18 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find()
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find({ approvalStatus: 'approved' })
+      .select("name description price images stockQuantity category seller") // Optimized selection
       .populate("category", "name") // Populate category name
-      .populate("seller", "username"); 
+      .populate("seller", "username") 
+      .lean() // Return plain JS objects
+      .skip(skip)
+      .limit(limit);
+      
     res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -54,9 +65,16 @@ const getAllProducts = async (req, res) => {
 
 const getProductsByseller = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    
     const products = await Product.find({ seller: req.user._id })
+      .select("name description price images stockQuantity category approvalStatus")
       .populate("category", "name") // Populate category name
-      .populate("seller", "username"); // Populate seller name
+      .lean()
+      .skip((page - 1) * limit)
+      .limit(limit);
+      
     res.json(products);
   } catch (error) {
     console.error('Error fetching seller products:', error);
@@ -67,7 +85,10 @@ const getProductsByseller = async (req, res) => {
 // Get Product by ID
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate("category", "name").populate("seller", "username");
+    const product = await Product.findById(req.params.id)
+      .populate("category", "name")
+      .populate("seller", "username")
+      .lean();
     res.json(product || { message: "Product not found" });
   } catch (error) {
     res.json({ message: "Server error" });
@@ -150,21 +171,22 @@ const deleteProduct = async (req, res) => {
 };
 const serchbyproducts = async (req, res) => {
   try {
-    const { query } = req.query; // Get search query from URL parameters
+    const { query, limit = 20 } = req.query; // Get search query from URL parameters
 
     if (!query) {
       return res.status(400).json({ message: "Search query is required" });
     }
 
-    // Perform a case-insensitive search for products matching the name or category
-    const products = await Product.find({
-      $or: [
-        { name: { $regex: query, $options: "i" } }, // Search by name
-        { "category.name": { $regex: query, $options: "i" } }, // Search by category name
-      ],
-    })
-      .populate("category", "name") // Populate category name
-      .populate("seller", "username"); // Populate seller name
+    // High performance text search
+    const products = await Product.find(
+      { $text: { $search: query }, approvalStatus: 'approved' },
+      { score: { $meta: "textScore" } }
+    )
+      .select("name price images category")
+      .populate("category", "name") 
+      .lean()
+      .sort({ score: { $meta: "textScore" } })
+      .limit(parseInt(limit));
 
     res.json(products);
   } catch (error) {

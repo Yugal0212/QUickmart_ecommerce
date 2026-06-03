@@ -1,0 +1,89 @@
+<div class="p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
+  
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Reports & Analytics</h1>
+    <p class="text-gray-500 mt-1">Generate deep insights, export data, and track historical performance.</p>
+  </div>
+
+  <!-- Generate Report Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    
+    <div class="bg-white/70 backdrop-blur-xl border border-gray-100 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:-translate-y-1 transition-transform">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30 mb-4 text-white">
+        <i class="fas fa-file-invoice-dollar text-xl"></i>
+      </div>
+      <h3 class="font-bold text-gray-900 text-lg mb-1">Financial Statements</h3>
+      <p class="text-sm text-gray-500 mb-6">Export monthly revenue, platform fees, and tax calculations.</p>
+      <button (click)="generateReport('financial')" [disabled]="isGenerating" class="w-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-semibold py-2.5 rounded-xl transition-colors border border-blue-100 hover:border-transparent">
+        Generate PDF
+      </button>
+    </div>
+    
+    <div class="bg-white/70 backdrop-blur-xl border border-gray-100 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:-translate-y-1 transition-transform">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/30 mb-4 text-white">
+        <i class="fas fa-users text-xl"></i>
+      </div>
+      <h3 class="font-bold text-gray-900 text-lg mb-1">Seller Performance</h3>
+      <p class="text-sm text-gray-500 mb-6">Export payouts, seller growth metrics, and top performers.</p>
+      <button (click)="generateReport('sellers')" [disabled]="isGenerating" class="w-full bg-purple-50 hover:bg-purple-600 hover:text-white text-purple-600 font-semibold py-2.5 rounded-xl transition-colors border border-purple-100 hover:border-transparent">
+        Generate CSV
+      </button>
+    </div>
+    
+    <div class="bg-white/70 backdrop-blur-xl border border-gray-100 rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:-translate-y-1 transition-transform">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-500/10 rounded-full blur-2xl group-hover:bg-green-500/20 transition-all"></div>
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg shadow-green-500/30 mb-4 text-white">
+        <i class="fas fa-boxes text-xl"></i>
+      </div>
+      <h3 class="font-bold text-gray-900 text-lg mb-1">Inventory & Sales</h3>
+      <p class="text-sm text-gray-500 mb-6">Export fast-moving items, out-of-stock alerts, and product data.</p>
+      <button (click)="generateReport('inventory')" [disabled]="isGenerating" class="w-full bg-green-50 hover:bg-green-600 hover:text-white text-green-600 font-semibold py-2.5 rounded-xl transition-colors border border-green-100 hover:border-transparent">
+        Generate CSV
+      </button>
+    </div>
+
+  </div>
+
+  <h2 class="text-xl font-bold text-gray-900 mb-4">Recent Reports</h2>
+  <div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left border-collapse">
+        <thead class="bg-gray-50/50">
+          <tr class="border-b border-gray-200">
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Report Name</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Generated Date</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Format</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-transparent">
+          <tr *ngFor="let report of reports" class="hover:bg-gray-50/50 transition-colors duration-200">
+            <td class="py-4 px-6 whitespace-nowrap">
+              <div class="font-bold text-gray-900 flex items-center">
+                <i class="fas" [ngClass]="report.type === 'PDF' ? 'fa-file-pdf text-red-500' : 'fa-file-csv text-green-500'"></i>
+                <span class="ml-3">{{ report.name }}</span>
+              </div>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap">
+              <div class="text-sm font-semibold text-gray-700">{{ report.date | date:'medium' }}</div>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold"
+                    [ngClass]="report.type === 'PDF' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'">
+                {{ report.type }}
+              </span>
+              <span class="text-xs text-gray-400 ml-2">{{ report.size }}</span>
+            </td>
+            <td class="py-4 px-6 whitespace-nowrap text-right">
+              <button class="text-gray-400 hover:text-gray-900 mx-2 transition-colors" title="Download">
+                <i class="fas fa-download"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

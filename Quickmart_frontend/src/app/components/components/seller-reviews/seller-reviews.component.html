@@ -33,7 +33,7 @@
         
         <!-- Product Thumbnail (Left) -->
         <div class="w-24 h-24 rounded-2xl bg-gray-100 border border-gray-200 overflow-hidden shrink-0 hidden md:block">
-           <img [src]="review.product?.images?.[0] || 'assets/placeholder.jpg'" class="w-full h-full object-cover">
+           <img loading="lazy" [src]="review.product?.images?.[0] || 'assets/placeholder.jpg'" class="w-full h-full object-cover">
         </div>
 
         <div class="flex-1">

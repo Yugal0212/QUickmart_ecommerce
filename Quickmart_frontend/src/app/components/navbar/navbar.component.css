@@ -10,7 +10,7 @@
   --nav-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
   --nav-font: "Space Grotesk", "Inter", "Segoe UI", sans-serif;
   --strip-height: 36px;
-  --header-height: 62px;
+  --header-height: 74px; /* Increased to allow larger logo */
 }
 
 /* ==============================
@@ -119,9 +119,11 @@
 }
 
 .brand img {
-  height: 38px;
+  height: 60px !important; /* Force large height */
   width: auto;
   object-fit: contain;
+  transform: scale(1.15); /* Visually expand to negate internal image padding */
+  transform-origin: left center;
 }
 
 /* ==============================
@@ -610,8 +612,10 @@
 }
 
 .offcanvas-brand img {
-  height: 32px;
+  height: 45px !important;
   width: auto;
+  transform: scale(1.15);
+  transform-origin: left center;
 }
 
 .offcanvas-body {

@@ -1,50 +1,64 @@
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { LoginComponent } from './pages/login/login.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { SingUpFormComponent } from './components/sing-up-form/sing-up-form.component';
-import { HomeComponent } from './pages/home/home.component';
-import { AddressComponent } from './components/address/address.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { AllproductsComponent } from './components/allproducts/allproducts.component';
-import { ProductdetailsComponent } from './components/productdetails/productdetails.component';
-import { CartComponent } from './components/cart/cart.component';
-import { OrderSummaryComponent } from './components/order-summary/order-summary.component';
-import { PaymentComponent } from './components/payment/payment.component';
-import { OrderPageComponent } from './pages/order/order.component';
-import { AddressFormComponent } from './components/address/address-form/address-form.component';
-import { OrdercompleteComponent } from './components/ordercomplete/ordercomplete.component';
-import { BecomeSellerComponent } from './components/become-seller/become-seller.component';
-import { SellerApplicationStatusComponent } from './pages/seller-application-status/seller-application-status.component';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { AuthService } from './Services/auth.service';
-import { SellerDashboardComponent } from './pages/seller-dashboard/seller-dashboard.component';
-import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
-import { ProductCategoryComponent } from './components/product-category/product-category.component';
-import { CategoryDetailsComponent } from './components/category-details/category-details.component';
-import { OrderHistoryComponent } from './components/orderhistory/orderhistory.component';
-import { ProductListComponent } from './components/components/product-list/product-list.component';
-import { CategoryListComponent } from './components/components/category-list/category-list.component';
-import { AddProductComponent } from './components/components/add-product/add-product.component';
-import { AddCategoryComponent } from './components/components/add-category/add-category.component';
-import { UserManageComponent } from './components/components/user-manage/user-manage.component';
-import { UserDetailsComponent } from './components/components/user-details/user-details.component';
-import { SellerOverviewComponent } from './components/components/seller-overview/seller-overview.component';
-import { SellerOrdersComponent } from './components/components/seller-orders/seller-orders.component';
-import { SellerInventoryComponent } from './components/components/seller-inventory/seller-inventory.component';
-import { SellerCustomersComponent } from './components/components/seller-customers/seller-customers.component';
-import { SellerReviewsComponent } from './components/components/seller-reviews/seller-reviews.component';
-import { SellerWalletComponent } from './components/components/seller-wallet/seller-wallet.component';
-import { SellerReportsComponent } from './components/components/seller-reports/seller-reports.component';
-import { SellerSettingsComponent } from './components/components/seller-settings/seller-settings.component';
-import { AdminOverviewComponent } from './components/components/admin-overview/admin-overview.component';
-import { SellerRequestsComponent } from './components/components/seller-requests/seller-requests.component';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () => import('./pages/login/login.component').then(c => c.LoginComponent),
     children: [
-      { path: 'sign-in', component: LoginFormComponent },
-      { path: 'sign-up', component: SingUpFormComponent },
+      { path: 'sign-in', loadComponent: () => import('./components/login-form/login-form.component').then(c => c.LoginFormComponent) },
+      { path: 'sign-up', loadComponent: () => import('./components/sing-up-form/sing-up-form.component').then(c => c.SingUpFormComponent) },
       { path: '', redirectTo: 'sign-in', pathMatch: 'full' } ,
       { path: '**', redirectTo: 'sign-in' }, // Wildcard route for any undefined paths
     ]
@@ -53,34 +67,34 @@ export const routes: Routes = [
 
   {
     path: 'order',
-    component: OrderPageComponent,
+    loadComponent: () => import('./pages/order/order.component').then(c => c.OrderPageComponent),
     children: [
-      { path: 'address', component: AddressComponent },
-      {path:'Add-address', component: AddressFormComponent},
-      {path:'Add-address/:id', component: AddressFormComponent},
-      { path: 'order-summary', component: OrderSummaryComponent },
-      { path: 'order-payment', component: PaymentComponent },
-      {path:'complete',component:OrdercompleteComponent},
+      { path: 'address', loadComponent: () => import('./components/address/address.component').then(c => c.AddressComponent) },
+      {path:'Add-address', loadComponent: () => import('./components/address/address-form/address-form.component').then(c => c.AddressFormComponent)},
+      {path:'Add-address/:id', loadComponent: () => import('./components/address/address-form/address-form.component').then(c => c.AddressFormComponent)},
+      { path: 'order-summary', loadComponent: () => import('./components/order-summary/order-summary.component').then(c => c.OrderSummaryComponent) },
+      { path: 'order-payment', loadComponent: () => import('./components/payment/payment.component').then(c => c.PaymentComponent) },
+      {path:'complete',loadComponent: () => import('./components/ordercomplete/ordercomplete.component').then(c => c.OrdercompleteComponent)},
       
       { path: '', redirectTo: 'address', pathMatch: 'full' }  // Default to Address step
     ]
   },
 
-  {path :'history', component: OrderHistoryComponent},
+  {path :'history', loadComponent: () => import('./components/orderhistory/orderhistory.component').then(c => c.OrderHistoryComponent)},
   {
-    path: 'sheller-dashboard', component:SellerDashboardComponent,canActivate: [AuthService],
+    path: 'sheller-dashboard', loadComponent: () => import('./pages/seller-dashboard/seller-dashboard.component').then(c => c.SellerDashboardComponent),canActivate: [AuthService],
     children: [
-      { path: 'overview', component: SellerOverviewComponent },
-      { path: 'add-product', component: AddProductComponent },
-      { path: 'products', component: ProductListComponent },
-      { path: 'categories', component: CategoryListComponent },
-      { path: 'orders', component: SellerOrdersComponent },
-      { path: 'inventory', component: SellerInventoryComponent },
-      { path: 'customers', component: SellerCustomersComponent },
-      { path: 'reviews', component: SellerReviewsComponent },
-      { path: 'wallet', component: SellerWalletComponent },
-      { path: 'reports', component: SellerReportsComponent },
-      { path: 'settings', component: SellerSettingsComponent },
+      { path: 'overview', loadComponent: () => import('./components/components/seller-overview/seller-overview.component').then(c => c.SellerOverviewComponent) },
+      { path: 'add-product', loadComponent: () => import('./components/components/add-product/add-product.component').then(c => c.AddProductComponent) },
+      { path: 'products', loadComponent: () => import('./components/components/product-list/product-list.component').then(c => c.ProductListComponent) },
+      { path: 'categories', loadComponent: () => import('./components/components/category-list/category-list.component').then(c => c.CategoryListComponent) },
+      { path: 'orders', loadComponent: () => import('./components/components/seller-orders/seller-orders.component').then(c => c.SellerOrdersComponent) },
+      { path: 'inventory', loadComponent: () => import('./components/components/seller-inventory/seller-inventory.component').then(c => c.SellerInventoryComponent) },
+      { path: 'customers', loadComponent: () => import('./components/components/seller-customers/seller-customers.component').then(c => c.SellerCustomersComponent) },
+      { path: 'reviews', loadComponent: () => import('./components/components/seller-reviews/seller-reviews.component').then(c => c.SellerReviewsComponent) },
+      { path: 'wallet', loadComponent: () => import('./components/components/seller-wallet/seller-wallet.component').then(c => c.SellerWalletComponent) },
+      { path: 'reports', loadComponent: () => import('./components/components/seller-reports/seller-reports.component').then(c => c.SellerReportsComponent) },
+      { path: 'settings', loadComponent: () => import('./components/components/seller-settings/seller-settings.component').then(c => c.SellerSettingsComponent) },
       { path: '', redirectTo: 'overview', pathMatch: 'full' }, 
     ],
   },
@@ -88,33 +102,47 @@ export const routes: Routes = [
 
 
   {
-    path: 'admin-dashboard', component:AdminPanelComponent,canActivate: [AuthService],
+    path: 'admin-dashboard', loadComponent: () => import('./pages/admin-panel/admin-panel.component').then(c => c.AdminPanelComponent),canActivate: [AuthService],
     children: [
-      { path: 'overview', component: AdminOverviewComponent },
-      { path: 'products', component: ProductListComponent },
-      { path: 'categories', component: CategoryListComponent },
-      { path: 'add-product', component: AddProductComponent },
-      { path: 'add-category', component: AddCategoryComponent },
-      {path:'add-category/:id', component:AddCategoryComponent},
-      { path: 'Users-manage', component: UserManageComponent },
-      { path: 'user-details/:id', component: UserDetailsComponent },
-      { path: 'seller-requests', component: SellerRequestsComponent },
+      { path: 'overview', loadComponent: () => import('./components/components/admin-overview/admin-overview.component').then(c => c.AdminOverviewComponent) },
+      { path: 'products', loadComponent: () => import('./components/components/admin-products/admin-products.component').then(c => c.AdminProductsComponent) },
+      { path: 'categories', loadComponent: () => import('./components/components/category-list/category-list.component').then(c => c.CategoryListComponent) },
+      { path: 'add-product', loadComponent: () => import('./components/components/add-product/add-product.component').then(c => c.AddProductComponent) },
+      { path: 'add-category', loadComponent: () => import('./components/components/add-category/add-category.component').then(c => c.AddCategoryComponent) },
+      { path: 'add-category/:id', loadComponent: () => import('./components/components/add-category/add-category.component').then(c => c.AddCategoryComponent) },
+      { path: 'users', loadComponent: () => import('./components/components/user-manage/user-manage.component').then(c => c.UserManageComponent) },
+      { path: 'user-details/:id', loadComponent: () => import('./components/components/user-details/user-details.component').then(c => c.UserDetailsComponent) },
+      { path: 'sellers', loadComponent: () => import('./components/components/admin-sellers/admin-sellers.component').then(c => c.AdminSellersComponent) },
+      { path: 'seller-requests', loadComponent: () => import('./components/components/seller-requests/seller-requests.component').then(c => c.SellerRequestsComponent) },
+      { path: 'orders', loadComponent: () => import('./components/components/admin-orders/admin-orders.component').then(c => c.AdminOrdersComponent) },
+      { path: 'coupons', loadComponent: () => import('./components/components/admin-coupons/admin-coupons.component').then(c => c.AdminCouponsComponent) },
+      { path: 'wallet', loadComponent: () => import('./components/components/admin-wallet/admin-wallet.component').then(c => c.AdminWalletComponent) },
+      { path: 'payouts', loadComponent: () => import('./components/components/admin-payouts/admin-payouts.component').then(c => c.AdminPayoutsComponent) },
+      { path: 'reports', loadComponent: () => import('./components/components/admin-reports/admin-reports.component').then(c => c.AdminReportsComponent) },
+      { path: 'banners', loadComponent: () => import('./components/components/admin-banners/admin-banners.component').then(c => c.AdminBannersComponent) },
+      { path: 'ai-insights', loadComponent: () => import('./components/components/admin-ai-insights/admin-ai-insights.component').then(c => c.AdminAiInsightsComponent) },
+      { path: 'campaigns', loadComponent: () => import('./components/components/admin-campaigns/admin-campaigns.component').then(c => c.AdminCampaignsComponent) },
+      { path: 'system-settings', loadComponent: () => import('./components/components/admin-settings/admin-settings.component').then(c => c.AdminSettingsComponent) },
+      { path: 'audit-logs', loadComponent: () => import('./components/components/admin-audit-logs/admin-audit-logs.component').then(c => c.AdminAuditLogsComponent) },
+      { path: 'seo-settings', loadComponent: () => import('./components/components/admin-seo-settings/admin-seo-settings.component').then(c => c.AdminSeoSettingsComponent) },
+      { path: 'seo-analyzer', loadComponent: () => import('./components/components/admin-seo-analyzer/admin-seo-analyzer.component').then(c => c.AdminSeoAnalyzerComponent) },
+      
       { path: '', redirectTo: 'overview', pathMatch: 'full' }, 
     ],
   },
   { path: '', redirectTo: '/admin-dashboard', pathMatch: 'full' },
 
 
-  {path:'become-seller',component:BecomeSellerComponent},
-  {path:'seller-application-status',component:SellerApplicationStatusComponent},
-  {path:'allproducts', component:AllproductsComponent},
-  {path:'productdetails/:id', component:ProductdetailsComponent},
-  {path:'cart',component:CartComponent},
-  { path: 'home', component: HomeComponent,canActivate: [AuthService] }, // Home route
+  {path:'become-seller',loadComponent: () => import('./components/become-seller/become-seller.component').then(c => c.BecomeSellerComponent)},
+  {path:'seller-application-status',loadComponent: () => import('./pages/seller-application-status/seller-application-status.component').then(c => c.SellerApplicationStatusComponent)},
+  {path:'allproducts', loadComponent: () => import('./components/allproducts/allproducts.component').then(c => c.AllproductsComponent)},
+  {path:'productdetails/:id', loadComponent: () => import('./components/productdetails/productdetails.component').then(c => c.ProductdetailsComponent)},
+  {path:'cart',loadComponent: () => import('./components/cart/cart.component').then(c => c.CartComponent)},
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent),canActivate: [AuthService] }, // Home route
 
 
 
-  {path:'category-details/:id', component:CategoryDetailsComponent},
+  {path:'category-details/:id', loadComponent: () => import('./components/category-details/category-details.component').then(c => c.CategoryDetailsComponent)},
   
   
 

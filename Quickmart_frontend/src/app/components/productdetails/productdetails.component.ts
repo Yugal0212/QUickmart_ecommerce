@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../Services/Cart/cart.service';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { CommonModule, NgIf } from '@angular/common';
+import { SeoService } from '../../Services/seo.service';
 
 @Component({
   selector: 'app-productdetails',
@@ -25,7 +26,8 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router, // Inject Router
     private productService: ProductService,
-    private cartService: CartService // Inject CartService
+    private cartService: CartService, // Inject CartService
+    private seoService: SeoService // Inject SEO Service
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,32 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
           this.imageSources = this.product.images || []; // Set product images
           this.productPrice = this.product.price; // Set product price
           this.isLoading = false; // Data loaded
+          
+          // Dynamic SEO Generation
+          this.seoService.setSeoData({
+            title: this.product.seo?.title || `${this.product.name} | QuickMartNexa`,
+            description: this.product.seo?.description || this.product.description,
+            keywords: this.product.seo?.keywords || this.product.category?.name,
+            image: this.product.images?.[0] || '',
+            type: 'product.item'
+          });
+
+          // Product Schema JSON-LD
+          this.seoService.setJsonLdSchema({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": this.product.name,
+            "image": this.product.images || [],
+            "description": this.product.description,
+            "offers": {
+              "@type": "Offer",
+              "url": window.location.href,
+              "priceCurrency": "USD",
+              "price": this.product.price,
+              "availability": this.product.stockQuantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+            }
+          });
+
           this.startAutoSlide(); // Start the auto-slide after images are loaded
         },
         (error) => {

@@ -1,4 +1,4 @@
-<!-- Category Details Page -->
+﻿<!-- Category Details Page -->
 <div class="category-page">
 
 
@@ -31,7 +31,7 @@
       <!-- Actual Category Info -->
       <div *ngIf="!isLoading" class="category-info">
         <div class="category-thumb">
-          <img [src]="category?.image || 'assets/default-category.png'" [alt]="category?.name" class="img-fluid">
+          <img loading="lazy" [src]="category?.image || 'assets/default-category.png'" [alt]="category?.name" class="img-fluid">
         </div>
         <div class="category-meta">
           <nav aria-label="breadcrumb">
@@ -107,8 +107,8 @@
 
                 <!-- Price -->
                 <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
-                  <del class="text-muted small">${{ product.price * 1.2 | number: '1.2-2' }}</del>
-                  <span class="fw-bold">${{ product.price | number: '1.2-2' }}</span>
+                  <del class="text-muted small">₹{{ product.price * 1.2 | number: '1.2-2' }}</del>
+                  <span class="fw-bold">₹{{ product.price | number: '1.2-2' }}</span>
                   <span class="discount-badge">{{ product.discount }}% OFF</span>
                 </div>
 

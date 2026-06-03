@@ -1,51 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { SellerService, SellerApplication } from '../../Services/seller.service';
+import { SellerService } from '../../Services/seller.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { PreloaderComponent } from '../preloader/preloader.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-declare var AOS: any;
 
 @Component({
   selector: 'app-become-seller',
-  imports: [FormsModule, PreloaderComponent, NgIf],
+  standalone: true,
+  imports: [FormsModule, PreloaderComponent, NgIf, CommonModule],
   templateUrl: './become-seller.component.html',
   styleUrls: ['./become-seller.component.css']
 })
 export class BecomeSellerComponent implements OnInit {
   showPreloader: boolean = false;
+  currentStep = 1;
 
-  sellerDetails: Partial<SellerApplication> = {
+  formData = {
+    fullName: '',
+    email: '',
+    mobile: '',
     storeName: '',
     businessName: '',
-    phone: '',
     gstNumber: '',
-    pickupAddress: ''
+    panNumber: '',
+    address: '',
+    city: '',
+    state: '',
+    pincode: '',
+    accountHolderName: '',
+    bankName: '',
+    accountNumber: '',
+    ifscCode: ''
   };
 
-  currentReviewIndex = 0;
-  reviews = [
-    {
-      text: "Selling on QuickMart has boosted my business by 300%! The platform is easy to use, and the support team is amazing.",
-      author: "John Doe"
-    },
-    {
-      text: "The payment system is seamless and hassle-free! I highly recommend QuickMart to all sellers.",
-      author: "Emma Smith"
-    },
-    {
-      text: "QuickMart helped me reach a wider audience. My sales have never been better!",
-      author: "Michael Johnson"
-    }
-  ];
+  files: any = {
+    aadhaarCard: null,
+    panCard: null,
+    gstCertificate: null,
+    businessLicense: null
+  };
 
   constructor(private sellerService: SellerService, private router: Router, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    AOS.init(); // Initialize AOS animations
-    this.showReview(this.currentReviewIndex);
-    
     // Check if user already applied
     this.sellerService.getApplicationStatus().subscribe({
       next: (app) => {
@@ -57,42 +56,47 @@ export class BecomeSellerComponent implements OnInit {
     });
   }
 
+  nextStep() {
+    if (this.currentStep < 3) this.currentStep++;
+  }
+
+  prevStep() {
+    if (this.currentStep > 1) this.currentStep--;
+  }
+
+  onFileChange(event: any, field: string) {
+    if (event.target.files.length > 0) {
+      this.files[field] = event.target.files[0];
+    }
+  }
+
   onSubmit() {
     this.showPreloader = true;
+    const submitData = new FormData();
     
-    this.sellerService.applyToBeSeller(this.sellerDetails).subscribe(
-      (response) => {
-        setTimeout(() => {
-          this.showPreloader = false;
-          this.snackBar.open('Application submitted successfully!', 'Close', { duration: 5000, panelClass: ['success-snackbar'] });
-          this.router.navigate(['/seller-application-status']);
-        }, 1500);
+    // Append text fields
+    for (const key in this.formData) {
+      if (this.formData.hasOwnProperty(key)) {
+        submitData.append(key, (this.formData as any)[key]);
+      }
+    }
+    
+    // Append files
+    if (this.files.aadhaarCard) submitData.append('aadhaarCard', this.files.aadhaarCard);
+    if (this.files.panCard) submitData.append('panCard', this.files.panCard);
+    if (this.files.gstCertificate) submitData.append('gstCertificate', this.files.gstCertificate);
+    if (this.files.businessLicense) submitData.append('businessLicense', this.files.businessLicense);
+
+    this.sellerService.applyToBeSeller(submitData).subscribe({
+      next: (response) => {
+        this.showPreloader = false;
+        this.snackBar.open('Application submitted successfully! You will receive an email shortly.', 'Close', { duration: 5000, panelClass: ['success-snackbar'] });
+        this.router.navigate(['/seller-application-status']);
       },
-      (error) => {
+      error: (error) => {
         this.showPreloader = false;
         this.snackBar.open(error.error?.message || 'Failed to submit application.', 'Close', { duration: 5000, panelClass: ['error-snackbar'] });
       }
-    );
-  }
-
-  showReview(index: number) {
-    const reviews = document.querySelectorAll('.review-item');
-    reviews.forEach((review, i) => {
-      if (i === index) {
-        review.classList.add('active');
-      } else {
-        review.classList.remove('active');
-      }
     });
-  }
-
-  nextReview() {
-    this.currentReviewIndex = (this.currentReviewIndex + 1) % this.reviews.length;
-    this.showReview(this.currentReviewIndex);
-  }
-
-  prevReview() {
-    this.currentReviewIndex = (this.currentReviewIndex - 1 + this.reviews.length) % this.reviews.length;
-    this.showReview(this.currentReviewIndex);
   }
 }

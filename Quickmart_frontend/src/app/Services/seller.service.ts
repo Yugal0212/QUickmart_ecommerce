@@ -15,6 +15,8 @@ export interface SellerApplication {
   verificationDocuments?: string[];
   status?: string;
   rejectionReason?: string;
+  adminRemark?: string;
+  documents?: any;
   createdAt?: string;
 }
 
@@ -34,7 +36,9 @@ export class SellerService {
   }
 
   // Submit Application
-  applyToBeSeller(data: Partial<SellerApplication>): Observable<any> {
+  applyToBeSeller(data: FormData): Observable<any> {
+    // Note: Do not set 'Content-Type': 'application/json' when sending FormData.
+    // HttpClient handles it automatically.
     return this.http.post(`${this.apiUrl}/seller/apply`, data, { headers: this.getHeaders() });
   }
 

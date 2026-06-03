@@ -41,7 +41,7 @@
             <!-- Product List -->
             <div *ngFor="let item of cart.items" class="d-flex align-items-center justify-content-between p-3 border-bottom">
               <div class="d-flex align-items-center">
-                <img [src]="item.images[0]" alt="{{ item.name }}" class="rounded" style="width: 80px; height: 80px;">
+                <img loading="lazy" [src]="item.images[0]" alt="{{ item.name }}" class="rounded" style="width: 80px; height: 80px;">
                 <div class="ms-3">
                   <h5 class="mb-1">{{ item.name }}</h5>
                   <p class="mb-1 text-muted">Price: ₹{{ item.price }} | Qty: {{ item.quantity }}</p>

@@ -13,7 +13,10 @@ const uploadOnCloudinary = async (fileBuffer) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         resource_type: "auto",
-        timeout: 60000 // 60 seconds timeout
+        timeout: 60000, // 60 seconds timeout
+        format: "auto", // f_auto
+        quality: "auto", // q_auto
+        transformation: [{ fetch_format: 'auto', quality: 'auto' }] // Ensures dynamic URL generation
       },
       (error, result) => {
         if (error) {

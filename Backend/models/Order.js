@@ -28,4 +28,10 @@ const OrderSchema = new mongoose.Schema({
     orderStatus: { type: String, default: "Processing" },
 }, { timestamps: true });
 
+// Performance Indexes
+OrderSchema.index({ user: 1, orderStatus: 1 }); // User order history
+OrderSchema.index({ 'items.product': 1 }); // Searching orders by product (Seller view)
+OrderSchema.index({ createdAt: -1 }); // Sorting recent orders
+OrderSchema.index({ paymentStatus: 1 }); // Payment tracking
+
 module.exports = mongoose.model("Order", OrderSchema);

@@ -1,0 +1,66 @@
+<div class="p-6">
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">SEO Analyzer & Dashboard</h1>
+      <p class="text-gray-500">Real-time health check of your entire catalog's SEO status.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="flex justify-center p-10">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+  </div>
+
+  <div *ngIf="errorMessage" class="mb-4 bg-red-50 text-red-700 p-4 rounded-md">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && analysis" class="space-y-6">
+    
+    <!-- Score Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center">
+        <h3 class="text-gray-500 text-sm font-medium mb-2">Overall SEO Score</h3>
+        <div class="text-5xl font-bold" [ngClass]="getScoreColor(analysis.score)">
+          {{ analysis.score }}<span class="text-2xl">/100</span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm font-medium">Indexed Products & Categories</h3>
+        <p class="text-3xl font-bold text-gray-800 mt-2">{{ analysis.indexedPages }}</p>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm font-medium">Missing Meta Tags</h3>
+        <p class="text-3xl font-bold text-red-600 mt-2">{{ analysis.missingMeta }}</p>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm font-medium">Missing SEO Slugs</h3>
+        <p class="text-3xl font-bold text-red-600 mt-2">{{ analysis.missingSlugs }}</p>
+      </div>
+
+    </div>
+
+    <!-- Warnings List -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-medium text-gray-800">SEO Issues & Warnings</h3>
+      </div>
+      
+      <div *ngIf="analysis.warnings?.length === 0" class="p-6 text-center text-gray-500">
+        <i class="fas fa-check-circle text-green-500 text-4xl mb-3"></i>
+        <p>Your catalog is perfectly optimized. No issues found!</p>
+      </div>
+
+      <ul *ngIf="analysis.warnings?.length > 0" class="divide-y divide-gray-200 max-h-96 overflow-y-auto">
+        <li *ngFor="let warning of analysis.warnings" class="px-6 py-4 hover:bg-gray-50 flex items-start">
+          <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-3"></i>
+          <span class="text-gray-700">{{ warning }}</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>

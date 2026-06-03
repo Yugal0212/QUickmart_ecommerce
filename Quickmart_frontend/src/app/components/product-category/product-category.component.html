@@ -30,7 +30,7 @@
             <!-- Actual Content -->
             <a *ngFor="let category of categories" class="nav-link swiper-slide text-center" [routerLink]="['/category-details', category._id]">
               <div class="image-container">
-                <img [src]="category.image" class="category-image" alt="Category Thumbnail">
+                <img loading="lazy" [src]="category.image" class="category-image" alt="Category Thumbnail">
               </div>
               <h4 class="fs-6 mt-3 fw-normal category-title">{{ category.name }}</h4>
             </a>

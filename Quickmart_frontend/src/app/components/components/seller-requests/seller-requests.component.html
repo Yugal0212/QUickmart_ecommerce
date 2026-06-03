@@ -1,8 +1,8 @@
 <div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
   <div class="p-6 lg:p-8 border-b border-gray-200 flex flex-col md:flex-row justify-between items-center bg-gray-50/50">
     <div class="mb-4 md:mb-0">
-      <h3 class="text-xl font-bold text-gray-900">Pending Seller Requests</h3>
-      <p class="text-sm text-gray-500 mt-1">Review and approve applications to join QuickMart as a seller.</p>
+      <h3 class="text-xl font-bold text-gray-900">Seller Requests</h3>
+      <p class="text-sm text-gray-500 mt-1">Review and manage applications to join QuickMartNexa as a seller.</p>
     </div>
     
     <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
@@ -13,10 +13,22 @@
         <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="currentPage = 1" placeholder="Search requests..." 
                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl leading-5 bg-white/70 backdrop-blur-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm">
       </div>
-      <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold shadow-sm whitespace-nowrap">
-        {{ requests.length }} Pending
-      </div>
     </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="px-6 lg:px-8 border-b border-gray-200 bg-white">
+    <nav class="-mb-px flex space-x-8">
+      <button (click)="setTab('pending')" [ngClass]="activeTab === 'pending' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+        Pending
+      </button>
+      <button (click)="setTab('approved')" [ngClass]="activeTab === 'approved' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+        Approved
+      </button>
+      <button (click)="setTab('rejected')" [ngClass]="activeTab === 'rejected' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+        Rejected
+      </button>
+    </nav>
   </div>
 
   <div class="p-0 lg:p-0">
@@ -26,56 +38,37 @@
 
     <div *ngIf="!isLoading && filteredRequests.length === 0" class="text-center py-16">
       <i class="fas fa-inbox text-5xl text-gray-300 mb-4"></i>
-      <h4 class="text-lg font-bold text-gray-700">No Pending Requests</h4>
-      <p class="text-gray-500">Either no requests match your search, or all applications have been processed.</p>
+      <h4 class="text-lg font-bold text-gray-700">No {{ activeTab }} Requests</h4>
+      <p class="text-gray-500">There are currently no requests in this category.</p>
     </div>
 
     <div *ngIf="!isLoading && filteredRequests.length > 0" class="overflow-x-auto">
       <table class="min-w-full text-left border-collapse">
         <thead class="bg-gray-50/50">
           <tr class="border-b border-gray-200">
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">User</th>
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Store Name</th>
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Business Details</th>
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Applicant</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Store & Business</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Date Applied</th>
             <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-transparent">
           <tr *ngFor="let req of paginatedRequests" class="hover:bg-green-50/30 transition-colors duration-200">
             <td class="py-4 px-6 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-purple-400 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md">
-                  {{ (req.userId?.username || 'U').charAt(0).toUpperCase() }}
-                </div>
-                <div class="ml-4">
-                  <div class="font-semibold text-gray-900">{{ req.userId?.username }}</div>
-                  <div class="text-xs text-gray-500">{{ req.userId?.email }}</div>
-                </div>
-              </div>
+              <div class="font-semibold text-gray-900">{{ req.fullName }}</div>
+              <div class="text-xs text-gray-500">{{ req.email }}</div>
             </td>
             <td class="py-4 px-6 whitespace-nowrap">
               <div class="font-bold text-gray-900">{{ req.storeName }}</div>
-              <div class="text-xs text-gray-500">{{ req.createdAt | date:'shortDate' }}</div>
+              <div class="text-xs text-gray-500">{{ req.businessName }}</div>
             </td>
             <td class="py-4 px-6 whitespace-nowrap">
-              <div class="text-sm text-gray-900">{{ req.businessName }}</div>
-              <div class="text-xs text-gray-500">GST: {{ req.gstNumber }}</div>
-            </td>
-            <td class="py-4 px-6 whitespace-nowrap">
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 shadow-sm">
-                <i class="fas fa-circle text-[8px] mr-1.5 animate-pulse"></i> Pending
-              </span>
+              <div class="text-sm text-gray-900">{{ req.createdAt | date:'mediumDate' }}</div>
             </td>
             <td class="py-4 px-6 whitespace-nowrap text-right">
-              <div class="flex items-center justify-end gap-2">
-                <button (click)="approve(req._id)" class="text-green-600 hover:text-white bg-green-50 hover:bg-green-500 border border-green-200 hover:border-green-500 p-2 rounded-lg transition-colors shadow-sm" title="Approve">
-                  <i class="fas fa-check"></i>
-                </button>
-                <button (click)="reject(req._id)" class="text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 hover:border-red-500 p-2 rounded-lg transition-colors shadow-sm" title="Reject">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
+              <button (click)="openModal(req)" class="text-blue-600 hover:text-white bg-blue-50 hover:bg-blue-600 border border-blue-200 hover:border-blue-600 px-4 py-1.5 rounded-lg transition-colors shadow-sm text-sm font-semibold">
+                Review Details
+              </button>
             </td>
           </tr>
         </tbody>
@@ -92,22 +85,136 @@
             </p>
           </div>
           <div>
-            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
               <button (click)="prevPage()" [disabled]="currentPage === 1" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
-                <span class="sr-only">Previous</span>
                 <i class="fas fa-chevron-left"></i>
               </button>
-              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                Page {{ currentPage }} of {{ totalPages }}
-              </span>
               <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
-                <span class="sr-only">Next</span>
                 <i class="fas fa-chevron-right"></i>
               </button>
             </nav>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detailed Review Modal -->
+<div *ngIf="showModal && selectedRequest" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" (click)="closeModal()" aria-hidden="true"></div>
+
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        
+        <div class="flex justify-between items-center border-b pb-3 mb-4">
+          <h3 class="text-2xl leading-6 font-bold text-gray-900" id="modal-title">
+            Application Details
+          </h3>
+          <button (click)="closeModal()" class="text-gray-400 hover:text-gray-500">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Column 1: Info -->
+          <div class="space-y-6">
+            
+            <div>
+              <h4 class="text-lg font-bold text-gray-900 border-b pb-1 mb-2">Personal Information</h4>
+              <p class="text-sm text-gray-600"><strong>Name:</strong> {{ selectedRequest.fullName }}</p>
+              <p class="text-sm text-gray-600"><strong>Email:</strong> {{ selectedRequest.email }}</p>
+              <p class="text-sm text-gray-600"><strong>Mobile:</strong> {{ selectedRequest.mobile }}</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-bold text-gray-900 border-b pb-1 mb-2">Business Information</h4>
+              <p class="text-sm text-gray-600"><strong>Store Name:</strong> {{ selectedRequest.storeName }}</p>
+              <p class="text-sm text-gray-600"><strong>Legal Name:</strong> {{ selectedRequest.businessName }}</p>
+              <p class="text-sm text-gray-600"><strong>GST Number:</strong> {{ selectedRequest.gstNumber }}</p>
+              <p class="text-sm text-gray-600"><strong>PAN Number:</strong> {{ selectedRequest.panNumber }}</p>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-bold text-gray-900 border-b pb-1 mb-2">Banking Details</h4>
+              <p class="text-sm text-gray-600"><strong>Holder Name:</strong> {{ selectedRequest.bankDetails?.accountHolderName }}</p>
+              <p class="text-sm text-gray-600"><strong>Bank Name:</strong> {{ selectedRequest.bankDetails?.bankName }}</p>
+              <p class="text-sm text-gray-600"><strong>Account Number:</strong> {{ selectedRequest.bankDetails?.accountNumber }}</p>
+              <p class="text-sm text-gray-600"><strong>IFSC Code:</strong> {{ selectedRequest.bankDetails?.ifscCode }}</p>
+            </div>
+
+          </div>
+
+          <!-- Column 2: Documents -->
+          <div>
+            <h4 class="text-lg font-bold text-gray-900 border-b pb-1 mb-4">Uploaded Documents</h4>
+            
+            <div class="space-y-4">
+              
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
+                <div>
+                  <h5 class="text-sm font-bold text-gray-800">Aadhaar Card</h5>
+                  <span class="text-xs text-gray-500" *ngIf="!selectedRequest.documents?.aadhaarCard">Not Uploaded</span>
+                </div>
+                <a *ngIf="selectedRequest.documents?.aadhaarCard" [href]="selectedRequest.documents.aadhaarCard" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                  <i class="fas fa-external-link-alt mr-1"></i> View
+                </a>
+              </div>
+
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
+                <div>
+                  <h5 class="text-sm font-bold text-gray-800">PAN Card</h5>
+                  <span class="text-xs text-gray-500" *ngIf="!selectedRequest.documents?.panCard">Not Uploaded</span>
+                </div>
+                <a *ngIf="selectedRequest.documents?.panCard" [href]="selectedRequest.documents.panCard" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                  <i class="fas fa-external-link-alt mr-1"></i> View
+                </a>
+              </div>
+
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
+                <div>
+                  <h5 class="text-sm font-bold text-gray-800">GST Certificate</h5>
+                  <span class="text-xs text-gray-500" *ngIf="!selectedRequest.documents?.gstCertificate">Not Uploaded</span>
+                </div>
+                <a *ngIf="selectedRequest.documents?.gstCertificate" [href]="selectedRequest.documents.gstCertificate" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                  <i class="fas fa-external-link-alt mr-1"></i> View
+                </a>
+              </div>
+
+              <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
+                <div>
+                  <h5 class="text-sm font-bold text-gray-800">Business License</h5>
+                  <span class="text-xs text-gray-500" *ngIf="!selectedRequest.documents?.businessLicense">Not Uploaded</span>
+                </div>
+                <a *ngIf="selectedRequest.documents?.businessLicense" [href]="selectedRequest.documents.businessLicense" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                  <i class="fas fa-external-link-alt mr-1"></i> View
+                </a>
+              </div>
+
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Modal Actions (Only show for pending) -->
+      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200" *ngIf="activeTab === 'pending'">
+        <button type="button" (click)="approve()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+          Approve Seller
+        </button>
+        <button type="button" (click)="reject()" class="mt-3 w-full inline-flex justify-center rounded-md border border-red-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-red-700 hover:bg-red-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+          Reject
+        </button>
+        <button type="button" (click)="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+          Cancel
+        </button>
+      </div>
+
     </div>
   </div>
 </div>

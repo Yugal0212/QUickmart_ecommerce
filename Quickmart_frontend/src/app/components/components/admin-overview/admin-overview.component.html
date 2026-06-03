@@ -1,83 +1,192 @@
-<div class="overview-container animate__animated animate__fadeIn">
-  <h2 class="mb-4">Admin Dashboard Overview</h2>
-  
-  <div *ngIf="isLoading" class="d-flex justify-content-center mt-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+﻿<!-- Loading State -->
+<div *ngIf="isLoading" class="animate-pulse space-y-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div *ngFor="let i of [1,2,3,4]" class="bg-white rounded-2xl h-32 border border-gray-100 shadow-sm"></div>
+  </div>
+  <div class="bg-white rounded-2xl h-96 border border-gray-100 shadow-sm"></div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-xl flex items-center gap-3">
+  <i class="fas fa-exclamation-triangle"></i>
+  <span class="font-medium">{{ errorMessage }}</span>
+</div>
+
+<!-- Dashboard Content -->
+<div *ngIf="!isLoading && !errorMessage && analytics" class="space-y-8 animate__animated animate__fadeIn">
+
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Overview</h1>
+    <p class="text-gray-500 mt-1">Global platform metrics and operational status.</p>
+  </div>
+
+  <!-- Key Metrics Row 1 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    
+    <!-- Total Revenue -->
+    <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 relative overflow-hidden group">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Revenue</p>
+            <h3 class="text-3xl font-black text-gray-900">₹{{ analytics.totalRevenue | number:'1.2-2' }}</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center text-xl shadow-inner">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+        </div>
+        <div class="flex items-center text-sm font-medium text-green-600 bg-green-50 w-max px-2 py-1 rounded-lg">
+          <i class="fas fa-arrow-up mr-1.5"></i> +12% this month
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Orders -->
+    <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 relative overflow-hidden group">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Orders</p>
+            <h3 class="text-3xl font-black text-gray-900">{{ analytics.totalOrders | number }}</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl shadow-inner">
+            <i class="fas fa-shopping-bag"></i>
+          </div>
+        </div>
+        <div class="flex items-center text-sm font-medium text-blue-600 bg-blue-50 w-max px-2 py-1 rounded-lg">
+          <i class="fas fa-box-open mr-1.5"></i> Platform Wide
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Customers -->
+    <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 relative overflow-hidden group">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-purple-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Customers</p>
+            <h3 class="text-3xl font-black text-gray-900">{{ analytics.totalUsers | number }}</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl shadow-inner">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+        <div class="flex items-center text-sm font-medium text-gray-500 bg-gray-50 w-max px-2 py-1 rounded-lg">
+          Total Registered Users
+        </div>
+      </div>
+    </div>
+
+    <!-- Approved Sellers -->
+    <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 relative overflow-hidden group">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-orange-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Total Sellers</p>
+            <h3 class="text-3xl font-black text-gray-900">{{ analytics.totalSellers | number }}</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl shadow-inner">
+            <i class="fas fa-store-alt"></i>
+          </div>
+        </div>
+        <div class="flex items-center text-sm font-medium text-orange-600 bg-orange-50 w-max px-2 py-1 rounded-lg">
+          <i class="fas fa-clock mr-1.5"></i> {{ analytics.pendingSellerApprovals }} Pending Approvals
+        </div>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="!isLoading && !errorMessage && analytics" class="row">
-    <!-- Total Users Card -->
-    <div class="col-md-3 mb-4">
-      <div class="card bg-primary text-white shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Customers</div>
-              <div class="h5 mb-0 font-weight-bold">{{ analytics.totalUsers }}</div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-users fa-2x text-white-50"></i>
-            </div>
-          </div>
+  <!-- Charts & Activity Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Revenue Analytics Chart -->
+    <div class="lg:col-span-2 bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex flex-col">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900">Revenue Analytics</h2>
+          <p class="text-sm text-gray-500">Gross platform volume for the current year</p>
         </div>
+        <button class="px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl text-sm font-bold transition-colors">
+          <i class="fas fa-download mr-2"></i> Export
+        </button>
+      </div>
+      <div class="flex-1 w-full relative" style="min-height: 300px;">
+        <canvas #revenueChart></canvas>
       </div>
     </div>
 
-    <!-- Total Sellers Card -->
-    <div class="col-md-3 mb-4">
-      <div class="card bg-info text-white shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Sellers</div>
-              <div class="h5 mb-0 font-weight-bold">{{ analytics.totalSellers }}</div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-store fa-2x text-white-50"></i>
-            </div>
+    <!-- Secondary Stats & Pending Queue -->
+    <div class="space-y-6">
+      
+      <!-- Operations Card -->
+      <div class="bg-gray-900 rounded-3xl p-6 shadow-xl text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">
+          <i class="fas fa-server"></i>
+        </div>
+        <h3 class="text-lg font-bold mb-6 relative z-10">System Health</h3>
+        
+        <div class="space-y-4 relative z-10">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-400 text-sm font-medium">Total Products</span>
+            <span class="font-bold">{{ analytics.totalProducts | number }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-400 text-sm font-medium">Refunds Processed</span>
+            <span class="font-bold text-red-400">{{ analytics.totalRefunds | number }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-400 text-sm font-medium">Returned Orders</span>
+            <span class="font-bold text-yellow-400">{{ analytics.totalReturns | number }}</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Total Products Card -->
-    <div class="col-md-3 mb-4">
-      <div class="card bg-success text-white shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Products</div>
-              <div class="h5 mb-0 font-weight-bold">{{ analytics.totalProducts }}</div>
+      <!-- Recent Orders Widget -->
+      <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-bold text-gray-900">Live Orders</h3>
+          <a routerLink="/admin-dashboard/orders" class="text-sm text-green-600 font-bold hover:underline">View All</a>
+        </div>
+        
+        <div class="space-y-4">
+          <div *ngFor="let order of analytics.recentOrders" class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-gray-100">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold shadow-sm">
+                {{ order.customerName.charAt(0).toUpperCase() }}
+              </div>
+              <div>
+                <p class="text-sm font-bold text-gray-900">{{ order.customerName }}</p>
+                <p class="text-xs text-gray-500">{{ order.date | date:'short' }}</p>
+              </div>
             </div>
-            <div class="col-auto">
-              <i class="fas fa-box fa-2x text-white-50"></i>
+            <div class="text-right">
+              <p class="text-sm font-black text-gray-900">₹{{ order.amount | number:'1.2-2' }}</p>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-700': order.status === 'Pending',
+                      'bg-blue-100 text-blue-700': order.status === 'Processing',
+                      'bg-indigo-100 text-indigo-700': order.status === 'Shipped',
+                      'bg-green-100 text-green-700': order.status === 'Delivered',
+                      'bg-red-100 text-red-700': order.status === 'Cancelled' || order.status === 'Returned'
+                    }">
+                {{ order.status }}
+              </span>
             </div>
+          </div>
+          
+          <div *ngIf="!analytics.recentOrders?.length" class="text-center py-6 text-gray-400">
+            <i class="fas fa-box-open text-3xl mb-2 opacity-50"></i>
+            <p class="text-sm font-medium">No recent orders found.</p>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Total Revenue Card -->
-    <div class="col-md-3 mb-4">
-      <div class="card bg-warning text-white shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-uppercase mb-1">Platform Revenue</div>
-              <div class="h5 mb-0 font-weight-bold">${{ analytics.totalRevenue | number:'1.2-2' }}</div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-dollar-sign fa-2x text-white-50"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>
+

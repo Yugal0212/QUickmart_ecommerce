@@ -1,4 +1,4 @@
-<div class="p-4 lg:p-8 w-full max-w-7xl mx-auto animate__animated animate__fadeIn">
+﻿<div class="p-4 lg:p-8 w-full max-w-7xl mx-auto animate__animated animate__fadeIn">
   
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
@@ -32,7 +32,7 @@
         <div class="flex justify-between items-start relative z-10">
           <div>
             <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Revenue</p>
-            <h3 class="text-3xl font-black text-gray-900">${{ analytics.totalRevenue | number:'1.2-2' }}</h3>
+            <h3 class="text-3xl font-black text-gray-900">₹{{ analytics.totalRevenue | number:'1.2-2' }}</h3>
           </div>
           <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-2xl flex items-center justify-center shadow-inner">
             <i class="fas fa-dollar-sign text-xl"></i>
@@ -149,3 +149,4 @@
     </div>
   </div>
 </div>
+

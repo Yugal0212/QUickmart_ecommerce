@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../Services/auth.service';
 import { OrderService } from '../../../Services/Order/order.service';
 import { CommonModule } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-user-details',
@@ -26,47 +27,28 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id') || '';
-    this.fetchUserDetails();
-    this.fetchUserOrders();
-    this.fetchLoginHistory();
+    this.fetchDataParallel();
   }
 
-  fetchUserDetails(): void {
-    this.authService.getUserById(this.userId).subscribe(
-      (response) => {
-        this.user = response;
-        this.isLoading = false; // Stop loading
+  fetchDataParallel(): void {
+    this.isLoading = true;
+    
+    // Load all data simultaneously
+    forkJoin({
+      user: this.authService.getUserById(this.userId),
+      ordersData: this.orderService.getOrdersByUserId(this.userId),
+      history: this.authService.getLoginHistory(this.userId)
+    }).subscribe({
+      next: (results) => {
+        this.user = results.user;
+        this.orders = results.ordersData.orders || [];
+        this.loginHistory = results.history;
+        this.isLoading = false;
       },
-      (error) => {
-        this.errorMessage = error.message;
-        this.isLoading = false; // Stop loading
+      error: (err) => {
+        this.errorMessage = err.message || "Failed to load user details.";
+        this.isLoading = false;
       }
-    );
-  }
-
-  fetchUserOrders(): void {
-    this.orderService.getOrdersByUserId(this.userId).subscribe(
-      (response) => {
-        this.orders = response.orders;
-        this.isLoading = false; // Stop loading
-      },
-      (error) => {
-        this.errorMessage = error.message;
-        this.isLoading = false; // Stop loading
-      }
-    );
-  }
-
-  fetchLoginHistory(): void {
-    this.authService.getLoginHistory(this.userId).subscribe(
-      (response) => {
-        this.loginHistory = response;
-        this.isLoading = false; // Stop loading
-      },
-      (error) => {
-        this.errorMessage = error.message;
-        this.isLoading = false; // Stop loading
-      }
-    );
+    });
   }
 }

@@ -1,139 +1,146 @@
-<!-- Hero Section -->
-<header class="bg-green-600 text-white pt-24 pb-16 px-4 relative overflow-hidden">
-  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
-  <div class="max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
-    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4" data-aos="fade-down">
-      Start Selling on QuickMart
-    </h1>
-    <p class="text-lg md:text-xl text-green-100 max-w-2xl mb-8" data-aos="fade-up">
-      Join thousands of successful sellers. Reach millions of customers and grow your business with our world-class marketplace tools.
-    </p>
-    <a href="#application-form" class="bg-white text-green-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in">
-      Apply Now
-    </a>
-  </div>
-</header>
+<app-preloader *ngIf="showPreloader"></app-preloader>
 
-<div class="bg-gray-50 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      
-      <!-- Left Column: Info & Benefits -->
-      <div data-aos="fade-right">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Why Sell on QuickMart?</h2>
-        
-        <div class="space-y-6">
-          <div class="flex items-start">
-            <div class="flex-shrink-0 bg-green-100 p-3 rounded-xl text-green-600">
-              <i class="fas fa-chart-line text-2xl"></i>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-xl font-bold text-gray-900">Reach Millions</h3>
-              <p class="mt-1 text-gray-600">Instantly tap into our massive active customer base. More visibility means more sales.</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start">
-            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-xl text-blue-600">
-              <i class="fas fa-truck-fast text-2xl"></i>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-xl font-bold text-gray-900">Fulfillment Made Easy</h3>
-              <p class="mt-1 text-gray-600">Take advantage of our nationwide logistics network. We pick up, pack, and deliver.</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start">
-            <div class="flex-shrink-0 bg-yellow-100 p-3 rounded-xl text-yellow-600">
-              <i class="fas fa-shield-halved text-2xl"></i>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-xl font-bold text-gray-900">Secure & Fast Payments</h3>
-              <p class="mt-1 text-gray-600">Get paid securely directly to your bank account every week. No hidden fees.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 class="text-xl font-bold text-gray-900 mb-4">How it works</h3>
-          <ul class="space-y-4">
-            <li class="flex items-center text-gray-600">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 font-bold text-gray-900 mr-3">1</span>
-              Submit your application with business details.
-            </li>
-            <li class="flex items-center text-gray-600">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 font-bold text-gray-900 mr-3">2</span>
-              Our team reviews and approves within 24 hours.
-            </li>
-            <li class="flex items-center text-gray-600">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 font-bold text-gray-900 mr-3">3</span>
-              List your products and start receiving orders!
-            </li>
-          </ul>
-        </div>
-      </div>
-      
-      <!-- Right Column: Form -->
-      <div id="application-form" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 p-8" data-aos="fade-left">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Seller Application</h2>
-        
-        <form (ngSubmit)="onSubmit()" #form="ngForm" class="space-y-5">
-          <!-- Store Name -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Store Name *</label>
-            <input type="text" [(ngModel)]="sellerDetails.storeName" name="storeName" required
-                   class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
-                   placeholder="Your public store name">
-          </div>
-          
-          <!-- Business Name -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Legal Business Name *</label>
-            <input type="text" [(ngModel)]="sellerDetails.businessName" name="businessName" required
-                   class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
-                   placeholder="Registered company name">
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <!-- Contact Number -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number *</label>
-              <input type="tel" [(ngModel)]="sellerDetails.phone" name="phone" required
-                     class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
-                     placeholder="+1 (555) 000-0000">
-            </div>
-            
-            <!-- GST Number -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">GST/Tax Number *</label>
-              <input type="text" [(ngModel)]="sellerDetails.gstNumber" name="gstNumber" required
-                     class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
-                     placeholder="Tax Identification">
-            </div>
-          </div>
-          
-          <!-- Pickup Address -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Pickup Address *</label>
-            <textarea [(ngModel)]="sellerDetails.pickupAddress" name="pickupAddress" required rows="3"
-                      class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white/50" 
-                      placeholder="Full address where logistics should pick up orders"></textarea>
-          </div>
-          
-          <div class="pt-4">
-            <button type="submit" [disabled]="form.invalid" 
-                    class="w-full bg-green-600 text-white font-bold py-4 rounded-xl shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-              Submit Application
-            </button>
-          </div>
-          <p class="text-xs text-gray-500 text-center mt-4">
-            By submitting, you agree to QuickMart's Seller Terms & Conditions.
-          </p>
-        </form>
-      </div>
-      
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="max-w-4xl w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl">
+    
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900">Become a QuickMartNexa Seller</h2>
+      <p class="mt-2 text-sm text-gray-600">Join thousands of businesses and grow your sales.</p>
     </div>
+
+    <!-- Progress Tracker -->
+    <div class="flex items-center justify-center mb-8">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold" [ngClass]="currentStep >= 1 ? 'bg-blue-600' : 'bg-gray-300'">1</div>
+        <div class="w-16 h-1 rounded" [ngClass]="currentStep >= 2 ? 'bg-blue-600' : 'bg-gray-300'"></div>
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold" [ngClass]="currentStep >= 2 ? 'bg-blue-600' : 'bg-gray-300'">2</div>
+        <div class="w-16 h-1 rounded" [ngClass]="currentStep >= 3 ? 'bg-blue-600' : 'bg-gray-300'"></div>
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold" [ngClass]="currentStep >= 3 ? 'bg-blue-600' : 'bg-gray-300'">3</div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #sellerForm="ngForm" class="space-y-6">
+
+      <!-- STEP 1: Personal & Business Info -->
+      <div *ngIf="currentStep === 1" class="space-y-6 animate-fade-in">
+        <h3 class="text-xl font-bold text-gray-800 border-b pb-2">Personal & Business Info</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Full Name</label>
+            <input type="text" name="fullName" [(ngModel)]="formData.fullName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Email Address</label>
+            <input type="email" name="email" [(ngModel)]="formData.email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Mobile Number</label>
+            <input type="tel" name="mobile" [(ngModel)]="formData.mobile" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Store Name (Display Name)</label>
+            <input type="text" name="storeName" [(ngModel)]="formData.storeName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Legal Business Name</label>
+            <input type="text" name="businessName" [(ngModel)]="formData.businessName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">GST Number</label>
+            <input type="text" name="gstNumber" [(ngModel)]="formData.gstNumber" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">PAN Number</label>
+            <input type="text" name="panNumber" [(ngModel)]="formData.panNumber" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Address & Banking Details -->
+      <div *ngIf="currentStep === 2" class="space-y-6 animate-fade-in">
+        <h3 class="text-xl font-bold text-gray-800 border-b pb-2">Address & Bank Details</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700">Full Business Address</label>
+            <input type="text" name="address" [(ngModel)]="formData.address" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">City</label>
+            <input type="text" name="city" [(ngModel)]="formData.city" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">State</label>
+            <input type="text" name="state" [(ngModel)]="formData.state" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Pincode</label>
+            <input type="text" name="pincode" [(ngModel)]="formData.pincode" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          
+          <div class="md:col-span-2 mt-4">
+            <h4 class="text-md font-semibold text-gray-700 border-b pb-1">Bank Information</h4>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Account Holder Name</label>
+            <input type="text" name="accountHolderName" [(ngModel)]="formData.accountHolderName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Bank Name</label>
+            <input type="text" name="bankName" [(ngModel)]="formData.bankName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Account Number</label>
+            <input type="text" name="accountNumber" [(ngModel)]="formData.accountNumber" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">IFSC Code</label>
+            <input type="text" name="ifscCode" [(ngModel)]="formData.ifscCode" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Document Uploads -->
+      <div *ngIf="currentStep === 3" class="space-y-6 animate-fade-in">
+        <h3 class="text-xl font-bold text-gray-800 border-b pb-2">Document Uploads</h3>
+        <p class="text-sm text-gray-500">Please upload clear copies of the following documents. Allowed formats: JPG, PNG, PDF.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Aadhaar Card (Front & Back)</label>
+            <input type="file" (change)="onFileChange($event, 'aadhaarCard')" accept="image/*,application/pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+            <p class="text-xs text-green-600 mt-2" *ngIf="files.aadhaarCard">File selected: {{ files.aadhaarCard.name }}</p>
+          </div>
+          
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition">
+            <label class="block text-sm font-medium text-gray-700 mb-2">PAN Card</label>
+            <input type="file" (change)="onFileChange($event, 'panCard')" accept="image/*,application/pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+            <p class="text-xs text-green-600 mt-2" *ngIf="files.panCard">File selected: {{ files.panCard.name }}</p>
+          </div>
+          
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition">
+            <label class="block text-sm font-medium text-gray-700 mb-2">GST Certificate</label>
+            <input type="file" (change)="onFileChange($event, 'gstCertificate')" accept="image/*,application/pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+            <p class="text-xs text-green-600 mt-2" *ngIf="files.gstCertificate">File selected: {{ files.gstCertificate.name }}</p>
+          </div>
+          
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Business License / FSSAI</label>
+            <input type="file" (change)="onFileChange($event, 'businessLicense')" accept="image/*,application/pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+            <p class="text-xs text-green-600 mt-2" *ngIf="files.businessLicense">File selected: {{ files.businessLicense.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between pt-6 border-t border-gray-200">
+        <button type="button" *ngIf="currentStep > 1" (click)="prevStep()" class="bg-gray-100 text-gray-800 px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">Back</button>
+        <div *ngIf="currentStep === 1"></div> <!-- Spacer -->
+        
+        <button type="button" *ngIf="currentStep < 3" (click)="nextStep()" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Next Step</button>
+        
+        <button type="submit" *ngIf="currentStep === 3" [disabled]="sellerForm.invalid" class="bg-green-600 text-white px-8 py-2 rounded-lg font-bold hover:bg-green-700 transition shadow-lg disabled:opacity-50">Submit Application</button>
+      </div>
+      
+    </form>
   </div>
 </div>
-
-<app-preloader *ngIf="showPreloader"></app-preloader>

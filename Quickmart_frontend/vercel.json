@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/node"
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/quickmart_frontend/browser"
+      }
     }
   ],
   "routes": [
@@ -11,9 +14,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "buildCommand": "ng build --configuration production",
-  "outputDirectory": "dist/Quickmart_frontend",
-  "framework": "angular",
-  "installCommand": "npm install"
+  ]
 }

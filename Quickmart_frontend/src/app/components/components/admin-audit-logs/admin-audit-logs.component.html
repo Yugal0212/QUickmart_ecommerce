@@ -1,0 +1,61 @@
+<div class="p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
+  
+  <div class="mb-8 flex justify-between items-end">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Audit & Activity Logs</h1>
+      <p class="text-gray-500 mt-1">Immutable record of all administrative actions taken on the platform.</p>
+    </div>
+    <button class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 shadow-sm transition-colors flex items-center">
+      <i class="fas fa-download mr-2"></i> Export Logs
+    </button>
+  </div>
+
+  <div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left border-collapse">
+        <thead class="bg-gray-50/50">
+          <tr class="border-b border-gray-200">
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Action Taken</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Administrator</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Timestamp</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">IP Address</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Severity</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-transparent">
+          <tr *ngFor="let log of logs" class="hover:bg-gray-50/50 transition-colors duration-200 font-mono text-sm">
+            
+            <td class="py-4 px-6 whitespace-nowrap text-gray-900 font-bold">
+              {{ log.action }}
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap text-gray-600">
+              <i class="fas fa-user-shield mr-2 text-gray-400"></i>{{ log.admin }}
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap text-gray-500">
+              {{ log.date | date:'medium' }}
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap text-gray-400">
+              {{ log.ip }}
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold"
+                    [ngClass]="{
+                      'bg-red-100 text-red-800 border border-red-200': log.severity === 'high',
+                      'bg-yellow-100 text-yellow-800 border border-yellow-200': log.severity === 'medium',
+                      'bg-blue-100 text-blue-800 border border-blue-200': log.severity === 'low'
+                    }">
+                {{ log.severity | uppercase }}
+              </span>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

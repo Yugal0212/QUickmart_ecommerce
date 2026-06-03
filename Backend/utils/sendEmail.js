@@ -8,8 +8,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (to, subject, text) => {
-  await transporter.sendMail({ from: process.env.EMAIL_USER, to, subject, text });
+const sendEmail = (to, subject, text) => {
+  // Fire and forget background execution
+  transporter.sendMail({ from: process.env.EMAIL_USER, to, subject, text }).catch(err => {
+    console.error('Background Email Error:', err);
+  });
 };
 
 module.exports = sendEmail;

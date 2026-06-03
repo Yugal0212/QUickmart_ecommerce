@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
           <div class="relative z-10">
             <i class="fas fa-clipboard-check text-5xl mb-4 opacity-90"></i>
             <h2 class="text-3xl font-extrabold tracking-tight">Application Status</h2>
-            <p class="mt-2 text-green-100 text-lg">Track your journey to becoming a QuickMart seller.</p>
+            <p class="mt-2 text-green-100 text-lg">Track your journey to becoming a QuickMartNexa seller.</p>
           </div>
         </div>
 
@@ -116,7 +116,7 @@ import { Router, RouterModule } from '@angular/router';
 
               <div *ngIf="application.status === 'rejected'">
                 <h4 class="text-lg font-bold text-red-900 mb-2">Application Rejected</h4>
-                <p class="text-red-700 mb-4">{{ application.rejectionReason || 'Unfortunately, your application did not meet our requirements at this time.' }}</p>
+                <p class="text-red-700 mb-4">{{ application.adminRemark || application.rejectionReason || 'Unfortunately, your application did not meet our requirements at this time.' }}</p>
                 <button routerLink="/become-seller" class="bg-white text-red-600 border border-red-200 px-6 py-2 rounded-full font-bold hover:bg-red-50 transition-colors">
                   Update & Re-apply
                 </button>

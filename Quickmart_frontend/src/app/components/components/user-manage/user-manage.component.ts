@@ -2,14 +2,15 @@
 
 import { Component } from '@angular/core';
 import { AuthService } from '../../../Services/auth.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-manage',
-  imports: [NgIf, NgFor, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './user-manage.component.html',
   styleUrl: './user-manage.component.css'
 })
@@ -84,6 +85,24 @@ export class UserManageComponent {
           this.errorMessage = error.message; // Display error message if the API call fails
         }
       );
+    }
+  }
+
+  toggleBlockUser(user: any): void {
+    const action = user.isActive === false ? 'unblock' : 'block';
+    if (confirm(`Are you sure you want to ${action} this user?`)) {
+      const apiCall = action === 'block' 
+        ? this.authService.blockUser(user._id)
+        : this.authService.unblockUser(user._id);
+
+      apiCall.subscribe({
+        next: () => {
+          this.fetchAllUsers();
+        },
+        error: (err) => {
+          this.errorMessage = err;
+        }
+      });
     }
   }
 }

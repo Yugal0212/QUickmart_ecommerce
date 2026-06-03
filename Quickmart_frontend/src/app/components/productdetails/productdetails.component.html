@@ -1,4 +1,4 @@
-<!-- src/app/productdetails/productdetails.component.html -->
+﻿<!-- src/app/productdetails/productdetails.component.html -->
 <div class="container my-5">
 
   <div class="row">
@@ -10,7 +10,7 @@
       </div>
       <!-- Actual Thumbnails -->
       <div *ngIf="!isLoading" class="thumbnail-container">
-        <img
+        <img loading="lazy"
           *ngFor="let img of imageSources; let i = index"
           [src]="img"
           class="thumbnail"
@@ -25,7 +25,7 @@
       </div>
       <!-- Actual Main Image -->
       <div *ngIf="!isLoading" class="main-image-container">
-        <img
+        <img loading="lazy"
           [src]="imageSources[currentIndex]"
           class="main-product-image"
           alt="Product Image"
@@ -51,7 +51,7 @@
 
       <!-- Skeleton Loader for Product Price -->
       <div *ngIf="isLoading" class="skeleton-text shimmer"></div>
-      <p *ngIf="!isLoading" class="product-price">${{ product?.price | number: '1.2-2' }}</p>
+      <p *ngIf="!isLoading" class="product-price">₹{{ product?.price | number: '1.2-2' }}</p>
 
       <!-- Skeleton Loader for Key Features -->
       <div *ngIf="isLoading" class="product-specifications">
@@ -69,19 +69,19 @@
         </ul>
       </div>
 
-      <!-- Skeleton Loader for QuickMart Policies -->
+      <!-- Skeleton Loader for QuickMartNexa Policies -->
       <div *ngIf="isLoading" class="quick-mart-policies">
         <div class="skeleton-text shimmer"></div>
         <div class="skeleton-text shimmer"></div>
         <div class="skeleton-text shimmer"></div>
         <div class="skeleton-text shimmer"></div>
       </div>
-      <!-- Actual QuickMart Policies -->
+      <!-- Actual QuickMartNexa Policies -->
       <div *ngIf="!isLoading" class="quick-mart-policies">
-        <h3>Why Shop at QuickMart?</h3>
+        <h3>Why Shop at QuickMartNexa?</h3>
         <ul>
           <li><i class="fas fa-shield-alt"></i> 100% Secure Payments</li>
-          <li><i class="fas fa-truck"></i> Fast & Free Shipping on Orders Above $50</li>
+          <li><i class="fas fa-truck"></i> Fast & Free Shipping on Orders Above ₹50</li>
           <li><i class="fas fa-undo"></i> Easy 30-Day Returns & Refunds</li>
           <li><i class="fas fa-headset"></i> 24/7 Customer Support</li>
         </ul>
@@ -106,7 +106,7 @@
           />
           <button class="quantity-btn increase-btn" (click)="increaseQuantity()">+</button>
         </div>
-        <span class="total-price">Total: ${{ getTotalPrice() | number: '1.2-2' }}</span>
+        <span class="total-price">Total: ₹{{ getTotalPrice() | number: '1.2-2' }}</span>
       </div>
       
       <div *ngIf="!isLoading" class="button-group">

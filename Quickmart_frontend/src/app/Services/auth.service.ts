@@ -99,7 +99,9 @@ export class AuthService {
         // Store tokens, username, and role in localStorage
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);
+        localStorage.setItem('userId', response.userId);
         localStorage.setItem('username', response.username);
+        localStorage.setItem('email', response.email);
         localStorage.setItem('roles', JSON.stringify(response.roles)); // Store the roles array
 
         // Update the tokenSubject with the new accessToken
@@ -170,7 +172,9 @@ export class AuthService {
         // Clear local storage and update tokenSubject
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userId');
         localStorage.removeItem('username');
+        localStorage.removeItem('email');
         localStorage.removeItem('roles');
         this.tokenSubject.next(null);
         this.router.navigate(['/login']); // Redirect to login page
@@ -181,7 +185,9 @@ export class AuthService {
         // Even if the API call fails, clear local storage and redirect
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userId');
         localStorage.removeItem('username');
+        localStorage.removeItem('email');
         localStorage.removeItem('roles');
         this.tokenSubject.next(null);
         this.router.navigate(['/login']);
@@ -376,6 +382,32 @@ export class AuthService {
         } else {
           throw new Error('Failed to delete user. Please try again later.');
         }
+      })
+    );
+  }
+
+  blockUser(userId: string): Observable<any> {
+    const accessToken = this.getAccessToken();
+    if (!accessToken) return throwError('No access token found. Please log in again.');
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${accessToken}` });
+    return this.http.put(`${environment.apiUrl}/admin/users/${userId}/block`, {}, { headers }).pipe(
+      map((response: any) => response),
+      catchError((error) => {
+        console.error('Error blocking user:', error);
+        return throwError('Failed to block user. Please try again later.');
+      })
+    );
+  }
+
+  unblockUser(userId: string): Observable<any> {
+    const accessToken = this.getAccessToken();
+    if (!accessToken) return throwError('No access token found. Please log in again.');
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${accessToken}` });
+    return this.http.put(`${environment.apiUrl}/admin/users/${userId}/unblock`, {}, { headers }).pipe(
+      map((response: any) => response),
+      catchError((error) => {
+        console.error('Error unblocking user:', error);
+        return throwError('Failed to unblock user. Please try again later.');
       })
     );
   }

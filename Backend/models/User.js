@@ -16,6 +16,12 @@ const UserSchema = new mongoose.Schema(
       contactNumber: { type: String, required: false },
       supportEmail: { type: String, required: false },
       storeAddress: { type: String, required: false },
+      seo: {
+        title: { type: String },
+        description: { type: String },
+        keywords: { type: String },
+        slug: { type: String, unique: true },
+      }
     },
     paymentDetails: {
       bankName: { type: String, required: false },
@@ -31,5 +37,10 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Performance Indexes
+UserSchema.index({ role: 1 });
+UserSchema.index({ sellerStatus: 1 });
+UserSchema.index({ 'sellerDetails.storeName': 1 });
 
 module.exports = mongoose.model("User", UserSchema);
