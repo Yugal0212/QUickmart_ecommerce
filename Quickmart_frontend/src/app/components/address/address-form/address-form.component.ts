@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -87,12 +88,12 @@ export class AddressFormComponent implements OnInit {
         this.addressService.updateAddress(this.addressId, addressData).subscribe(
           (response) => {
             console.log("Address updated successfully:", response);
-            alert("✅ Address updated successfully!");
+            Swal.fire({ text: "✅ Address updated successfully!", confirmButtonColor: '#255ff4' });
             this.router.navigate(['/order/address']);
           },
           (error) => {
             console.error("Error updating address:", error);
-            alert("❌ Failed to update address. Please try again.");
+            Swal.fire({ text: "❌ Failed to update address. Please try again.", confirmButtonColor: '#255ff4' });
           }
         );
       } else {
@@ -100,12 +101,12 @@ export class AddressFormComponent implements OnInit {
         this.addressService.addAddress(addressData).subscribe(
           (response) => {
             console.log("Address saved successfully:", response);
-            alert("✅ Address saved successfully!");
+            Swal.fire({ text: "✅ Address saved successfully!", confirmButtonColor: '#255ff4' });
             this.router.navigate(['/order/address']);
           },
           (error) => {
             console.error("Error saving address:", error);
-            alert("❌ Failed to save address. Please try again.");
+            Swal.fire({ text: "❌ Failed to save address. Please try again.", confirmButtonColor: '#255ff4' });
           }
         );
       }

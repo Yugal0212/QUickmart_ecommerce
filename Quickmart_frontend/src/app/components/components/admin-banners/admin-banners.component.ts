@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -71,7 +72,7 @@ export class AdminBannersComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert('Failed to create banner');
+          Swal.fire({ text: 'Failed to create banner', confirmButtonColor: '#255ff4' });
           this.isSaving = false;
         }
       });
@@ -86,7 +87,7 @@ export class AdminBannersComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            alert('Failed to delete banner');
+            Swal.fire({ text: 'Failed to delete banner', confirmButtonColor: '#255ff4' });
           }
         });
     }
@@ -101,7 +102,7 @@ export class AdminBannersComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert('Failed to update status');
+          Swal.fire({ text: 'Failed to update status', confirmButtonColor: '#255ff4' });
         }
       });
   }

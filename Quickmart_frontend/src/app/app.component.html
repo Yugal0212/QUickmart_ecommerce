@@ -1,5 +1,13 @@
+<div *ngIf="showSplash" class="app-splash-overlay">
+  <div class="app-splash-content">
+    <div class="app-splash-spinner"></div>
+    <img src="images/QuickmartNexa_proper.png" alt="QickmartNexa Logo" class="app-splash-logo">
+    <div class="app-splash-text">QICKMARTNEXA</div>
+  </div>
+</div>
+
 <app-navbar *ngIf="!hideHeaderFooter"></app-navbar> <!-- Navbar visible only if not on auth/dashboard page -->
-<div class="content" [class.has-navbar]="!hideHeaderFooter">
+<div class="content" [class.has-navbar]="!hideHeaderFooter" [class.hidden-content]="showSplash">
   <router-outlet></router-outlet>
 </div>
 <app-footer *ngIf="!hideHeaderFooter"></app-footer> <!-- Footer visible only if not on auth/dashboard page -->

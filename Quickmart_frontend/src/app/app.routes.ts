@@ -140,6 +140,7 @@ export const routes: Routes = [
   { 
     path: '', 
     pathMatch: 'full',
+    loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent),
     canActivate: [() => {
       const auth = inject(AuthService);
       const router = inject(Router);
@@ -148,17 +149,15 @@ export const routes: Routes = [
         if (roles.includes('admin')) return router.parseUrl('/admin-dashboard');
         if (roles.includes('seller')) return router.parseUrl('/sheller-dashboard');
       }
-      return router.parseUrl('/home');
+      return true;
     }]
   },
 
 
   {path:'category-details/:id', loadComponent: () => import('./components/category-details/category-details.component').then(c => c.CategoryDetailsComponent)},
   
-  
-
-  
-
+  // Wildcard 404 Route
+  {path: '**', loadComponent: () => import('./components/not-found/not-found.component').then(c => c.NotFoundComponent)}
 ];
 
 

@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -124,7 +125,7 @@ export class SellerRequestsComponent implements OnInit {
           error: (err) => alert('Error rejecting seller.')
         });
     } else if (reason !== null) {
-      alert("A reason is required to reject a seller.");
+      Swal.fire({ text: "A reason is required to reject a seller.", confirmButtonColor: '#255ff4' });
     }
   }
 }

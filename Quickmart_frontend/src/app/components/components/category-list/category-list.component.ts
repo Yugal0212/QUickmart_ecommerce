@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 // src/app/category-list/category-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, Category } from '../../../Services/Categories/categories.service';
@@ -74,7 +75,7 @@ export class CategoryListComponent implements OnInit {
 
   deleteCategory(id: string): void {
     if (!this.authService.getUserRoles().includes('admin')) {
-      alert('You do not have permission to delete categories.');
+      Swal.fire({ text: 'You do not have permission to delete categories.', confirmButtonColor: '#255ff4' });
       return;
     }
 

@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -101,7 +102,7 @@ export class AdminPayoutsComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert('Failed to update payout status');
+          Swal.fire({ text: 'Failed to update payout status', confirmButtonColor: '#255ff4' });
         }
       });
   }

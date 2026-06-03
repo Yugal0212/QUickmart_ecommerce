@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -55,11 +56,11 @@ export class AdminSettingsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.isSaving = false;
-          alert('Global platform settings updated successfully!');
+          Swal.fire({ text: 'Global platform settings updated successfully!', confirmButtonColor: '#255ff4' });
         },
         error: (err) => {
           this.isSaving = false;
-          alert('Failed to update settings');
+          Swal.fire({ text: 'Failed to update settings', confirmButtonColor: '#255ff4' });
           console.error(err);
         }
       });

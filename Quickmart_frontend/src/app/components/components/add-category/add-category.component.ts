@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriesService } from '../../../Services/Categories/categories.service';
@@ -105,7 +106,7 @@ export class AddCategoryComponent implements OnInit {
         error: (error) => {
           this.showPreloader = false; // Hide the preloader
           console.error('Error updating category:', error);
-          alert('Failed to update category. Please try again.');
+          Swal.fire({ text: 'Failed to update category. Please try again.', confirmButtonColor: '#255ff4' });
           this.isLoading = false;
         },
       });
@@ -118,12 +119,12 @@ export class AddCategoryComponent implements OnInit {
             this.showPreloader = false; // Hide the preloader
             this.router.navigate(['/admin-dashboard/categories']); // Redirect to the cart page
           }, 2000); 
-          // alert('Category added successfully!');
+          // Swal.fire({ text: 'Category added successfully!', confirmButtonColor: '#255ff4' });
         },
         error: (error) => {
           this.showPreloader = false; // Hide the preloader
           console.error('Error adding category:', error);
-          alert('Failed to add category. Please try again.');
+          Swal.fire({ text: 'Failed to add category. Please try again.', confirmButtonColor: '#255ff4' });
           this.isLoading = false;
         },
       });

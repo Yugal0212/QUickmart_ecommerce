@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../Services/Order/order.service';
 import { CommonModule, NgClass } from '@angular/common';
@@ -36,12 +37,12 @@ export class OrderHistoryComponent implements OnInit {
   cancelOrder(orderId: string): void {
     this.orderService.cancelOrder(orderId).subscribe(
       (response) => {
-        alert('Order cancelled successfully');
+        Swal.fire({ text: 'Order cancelled successfully', confirmButtonColor: '#255ff4' });
         this.fetchOrders(); // Refresh the order list
       },
       (error) => {
         console.error('Error cancelling order:', error);
-        alert('Failed to cancel order. Please try again.');
+        Swal.fire({ text: 'Failed to cancel order. Please try again.', confirmButtonColor: '#255ff4' });
       }
     );
   }

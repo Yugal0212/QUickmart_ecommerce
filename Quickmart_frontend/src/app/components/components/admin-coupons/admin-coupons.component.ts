@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -138,7 +139,7 @@ export class AdminCouponsComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            alert('Failed to delete coupon');
+            Swal.fire({ text: 'Failed to delete coupon', confirmButtonColor: '#255ff4' });
           }
         });
     }
@@ -153,7 +154,7 @@ export class AdminCouponsComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert('Failed to update status');
+          Swal.fire({ text: 'Failed to update status', confirmButtonColor: '#255ff4' });
         }
       });
   }

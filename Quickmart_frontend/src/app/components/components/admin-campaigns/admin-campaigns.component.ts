@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -35,12 +36,12 @@ export class AdminCampaignsComponent {
       .subscribe({
         next: (data: any) => {
           this.isSending = false;
-          alert(`Campaign "${data.campaign.name}" queued for sending successfully!`);
+          Swal.fire({ text: `Campaign "${data.campaign.name}" queued for sending successfully!`, confirmButtonColor: '#255ff4' });
           this.newCampaign = { name: '', targetAudience: 'all_customers', subject: '', message: '' };
         },
         error: (err) => {
           this.isSending = false;
-          alert('Failed to blast campaign');
+          Swal.fire({ text: 'Failed to blast campaign', confirmButtonColor: '#255ff4' });
           console.error(err);
         }
       });

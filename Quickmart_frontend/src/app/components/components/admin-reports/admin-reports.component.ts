@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -29,7 +30,7 @@ export class AdminReportsComponent {
         date: new Date(),
         size: '1.2 MB'
       });
-      alert('Report generated successfully! (Mocked)');
+      Swal.fire({ text: 'Report generated successfully! (Mocked)', confirmButtonColor: '#255ff4' });
     }, 1500);
   }
 }

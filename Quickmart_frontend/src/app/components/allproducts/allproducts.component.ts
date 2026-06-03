@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, DestroyRef, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from '../../Services/auth.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -131,8 +132,19 @@ export class AllproductsComponent implements OnInit {
   /** Add to cart — fast inline spinner, no full-page loader, instant redirect */
   addToCart(productId: string, quantity: number): void {
     if (!this.authService.getAccessToken()) {
-      alert('You must register or login first before shopping!');
-      this.router.navigate(['/login/sign-up']);
+      Swal.fire({
+        icon: 'warning',
+        title: 'Authentication Required',
+        text: 'You must register or login first before shopping!',
+        confirmButtonText: 'Go to Register',
+        confirmButtonColor: '#255ff4',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login/sign-up']);
+        }
+      });
       return;
     }
 

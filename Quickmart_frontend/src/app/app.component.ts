@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   hideHeaderFooter: boolean = false;
+  showSplash: boolean = true;
 
   constructor(private router: Router) {}
 
@@ -28,6 +29,11 @@ export class AppComponent implements OnInit {
         this.updateLayout(this.router.url);
         this.scrollToTop();
       });
+
+    // Hide splash screen after components have time to fetch data
+    setTimeout(() => {
+      this.showSplash = false;
+    }, 1500);
   }
 
   private updateLayout(url: string) {
@@ -38,7 +44,7 @@ export class AppComponent implements OnInit {
   }
 
   private scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
 }

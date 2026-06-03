@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router'; // Import Router
 import { MatDialog } from '@angular/material/dialog'; // Import MatDialog
@@ -55,7 +56,7 @@ export class AddressComponent {
           },
           (error) => {
             console.error('Error deleting address:', error);
-            alert('Failed to delete address. Please try again.');
+            Swal.fire({ text: 'Failed to delete address. Please try again.', confirmButtonColor: '#255ff4' });
           }
         );
       }

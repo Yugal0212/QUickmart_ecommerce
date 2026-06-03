@@ -265,6 +265,9 @@
           <li class="nav-item" *ngIf="authService.getUserRoles().includes('admin')">
             <a class="nav-link" routerLink="/admin-dashboard">⚙️ Admin Panel</a>
           </li>
+          <li class="nav-item" *ngIf="username">
+            <a class="nav-link fw-bold text-primary" routerLink="/history">📦 My Orders</a>
+          </li>
 
           <!-- Categories Dropdown -->
           <li class="nav-item dropdown category-dropdown">
@@ -325,7 +328,12 @@
         </div>
 
         <!-- Account Dropdown -->
-        <div class="dropdown account-dropdown">
+        <div class="auth-buttons d-none d-lg-flex align-items-center" *ngIf="!username" style="gap: 10px; margin-right: 15px;">
+          <a class="btn btn-outline-primary rounded-pill px-4" routerLink="/login" style="font-weight: 600;">Login</a>
+          <a class="btn btn-primary rounded-pill px-4" routerLink="/login/sign-up" style="font-weight: 600;">Sign Up</a>
+        </div>
+
+        <div class="dropdown account-dropdown" [class.d-lg-none]="!username">
           <button
             class="account-trigger dropdown-toggle"
             id="accountMenu"

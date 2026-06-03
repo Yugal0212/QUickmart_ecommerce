@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from '../../Services/product/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -125,13 +126,24 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
   // Add product to cart
   addToCart(productId: string): void {
     if (!this.authService.getAccessToken()) {
-      alert('You must register or login first before shopping!');
-      this.router.navigate(['/login/sign-up']);
+      Swal.fire({
+        icon: 'warning',
+        title: 'Authentication Required',
+        text: 'You must register or login first before shopping!',
+        confirmButtonText: 'Go to Register',
+        confirmButtonColor: '#255ff4',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login/sign-up']);
+        }
+      });
       return;
     }
 
     if (!productId || this.quantity < 1) {
-      alert('Invalid product or quantity.');
+      Swal.fire({ text: 'Invalid product or quantity.', confirmButtonColor: '#255ff4' });
       return;
     }
 
@@ -150,7 +162,7 @@ export class ProductdetailsComponent implements OnInit, OnDestroy {
         console.error('Error adding product to cart:', error);
         this.addingToCart = false;
         const errorMsg = error?.error?.message || error?.message || 'Failed to add product to cart. Please try again.';
-        alert(`Error: ${errorMsg}`);
+        Swal.fire({ text: `Error: ${errorMsg}`, confirmButtonColor: '#255ff4' });
       }
     });
   }
