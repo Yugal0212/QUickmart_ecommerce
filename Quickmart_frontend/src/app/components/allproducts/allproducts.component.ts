@@ -29,6 +29,7 @@ export class AllproductsComponent implements OnInit {
 
   isLoading = true;
   categoriesLoading = true;
+  isDropdownOpen = false;
 
   // Per-product loading state (keyed by product._id)
   addingToCart: Record<string, boolean> = {};
@@ -84,6 +85,7 @@ export class AllproductsComponent implements OnInit {
 
   filterByCategory(categoryId: string | null): void {
     this.selectedCategoryId = categoryId;
+    this.isDropdownOpen = false;
 
     if (!categoryId) {
       this.selectedCategoryName = null;
@@ -107,11 +109,17 @@ export class AllproductsComponent implements OnInit {
     });
   }
 
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown(): void {
+    this.isDropdownOpen = false;
+  }
+
   private enrichProducts(data: Product[]): any[] {
     return data.map((p, i) => ({
       ...p,
-      rating: this.getRandomRating(),
-      reviewCount: this.getRandomReviewCount(),
       discount: i === 0 ? 10 : this.getRandomDiscount()
     }));
   }
@@ -125,8 +133,6 @@ export class AllproductsComponent implements OnInit {
     return stars;
   }
 
-  getRandomRating()     { return +(Math.random() * 2 + 3).toFixed(1); }   // 3.0–5.0
-  getRandomReviewCount(){ return Math.floor(Math.random() * 450) + 50; }
   getRandomDiscount()   { return Math.floor(Math.random() * 35) + 5; }
 
   /** Add to cart — fast inline spinner, no full-page loader, instant redirect */

@@ -1,7 +1,8 @@
 const express = require("express");
-const { register, login, logout, becomeSeller, refreshToken, getUserById,deleteUser, getAllUsers, getLoginHistory } = require("../controllers/authController");
+const { register, login, logout, becomeSeller, refreshToken, getUserById,deleteUser, getAllUsers, getLoginHistory, updateProfile } = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/Roalbase.auth.Middleware");
+const { upload } = require("../middleware/Multer.middleware");
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.get("/users/:id/login-history", authMiddleware, roleMiddleware("admin"), 
 router.post("/logout", authMiddleware, logout);
 router.post("/become-seller", authMiddleware, becomeSeller);
 router.post("/refresh", refreshToken);
+router.put("/profile", authMiddleware, upload.single("avatar"), updateProfile);
 
 router.delete("/users/:id", authMiddleware, roleMiddleware("admin"),deleteUser);
 

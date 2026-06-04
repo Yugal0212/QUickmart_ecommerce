@@ -1,14 +1,60 @@
-<div class="p-6 max-w-7xl mx-auto">
-  <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">User Management</h1>
+<div class="p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto animate__animated animate__fadeIn">
+  
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">User Management</h1>
+      <p class="text-gray-500 mt-1">Manage platform users, roles, and access controls.</p>
+    </div>
     
-    <!-- Search Bar -->
-    <div class="mt-4 md:mt-0 relative w-full md:w-72">
-      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <i class="fas fa-search text-gray-400"></i>
+    <!-- Action / Search Bar -->
+    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+      <div class="relative w-full sm:w-72 group">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-colors group-focus-within:text-green-500">
+          <i class="fas fa-search text-gray-400 group-focus-within:text-green-500"></i>
+        </div>
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="currentPage = 1" placeholder="Search by name, email, or ID..." 
+               class="block w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl leading-5 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 sm:text-sm transition-all">
       </div>
-      <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="currentPage = 1" placeholder="Search users..." 
-             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl leading-5 bg-white/70 backdrop-blur-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all shadow-sm">
+      <button class="bg-gray-900 hover:bg-black text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-md flex items-center justify-center gap-2 transition-all hover:shadow-lg">
+        <i class="fas fa-download"></i> Export
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div *ngIf="!isLoading && users.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate__animated animate__fadeInUp animate__faster">
+    <div class="bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 flex items-center justify-between group overflow-hidden relative">
+      <div class="absolute -right-4 -top-4 w-16 h-16 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Total Users</p>
+        <h3 class="text-3xl font-black text-gray-900">{{ totalUsersCount }}</h3>
+      </div>
+      <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl relative z-10 shadow-inner">
+        <i class="fas fa-users"></i>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 flex items-center justify-between group overflow-hidden relative">
+      <div class="absolute -right-4 -top-4 w-16 h-16 bg-green-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Active Accounts</p>
+        <h3 class="text-3xl font-black text-gray-900">{{ activeUsersCount }}</h3>
+      </div>
+      <div class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center text-xl relative z-10 shadow-inner">
+        <i class="fas fa-user-check"></i>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 flex items-center justify-between group overflow-hidden relative">
+      <div class="absolute -right-4 -top-4 w-16 h-16 bg-red-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
+      <div class="relative z-10">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Restricted</p>
+        <h3 class="text-3xl font-black text-gray-900">{{ blockedUsersCount }}</h3>
+      </div>
+      <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center text-xl relative z-10 shadow-inner">
+        <i class="fas fa-user-lock"></i>
+      </div>
     </div>
   </div>
 
@@ -19,7 +65,7 @@
 
   <!-- Loading Skeleton -->
   <div *ngIf="isLoading" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
-    <div class="animate-pulse flex space-x-4 p-6" *ngFor="let i of [1,2,3]">
+    <div class="animate-pulse flex space-x-4 p-4 md:p-6" *ngFor="let i of [1,2,3]">
       <div class="flex-1 space-y-4 py-1">
         <div class="h-4 bg-gray-200 rounded w-3/4"></div>
         <div class="space-y-2">
@@ -31,66 +77,88 @@
   </div>
 
   <!-- Glassmorphism Table -->
-  <div *ngIf="!isLoading && users.length > 0" class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50/50">
+  <div *ngIf="!isLoading && users.length > 0" class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden animate__animated animate__fadeInUp animate__faster">
+    <div class="overflow-x-auto w-full pb-0"><table class="min-w-full divide-y divide-gray-100">
+        <thead class="bg-gray-50/80 backdrop-blur-sm">
           <tr>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">User ID</th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Username</th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Roles</th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Email</th>
-            <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+            <th scope="col" class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">User Identity</th>
+            <th scope="col" class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Contact Info</th>
+            <th scope="col" class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Account Role</th>
+            <th scope="col" class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
+            <th scope="col" class="px-6 py-4 text-right text-[11px] font-bold text-gray-400 uppercase tracking-wider">Manage</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-transparent">
-          <tr *ngFor="let user of paginatedUsers" class="hover:bg-green-50/30 transition-colors duration-200">
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user._id }}</td>
+        <tbody class="divide-y divide-gray-100 bg-white">
+          <tr *ngFor="let user of paginatedUsers" class="hover:bg-gray-50/50 transition-colors duration-200 group">
+            
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-green-400 to-blue-500 flex items-center justify-center text-white font-bold shadow-md">
+              <div class="flex items-center gap-4">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-green-400 to-green-600 flex items-center justify-center text-white font-bold shadow-md shadow-green-500/20 group-hover:scale-110 transition-transform">
                   {{ user.username.charAt(0).toUpperCase() }}
                 </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">{{ user.username }}</div>
+                <div>
+                  <div class="text-sm font-extrabold text-gray-900">{{ user.username }}</div>
+                  <div class="text-[10px] text-gray-400 font-mono mt-0.5">ID: {{ user._id.substring(0,8) }}...</div>
                 </div>
               </div>
             </td>
+
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 shadow-sm mr-2">
+              <div class="flex items-center gap-2 text-sm text-gray-600 font-medium">
+                <i class="fas fa-envelope text-gray-400"></i>
+                {{ user.email }}
+              </div>
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-3 py-1 inline-flex text-[10px] uppercase tracking-wider font-bold rounded-lg"
+                    [ngClass]="{
+                      'bg-purple-100 text-purple-700': user.roles?.includes('admin'),
+                      'bg-blue-100 text-blue-700': user.roles?.includes('seller'),
+                      'bg-gray-100 text-gray-700': !user.roles?.includes('admin') && !user.roles?.includes('seller')
+                    }">
+                <i class="fas mr-1.5"
+                   [ngClass]="{
+                     'fa-shield-alt': user.roles?.includes('admin'),
+                     'fa-store': user.roles?.includes('seller'),
+                     'fa-user': !user.roles?.includes('admin') && !user.roles?.includes('seller')
+                   }"></i>
                 {{ user.roles?.join(', ') || user.role || 'customer' }}
               </span>
-              <span *ngIf="user.isActive === false || user.status === 'blocked'" class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 shadow-sm">
-                Blocked
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span *ngIf="user.isActive === false || user.status === 'blocked'" class="flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-lg bg-red-50 text-red-600 border border-red-100 w-max">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Blocked
               </span>
-              <span *ngIf="user.isActive !== false && user.status !== 'blocked'" class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 shadow-sm">
-                Active
+              <span *ngIf="user.isActive !== false && user.status !== 'blocked'" class="flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-lg bg-green-50 text-green-600 border border-green-100 w-max">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span> Active
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.email }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex justify-end gap-2">
-                <button (click)="viewUserDetails(user._id)" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition-colors" title="View Details">
-                  <i class="fas fa-eye"></i>
+
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <div class="flex justify-end gap-2 opacity-100 sm:opacity-50 sm:group-hover:opacity-100 transition-opacity">
+                <button (click)="viewUserDetails(user._id)" class="w-8 h-8 flex items-center justify-center text-blue-600 hover:text-white hover:bg-blue-600 bg-blue-50 rounded-lg transition-all" title="View Full Profile">
+                  <i class="fas fa-eye text-sm"></i>
                 </button>
                 <button (click)="toggleBlockUser(user)" 
-                        [ngClass]="user.isActive === false || user.status === 'blocked' ? 'text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100' : 'text-orange-600 hover:text-orange-900 bg-orange-50 hover:bg-orange-100'"
-                        class="p-2 rounded-lg transition-colors"
+                        [ngClass]="user.isActive === false || user.status === 'blocked' ? 'text-green-600 hover:text-white hover:bg-green-600 bg-green-50' : 'text-orange-600 hover:text-white hover:bg-orange-500 bg-orange-50'"
+                        class="w-8 h-8 flex items-center justify-center rounded-lg transition-all"
                         [title]="user.isActive === false || user.status === 'blocked' ? 'Unblock User' : 'Block User'">
-                  <i class="fas" [ngClass]="user.isActive === false || user.status === 'blocked' ? 'fa-unlock' : 'fa-ban'"></i>
+                  <i class="fas text-sm" [ngClass]="user.isActive === false || user.status === 'blocked' ? 'fa-unlock' : 'fa-ban'"></i>
                 </button>
-                <button (click)="deleteUser(user._id)" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors" title="Delete User">
-                  <i class="fas fa-trash"></i>
+                <button (click)="deleteUser(user._id)" class="w-8 h-8 flex items-center justify-center text-red-600 hover:text-white hover:bg-red-600 bg-red-50 rounded-lg transition-all" title="Permanently Delete">
+                  <i class="fas fa-trash text-sm"></i>
                 </button>
               </div>
             </td>
+
           </tr>
         </tbody>
-      </table>
-    </div>
+      </table></div>
     
     <!-- Pagination Controls -->
-    <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex items-center justify-between sm:px-6">
+    <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:px-6">
       <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
           <p class="text-sm text-gray-700">

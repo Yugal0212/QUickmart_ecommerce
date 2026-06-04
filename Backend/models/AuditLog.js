@@ -2,9 +2,14 @@ const mongoose = require('mongoose');
 
 const auditLogSchema = new mongoose.Schema({
   action: { type: String, required: true },
-  admin: { type: String, required: true },
-  ip: { type: String, required: true },
-  severity: { type: String, enum: ['low', 'medium', 'high', 'critical'], default: 'low' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  email: { type: String },
+  role: { type: String },
+  ip: { type: String },
+  method: { type: String },
+  route: { type: String },
+  details: { type: mongoose.Schema.Types.Mixed },
+  severity: { type: String, enum: ['info', 'low', 'medium', 'high', 'critical'], default: 'info' },
   createdAt: { type: Date, default: Date.now }
 });
 

@@ -1,4 +1,4 @@
-<div class="p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
+<div class="p-4 md:p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
   
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
@@ -35,13 +35,13 @@
     </div>
 
     <!-- Loading Skeleton -->
-    <div *ngIf="isLoading" class="animate-pulse p-6 space-y-4">
+    <div *ngIf="isLoading" class="animate-pulse p-4 md:p-6 space-y-4">
       <div *ngFor="let i of [1,2,3,4]" class="h-16 bg-gray-200 rounded-xl"></div>
     </div>
 
     <!-- Table -->
     <div *ngIf="!isLoading && filteredData.length > 0" class="overflow-x-auto">
-      <table class="min-w-full text-left border-collapse">
+      <div class="overflow-x-auto w-full pb-4"><table class="min-w-full text-left border-collapse">
         <thead class="bg-gray-50/50">
           <tr class="border-b border-gray-200">
             <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">User Info</th>
@@ -125,10 +125,10 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
       
       <!-- Pagination Controls -->
-      <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex items-center justify-between sm:px-6">
+      <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:px-6">
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p class="text-sm text-gray-700">

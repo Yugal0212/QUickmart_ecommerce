@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-seller-dashboard',
   standalone: true,
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, CommonModule],
   templateUrl: './seller-dashboard.component.html',
   styleUrls: ['./seller-dashboard.component.css']
 })
 export class SellerDashboardComponent implements OnInit {
   username: string = 'Seller';
+  isMobileMenuOpen: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -19,6 +21,14 @@ export class SellerDashboardComponent implements OnInit {
     if (storedName) {
       this.username = storedName;
     }
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 
   logout(): void {

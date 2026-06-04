@@ -376,55 +376,8 @@
    MOBILE OVERRIDES
    ============================================= */
 
-/* Mobile: sidebar becomes horizontal chip row */
+/* Mobile Overrides */
 @media (max-width: 767px) {
-  .category-sidebar {
-    position: static;
-    padding: 10px 0 6px;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  .sidebar-title {
-    padding: 0 4px;
-    margin-bottom: 6px;
-  }
-
-  .sidebar-list {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 6px;
-    padding: 0 4px 8px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .sidebar-list::-webkit-scrollbar { display: none; }
-
-  .sidebar-item {
-    white-space: nowrap;
-    border: 1.5px solid #e5e7eb;
-    background: #fff;
-    padding: 6px 14px;
-    border-radius: 999px;
-    flex-shrink: 0;
-    font-size: 12px;
-  }
-
-  .sidebar-item.active {
-    background: #2f7d32;
-    color: #fff;
-    border-color: #2f7d32;
-  }
-
-  .sidebar-item.active .cat-dot {
-    background: rgba(255,255,255,0.6);
-  }
-
-  .check-icon { display: none; }
-
   .product-img-wrap {
     height: 130px;
   }

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, CommonModule],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
 export class AdminPanelComponent implements OnInit {
   username: string = 'Admin';
   email: string = 'admin@QickmartNexa.com';
+  isMobileMenuOpen: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -24,6 +26,14 @@ export class AdminPanelComponent implements OnInit {
     if (storedEmail && storedEmail !== 'undefined') {
       this.email = storedEmail;
     }
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 
   logout(): void {

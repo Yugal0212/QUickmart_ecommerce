@@ -1,4 +1,4 @@
-<div class="p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
+<div class="p-4 md:p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
   
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
@@ -31,13 +31,13 @@
   <div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
     
     <!-- Loading Skeleton -->
-    <div *ngIf="isLoading" class="animate-pulse p-6 space-y-4">
+    <div *ngIf="isLoading" class="animate-pulse p-4 md:p-6 space-y-4">
       <div *ngFor="let i of [1,2,3,4,5]" class="h-16 bg-gray-200 rounded-xl"></div>
     </div>
 
     <!-- Table -->
     <div *ngIf="!isLoading && filteredOrders.length > 0" class="overflow-x-auto">
-      <table class="min-w-full text-left border-collapse">
+      <div class="overflow-x-auto w-full pb-4"><table class="min-w-full text-left border-collapse">
         <thead class="bg-gray-50/50">
           <tr class="border-b border-gray-200">
             <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Order Info</th>
@@ -77,19 +77,19 @@
             
             <!-- Status -->
             <td class="py-4 px-6 whitespace-nowrap">
-              <span *ngIf="order.status === 'pending'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 shadow-sm">
+              <span *ngIf="order.orderStatus === 'Pending'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 shadow-sm">
                 <i class="fas fa-circle text-[8px] mr-1.5"></i> Pending
               </span>
-              <span *ngIf="order.status === 'processing'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 shadow-sm">
+              <span *ngIf="order.orderStatus === 'Processing'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 shadow-sm">
                 <i class="fas fa-cog text-[10px] mr-1.5 animate-spin"></i> Processing
               </span>
-              <span *ngIf="order.status === 'shipped'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 shadow-sm">
+              <span *ngIf="order.orderStatus === 'Shipped'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 shadow-sm">
                 <i class="fas fa-truck text-[10px] mr-1.5"></i> Shipped
               </span>
-              <span *ngIf="order.status === 'delivered'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 shadow-sm">
+              <span *ngIf="order.orderStatus === 'Delivered'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 shadow-sm">
                 <i class="fas fa-check text-[10px] mr-1.5"></i> Delivered
               </span>
-              <span *ngIf="order.status === 'cancelled'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 shadow-sm">
+              <span *ngIf="order.orderStatus === 'Cancelled'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 shadow-sm">
                 <i class="fas fa-times text-[10px] mr-1.5"></i> Cancelled
               </span>
             </td>
@@ -102,10 +102,10 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
       
       <!-- Pagination -->
-      <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex items-center justify-between sm:px-6">
+      <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:px-6">
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p class="text-sm text-gray-700">
@@ -154,7 +154,7 @@
   <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col animate__animated animate__zoomIn animate__faster">
     
     <!-- Header -->
-    <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 bg-gray-50/80">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-8 py-5 border-b border-gray-100 bg-gray-50/80">
       <div>
         <h3 class="text-xl font-bold text-gray-900">Order Details</h3>
         <p class="text-sm text-gray-500 mt-1">ID: #{{ selectedOrder._id }}</p>
@@ -165,7 +165,7 @@
     </div>
     
     <!-- Body -->
-    <div class="p-8 overflow-y-auto custom-scrollbar flex-1 bg-white">
+    <div class="p-4 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-white">
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
@@ -173,7 +173,7 @@
         <div class="space-y-8">
           
           <!-- Customer Info -->
-          <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+          <div class="bg-gray-50 p-4 md:p-6 rounded-2xl border border-gray-100">
             <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Customer Information</h4>
             <div class="flex items-center gap-4">
               <div class="h-12 w-12 rounded-full bg-gradient-to-tr from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
@@ -187,14 +187,17 @@
             <div class="mt-4 pt-4 border-t border-gray-200">
               <div class="text-sm">
                 <span class="text-gray-500">Shipping Address:</span>
-                <p class="font-medium text-gray-900 mt-1">{{ selectedOrder.shippingAddress?.street }}, {{ selectedOrder.shippingAddress?.city }}</p>
-                <p class="font-medium text-gray-900">{{ selectedOrder.shippingAddress?.state }}, {{ selectedOrder.shippingAddress?.zipCode }}, {{ selectedOrder.shippingAddress?.country }}</p>
+                <p class="font-medium text-gray-900 mt-1">{{ selectedOrder.shippingAddress?.fullName }}</p>
+                <p class="font-medium text-gray-900 text-xs">{{ selectedOrder.shippingAddress?.addressLine1 }}<span *ngIf="selectedOrder.shippingAddress?.addressLine2">, {{ selectedOrder.shippingAddress?.addressLine2 }}</span></p>
+                <p class="font-medium text-gray-900 text-xs">{{ selectedOrder.shippingAddress?.city }}, {{ selectedOrder.shippingAddress?.state }} {{ selectedOrder.shippingAddress?.zipCode }}</p>
+                <p class="font-medium text-gray-900 text-xs">{{ selectedOrder.shippingAddress?.country }}</p>
+                <p class="font-medium text-gray-500 text-xs mt-1"><i class="fas fa-phone mr-1"></i> {{ selectedOrder.shippingAddress?.phone }}</p>
               </div>
             </div>
           </div>
           
           <!-- Payment Info -->
-          <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+          <div class="bg-gray-50 p-4 md:p-6 rounded-2xl border border-gray-100">
             <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Payment & Status</h4>
             <div class="space-y-3 text-sm">
               <div class="flex justify-between">
@@ -203,13 +206,13 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-500">Payment Status:</span>
-                <span class="font-semibold" [ngClass]="selectedOrder.isPaid ? 'text-green-600' : 'text-orange-600'">
-                  {{ selectedOrder.isPaid ? 'Paid' : 'Pending' }}
+                <span class="font-semibold" [ngClass]="selectedOrder.paymentStatus === 'Paid' ? 'text-green-600' : 'text-orange-600'">
+                  {{ selectedOrder.paymentStatus }}
                 </span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-500">Order Status:</span>
-                <span class="font-semibold text-blue-600 uppercase">{{ selectedOrder.status }}</span>
+                <span class="font-semibold text-blue-600 uppercase">{{ selectedOrder.orderStatus }}</span>
               </div>
             </div>
           </div>
@@ -235,15 +238,15 @@
           
           <!-- Summary -->
           <div class="mt-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-            <div class="flex justify-between items-center text-sm mb-2">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-sm mb-2">
               <span class="text-gray-500">Subtotal</span>
               <span class="font-semibold text-gray-900">₹{{ selectedOrder.totalAmount | number:'1.2-2' }}</span>
             </div>
-            <div class="flex justify-between items-center text-sm mb-2">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-sm mb-2">
               <span class="text-gray-500">Shipping</span>
               <span class="font-semibold text-gray-900">₹0.00</span>
             </div>
-            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-4 pt-4 border-t border-gray-200">
               <span class="font-bold text-gray-900">Total</span>
               <span class="text-xl font-black text-green-600">₹{{ selectedOrder.totalAmount | number:'1.2-2' }}</span>
             </div>

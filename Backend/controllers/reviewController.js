@@ -1,5 +1,6 @@
 const Review = require("../models/Review");
 const Product = require("../models/Product");
+const mongoose = require("mongoose");
 
 // Create a Review (Customer)
 exports.createReview = async (req, res) => {
@@ -20,6 +21,20 @@ exports.createReview = async (req, res) => {
     });
 
     await review.save();
+
+    // Recalculate average rating and review count for the product
+    const stats = await Review.aggregate([
+      { $match: { product: new mongoose.Types.ObjectId(product) } },
+      { $group: { _id: '$product', averageRating: { $avg: '$rating' }, reviewCount: { $sum: 1 } } }
+    ]);
+
+    if (stats.length > 0) {
+      await Product.findByIdAndUpdate(product, {
+        rating: Math.round(stats[0].averageRating * 10) / 10,
+        reviewCount: stats[0].reviewCount
+      });
+    }
+
     res.status(201).json({ message: "Review added successfully", review });
   } catch (error) {
     res.status(500).json({ error: error.message });

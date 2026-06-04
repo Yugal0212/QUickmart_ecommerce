@@ -1,9 +1,9 @@
-<div class="p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
+<div class="p-4 md:p-6 max-w-7xl mx-auto animate__animated animate__fadeIn">
   
   <div class="mb-8 flex justify-between items-end">
     <div>
-      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Audit & Activity Logs</h1>
-      <p class="text-gray-500 mt-1">Immutable record of all administrative actions taken on the platform.</p>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Global Activity Logs</h1>
+      <p class="text-gray-500 mt-1">Real-time log of all customer movements, logins, and administrative actions.</p>
     </div>
     <button class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 shadow-sm transition-colors flex items-center">
       <i class="fas fa-download mr-2"></i> Export Logs
@@ -11,50 +11,139 @@
   </div>
 
   <div class="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="min-w-full text-left border-collapse">
+    <div class="overflow-x-auto w-full pb-4"><table class="min-w-full text-left border-collapse">
         <thead class="bg-gray-50/50">
           <tr class="border-b border-gray-200">
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Action Taken</th>
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Administrator</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Action & Route</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">User (Email)</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Role</th>
             <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Timestamp</th>
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">IP Address</th>
-            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Severity</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">IP / Meta</th>
+            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-transparent">
-          <tr *ngFor="let log of logs" class="hover:bg-gray-50/50 transition-colors duration-200 font-mono text-sm">
+          <tr *ngFor="let log of logs" class="hover:bg-gray-50/50 transition-colors duration-200 text-sm">
             
-            <td class="py-4 px-6 whitespace-nowrap text-gray-900 font-bold">
-              {{ log.action }}
-            </td>
-            
-            <td class="py-4 px-6 whitespace-nowrap text-gray-600">
-              <i class="fas fa-user-shield mr-2 text-gray-400"></i>{{ log.admin }}
-            </td>
-            
-            <td class="py-4 px-6 whitespace-nowrap text-gray-500">
-              {{ log.date | date:'medium' }}
-            </td>
-            
-            <td class="py-4 px-6 whitespace-nowrap text-gray-400">
-              {{ log.ip }}
+            <td class="py-4 px-6 whitespace-nowrap">
+              <div class="font-bold text-gray-900 flex items-center gap-2">
+                <span *ngIf="log.method === 'GET'" class="px-2 py-0.5 rounded text-[10px] bg-blue-100 text-blue-700 font-black">GET</span>
+                <span *ngIf="log.method === 'POST'" class="px-2 py-0.5 rounded text-[10px] bg-green-100 text-green-700 font-black">POST</span>
+                <span *ngIf="log.method === 'DELETE'" class="px-2 py-0.5 rounded text-[10px] bg-red-100 text-red-700 font-black">DEL</span>
+                <span *ngIf="log.method === 'PUT' || log.method === 'PATCH'" class="px-2 py-0.5 rounded text-[10px] bg-orange-100 text-orange-700 font-black">PUT</span>
+                {{ log.action }}
+              </div>
+              <div class="text-xs text-gray-500 mt-1 font-mono truncate max-w-xs" title="{{ log.route }}">{{ log.route }}</div>
             </td>
             
             <td class="py-4 px-6 whitespace-nowrap">
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold"
-                    [ngClass]="{
-                      'bg-red-100 text-red-800 border border-red-200': log.severity === 'high',
-                      'bg-yellow-100 text-yellow-800 border border-yellow-200': log.severity === 'medium',
-                      'bg-blue-100 text-blue-800 border border-blue-200': log.severity === 'low'
-                    }">
-                {{ log.severity | uppercase }}
-              </span>
+              <div class="flex items-center gap-2">
+                <i class="fas" [ngClass]="{'fa-user-shield text-red-400': log.role === 'admin', 'fa-store text-blue-400': log.role === 'seller', 'fa-user text-green-400': log.role === 'customer' || log.role === 'Guest'}"></i>
+                <span class="font-medium text-gray-700">{{ log.email || log.admin || 'Anonymous' }}</span>
+              </div>
+            </td>
+
+            <td class="py-4 px-6 whitespace-nowrap">
+              <span class="uppercase text-xs font-bold text-gray-500">{{ log.role || 'GUEST' }}</span>
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap text-gray-500">
+              <div class="font-medium text-gray-700">{{ log.createdAt | date:'mediumDate' }}</div>
+              <div class="text-xs">{{ log.createdAt | date:'shortTime' }}</div>
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap text-xs text-gray-400 font-mono">
+              <div>{{ log.ip }}</div>
+              <div *ngIf="log.details?.durationMs" class="text-[10px] mt-1">{{ log.details.durationMs }}ms | {{ log.details.statusCode }}</div>
+            </td>
+            
+            <td class="py-4 px-6 whitespace-nowrap text-right">
+              <button (click)="viewLogDetails(log)" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View Detailed Operation">
+                <i class="fas fa-eye"></i>
+              </button>
             </td>
             
           </tr>
         </tbody>
-      </table>
+      </table></div>
+  </div>
+
+  <!-- Detailed Log Modal -->
+  <div *ngIf="selectedLog" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh] animate__animated animate__fadeInUp animate__faster">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+            <i class="fas fa-microchip"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">Operation Details</h3>
+            <p class="text-xs text-gray-500 font-mono">{{ selectedLog._id }}</p>
+          </div>
+        </div>
+        <button (click)="closeLogDetails()" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Operation Info -->
+          <div class="space-y-4">
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Action Performed</p>
+              <div class="font-semibold text-gray-900 text-lg">{{ selectedLog.action }}</div>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">HTTP Method & Route</p>
+              <div class="bg-gray-100 p-2 rounded-md font-mono text-sm text-gray-800 break-all border border-gray-200">
+                <span class="font-bold text-blue-600 mr-2">{{ selectedLog.method }}</span>
+                {{ selectedLog.route }}
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Timestamp</p>
+              <div class="text-gray-700 font-medium">{{ selectedLog.createdAt | date:'medium' }}</div>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status Code & Duration</p>
+              <div class="flex items-center gap-2 font-mono">
+                <span class="px-2 py-1 rounded bg-green-100 text-green-700 font-bold text-xs border border-green-200">{{ selectedLog.details?.statusCode || '200' }}</span>
+                <span class="text-gray-500 text-sm">{{ selectedLog.details?.durationMs || 'N/A' }}ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Info -->
+          <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Initiator (User)</p>
+              <div class="font-semibold text-gray-900">{{ selectedLog.email || selectedLog.admin || 'Anonymous / System' }}</div>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Assigned Role</p>
+              <span class="px-2 py-1 bg-purple-100 text-purple-700 font-bold rounded text-xs uppercase">{{ selectedLog.role || 'Guest' }}</span>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Network IP</p>
+              <div class="font-mono text-gray-600 text-sm bg-white border border-gray-200 p-1.5 rounded inline-block">{{ selectedLog.ip }}</div>
+            </div>
+            
+            <!-- Quick Action: Go to user profile -->
+            <div class="pt-4 border-t border-gray-200 mt-4" *ngIf="selectedLog.user">
+              <a [routerLink]="['/admin-dashboard/user-details', selectedLog.user]" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-black transition-colors font-semibold shadow-md">
+                <i class="fas fa-external-link-alt"></i> View Full Admin Profile
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
     </div>
   </div>
 

@@ -1,0 +1,232 @@
+<app-navbar></app-navbar>
+
+<!-- Edit Profile Modal -->
+<div *ngIf="isEditingProfile" class="fixed inset-0 z-[1050] flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6 overflow-hidden">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-900">Edit Profile</h3>
+      <button (click)="cancelEditProfile()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+    </div>
+    <form (ngSubmit)="saveProfile()">
+      <div class="mb-4 text-center">
+        <label for="avatarInput" class="cursor-pointer inline-block relative group">
+          <div class="h-24 w-24 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-green-500">
+            <img *ngIf="avatarPreview" [src]="avatarPreview" class="h-full w-full object-cover" />
+            <span *ngIf="!avatarPreview" class="text-3xl text-gray-400"><i class="fas fa-camera"></i></span>
+          </div>
+          <div class="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <i class="fas fa-upload text-white"></i>
+          </div>
+        </label>
+        <input type="file" id="avatarInput" class="hidden" accept="image/*" (change)="onFileSelected($event)">
+        <p class="text-xs text-gray-500 mt-2">Click to change photo</p>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+        <input type="text" [(ngModel)]="editProfileData.username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none" required>
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+        <input type="email" [(ngModel)]="editProfileData.email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none" required>
+      </div>
+      <div class="flex justify-end gap-3">
+        <button type="button" (click)="cancelEditProfile()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-semibold transition-colors">Cancel</button>
+        <button type="submit" [disabled]="isSubmitting" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors flex items-center">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm mr-2"></span> Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Address Modal -->
+<div *ngIf="isAddingAddress" class="fixed inset-0 z-[1050] flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 overflow-hidden max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-900">Add New Address</h3>
+      <button (click)="cancelAddAddress()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+    </div>
+    <form (ngSubmit)="saveAddress()">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+          <input type="text" [(ngModel)]="newAddress.fullName" name="fullName" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
+          <input type="text" [(ngModel)]="newAddress.phoneNumber" name="phoneNumber" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Address Line 1</label>
+        <input type="text" [(ngModel)]="newAddress.addressLine1" name="addressLine1" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Address Line 2 (Optional)</label>
+        <input type="text" [(ngModel)]="newAddress.addressLine2" name="addressLine2" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500">
+      </div>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">City</label>
+          <input type="text" [(ngModel)]="newAddress.city" name="city" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">State</label>
+          <input type="text" [(ngModel)]="newAddress.state" name="state" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Zip Code</label>
+          <input type="text" [(ngModel)]="newAddress.zipCode" name="zipCode" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Country</label>
+          <input type="text" [(ngModel)]="newAddress.country" name="country" class="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-green-500" required>
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+        <button type="button" (click)="cancelAddAddress()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-semibold transition-colors">Cancel</button>
+        <button type="submit" [disabled]="isSubmitting" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors flex items-center">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm mr-2"></span> Save Address
+        </button>
+      </div>
+    </form>
+  </div>
+</div><main class="min-h-screen bg-gray-50 pt-20 pb-16 font-sans">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header Section -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8 mt-8">
+      <div class="h-32 bg-gradient-to-r from-green-500 to-emerald-600 relative">
+        <div class="absolute -bottom-12 left-8">
+          <div class="h-24 w-24 rounded-full bg-white flex items-center justify-center border-4 border-white shadow-md overflow-hidden">
+            <img *ngIf="avatar" [src]="avatar" class="h-full w-full object-cover" />
+            <span *ngIf="!avatar" class="text-4xl font-black text-green-600">{{ username ? username.charAt(0).toUpperCase() : 'U' }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="pt-16 pb-8 px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">{{ username || 'User Name' }}</h1>
+          <p class="text-gray-500 mt-1 flex items-center gap-2">
+            <i class="fas fa-envelope text-gray-400"></i> {{ email || 'email@example.com' }}
+          </p>
+          <div class="mt-3 flex gap-2">
+            <span *ngFor="let role of roles" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700">
+              {{ role }}
+            </span>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button (click)="openEditProfile()" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl transition-colors">
+            <i class="fas fa-edit mr-2"></i> Edit Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="animate-pulse space-y-8">
+      <div class="h-64 bg-gray-200 rounded-3xl"></div>
+      <div class="h-64 bg-gray-200 rounded-3xl"></div>
+    </div>
+
+    <div *ngIf="errorMessage" class="bg-red-50 text-red-700 p-4 rounded-2xl mb-8 flex items-center">
+      <i class="fas fa-exclamation-circle text-xl mr-3"></i> {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left Column: Addresses -->
+      <div class="lg:col-span-1 space-y-8">
+        
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900">Saved Addresses</h3>
+            <button (click)="openAddAddress()" class="text-green-600 hover:text-green-700 font-bold text-sm bg-green-50 p-2 rounded-lg">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          
+          <div *ngIf="addresses.length === 0" class="text-center py-8">
+            <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-map-marker-alt text-gray-400"></i>
+            </div>
+            <p class="text-gray-500 text-sm">No saved addresses.</p>
+          </div>
+          
+          <div class="space-y-4">
+            <div *ngFor="let address of addresses" class="p-4 rounded-2xl border border-gray-200 hover:border-green-300 transition-colors bg-gray-50/50 relative group">
+              <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button class="text-gray-400 hover:text-blue-600 mr-2"><i class="fas fa-edit"></i></button>
+                <button class="text-gray-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+              </div>
+              <p class="font-bold text-gray-900 text-sm">{{ address.fullName || address.firstName + ' ' + address.lastName }}</p>
+              <p class="text-sm text-gray-600 mt-1">{{ address.addressLine1 || address.street }}<br>{{ address.city }}, {{ address.state }} {{ address.zipCode }}</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fas fa-phone-alt text-xs mr-1"></i> {{ address.phone || address.phoneNumber }}</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Right Column: Recent Orders -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900">Recent Orders</h3>
+            <a routerLink="/history" class="text-green-600 hover:text-green-700 font-bold text-sm">View All <i class="fas fa-arrow-right ml-1"></i></a>
+          </div>
+          
+          <div *ngIf="orders.length === 0" class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl">
+            <div class="h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-box-open text-gray-400 text-xl"></i>
+            </div>
+            <h4 class="text-gray-900 font-bold">No orders yet</h4>
+            <p class="text-gray-500 text-sm mt-1 mb-4">You haven't placed any orders.</p>
+            <a routerLink="/allproducts" class="px-6 py-2.5 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors">Start Shopping</a>
+          </div>
+          
+          <div class="space-y-4">
+            <div *ngFor="let order of orders.slice(0, 5)" class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow bg-white">
+              <div class="flex items-center gap-4 mb-3 sm:mb-0">
+                <div class="h-12 w-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-lg">
+                  <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-gray-900 text-sm">Order #{{ order._id ? order._id.toString().slice(-6).toUpperCase() : '' }}</p>
+                  <p class="text-xs text-gray-500 mt-0.5">{{ order.createdAt | date:'mediumDate' }} • {{ order.items?.length || 0 }} items</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center justify-between w-full sm:w-auto gap-6 pl-16 sm:pl-0">
+                <div class="text-left sm:text-right">
+                  <p class="font-black text-gray-900">₹{{ order.totalAmount | number:'1.2-2' }}</p>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider"
+                        [ngClass]="{
+                          'bg-green-100 text-green-700': order.status === 'Delivered',
+                          'bg-blue-100 text-blue-700': order.status === 'Shipped',
+                          'bg-yellow-100 text-yellow-700': order.status === 'Processing' || order.status === 'Pending',
+                          'bg-red-100 text-red-700': order.status === 'Cancelled'
+                        }">
+                    {{ order.status || 'Pending' }}
+                  </span>
+                </div>
+                <button class="h-8 w-8 rounded-full bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-gray-600 transition-colors" title="View details">
+                  <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

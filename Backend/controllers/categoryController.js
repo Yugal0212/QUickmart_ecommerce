@@ -28,7 +28,7 @@ exports.getCategoryById = async (req, res) => {
 };
 
 exports.getProductsByCategory = async (req, res) => {
-const category = await Product.find({ category: req.params.id })
+const category = await Product.find({ category: req.params.id, approvalStatus: 'approved' })
   res.json(category);
 };
 

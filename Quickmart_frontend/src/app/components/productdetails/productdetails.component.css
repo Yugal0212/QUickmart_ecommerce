@@ -233,7 +233,7 @@ body {
 /* Thumbnails Responsive Layout */
 @media (max-width: 768px) {
   .product-images-container {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
   }
 
@@ -243,6 +243,7 @@ body {
     justify-content: center;
     gap: 5px;
     margin-top: 10px;
+    flex-wrap: wrap;
   }
 
   .thumbnail {
@@ -251,8 +252,10 @@ body {
   }
 
   .main-product-image {
-    width: 350px;
-    height: 350px;
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    aspect-ratio: 1;
   }
 
   /* Quantity Selector Mobile Adjustments */

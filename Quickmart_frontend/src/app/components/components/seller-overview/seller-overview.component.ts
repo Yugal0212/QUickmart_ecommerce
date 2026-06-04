@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { SellerService } from '../../../Services/seller.service';
 import { Chart, registerables } from 'chart.js';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 Chart.register(...registerables);
 
@@ -105,5 +107,26 @@ export class SellerOverviewComponent implements OnInit {
         }
       }
     });
+  }
+
+  exportReport() {
+    if (!this.analytics) return;
+    const doc = new jsPDF();
+    doc.setFontSize(20);
+    doc.text('Seller Revenue Overview', 14, 20);
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    autoTable(doc, {
+      startY: 40,
+      head: [['Metric', 'Value']],
+      body: [
+        ['Total Revenue', `INR ${this.analytics.totalRevenue}`],
+        ['Total Orders', this.analytics.totalOrders],
+        ['Active Products', this.analytics.activeProducts],
+        ['Total Customers', this.analytics.totalCustomers],
+      ],
+    });
+    doc.save('revenue_overview.pdf');
   }
 }

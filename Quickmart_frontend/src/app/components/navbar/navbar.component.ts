@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { PreloaderComponent } from '../preloader/preloader.component';
@@ -8,7 +8,7 @@ import { Product, ProductService } from '../../Services/product/products.service
 import { CategoriesService, Category } from '../../Services/Categories/categories.service';
 import { CartService } from '../../Services/Cart/cart.service';
 import { debounceTime, distinctUntilChanged, map, take } from 'rxjs/operators';
-import { catchError, of } from 'rxjs';
+import { catchError, filter, of } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -20,6 +20,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('searchWrapper') searchWrapper?: ElementRef<HTMLDivElement>;
 
   username: string | null = null;
+  avatar: string | null = null;
   showPreloader: boolean = false; // Add a flag to control the preloader visibility
   searchControl = new FormControl('');
   productResults: Product[] = [];
@@ -39,7 +40,17 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.username = this.authService.getUsername();
+    // Listen to profile and token updates to refresh navbar user data
+    this.authService.token.subscribe(() => {
+      this.username = this.authService.getUsername();
+      this.avatar = localStorage.getItem('avatar');
+    });
+
+    this.authService.profileUpdated.subscribe(() => {
+      this.username = this.authService.getUsername();
+      this.avatar = localStorage.getItem('avatar');
+    });
+
     console.log('Username in component:', this.username); // Debug
     console.log('User roles in component:', this.authService.getUserRoles()); // Debug
 
@@ -63,9 +74,37 @@ export class NavbarComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe((query) => this.handleSearch(query));
+
+    // Fix for offcanvas backdrop not closing properly when clicked
+    document.addEventListener('click', (event: any) => {
+      if (event.target && event.target.classList && event.target.classList.contains('offcanvas-backdrop')) {
+        this.closeMobileMenu();
+      }
+    });
+
+    // Extremely aggressive cleanup: Whenever route changes, forcibly rip out stuck backdrops
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      this.closeMobileMenu();
+      setTimeout(() => {
+        document.querySelectorAll('.offcanvas-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('offcanvas-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }, 300);
+    });
   }
 
-
+  closeMobileMenu() {
+    const offcanvasEl = document.getElementById('offcanvasNavbar');
+    if (offcanvasEl) {
+      // @ts-ignore
+      if (typeof bootstrap !== 'undefined') {
+        // @ts-ignore
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+        if (bsOffcanvas) bsOffcanvas.hide();
+      }
+    }
+  }
    
   logout() {
     this.showPreloader = true;

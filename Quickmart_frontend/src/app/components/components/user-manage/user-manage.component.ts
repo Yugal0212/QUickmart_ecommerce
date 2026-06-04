@@ -45,6 +45,11 @@ export class UserManageComponent {
     return Math.ceil(this.filteredUsers.length / this.itemsPerPage) || 1;
   }
 
+  // KPIs
+  get totalUsersCount() { return this.users.length; }
+  get activeUsersCount() { return this.users.filter(u => u.isActive !== false && u.status !== 'blocked').length; }
+  get blockedUsersCount() { return this.users.filter(u => u.isActive === false || u.status === 'blocked').length; }
+
   nextPage() {
     if (this.currentPage < this.totalPages) this.currentPage++;
   }

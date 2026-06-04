@@ -1,4 +1,4 @@
-﻿<section id="featured-products" class="products-carousel">
+<section id="featured-products" class="products-carousel">
 
   <div class="container-lg overflow-hidden py-5">
     <div class="row">
@@ -31,7 +31,18 @@
               </div>
             </ng-container>
 
-            <!-- Loop through featured products and render each one -->
+          <!-- Empty State -->
+          <div class="w-100 text-center py-5" *ngIf="!isLoading && featuredProducts.length === 0">
+            <div class="p-5 bg-light rounded-3 border border-dashed">
+              <svg width="48" height="48" class="text-muted mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <h4 class="text-muted fw-bold">No Featured Products</h4>
+              <p class="text-muted mb-0">We don't have any featured products right now. Check back later!</p>
+            </div>
+          </div>
+
+          <!-- Loop through featured products and render each one -->
             <div class="product-item swiper-slide" *ngFor="let product of featuredProducts">
               <figure>
                 <a [routerLink]="['/productdetails', product._id]" title="Product Title">
@@ -40,16 +51,13 @@
               </figure>
               <div class="d-flex flex-column text-center">
                 <h3 class="fs-6 fw-normal">{{ product.name }}</h3>
-                <div>
-                  <span class="rating">
-                    <span *ngFor="let star of getStars(product.rating)">
-                      <svg width="18" height="18" [ngClass]="{'text-warning': star === 'full', 'text-muted': star === 'empty'}">
-                        <use [attr.xlink:href]="star === 'full' ? '#star-full' : '#star-empty'"></use>
-                      </svg>
+                  <div class="d-flex justify-content-center align-items-center gap-1 mb-2">
+                    <span class="rating d-flex text-warning fs-6">
+                      <i *ngFor="let star of getStars(product.rating || 0)" 
+                         [ngClass]="star === 'full' ? 'fas fa-star' : (star === 'half' ? 'fas fa-star-half-alt' : 'far fa-star text-muted')"></i>
                     </span>
-                  </span>
-                  <span>({{ product.reviewCount }})</span>
-                </div>
+                    <span class="text-muted fs-7">({{ product.reviewCount || 0 }})</span>
+                  </div>
                 <div class="d-flex justify-content-center align-items-center gap-2">
                   <del>₹{{ product.price * 1.2 | number: '1.2-2' }}</del>
                   <span class="text-dark fw-semibold">₹{{ product.price | number: '1.2-2' }}</span>
@@ -58,36 +66,31 @@
                   </span>
                 </div>
                 <div class="button-area p-3 pt-0">
-                  <div class="row g-1 mt-2">
-                    <div class="col-3">
-                      <input
-                        type="number"
-                        name="quantity"
-                        class="form-control border-dark-subtle input-number quantity"
-                        value="1"
-                        #quantityInput
-                      />
-                    </div>
-                    <div class="col-7">
-                      <button
-                        class="btn btn-primary rounded-1 p-2 fs-7 btn-cart w-100"
-                        [disabled]="addingToCart[product._id]"
-                        (click)="addToCart(product._id, +quantityInput.value)"
-                      >
-                        <ng-container *ngIf="!addingToCart[product._id]">
-                          <svg width="18" height="18" class="me-1"><use xlink:href="#cart"></use></svg> Add
-                        </ng-container>
-                        <ng-container *ngIf="addingToCart[product._id]">
-                          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                          Adding...
-                        </ng-container>
-                      </button>
-                    </div>
-                    <div class="col-2">
-                      <a href="#" class="btn btn-outline-dark rounded-1 p-2 fs-6">
-                        <svg width="18" height="18"><use xlink:href="#heart"></use></svg>
-                      </a>
-                    </div>
+                  <div class="d-flex justify-content-between align-items-center gap-2 mt-3">
+                    <input
+                      type="number"
+                      name="quantity"
+                      class="form-control border-dark-subtle input-number text-center"
+                      style="width: 60px;"
+                      value="1"
+                      min="1"
+                      #quantityInput
+                    />
+                    <button
+                      class="btn btn-primary rounded-1 flex-grow-1 d-flex justify-content-center align-items-center px-2 py-2 fs-7"
+                      [disabled]="addingToCart[product._id]"
+                      (click)="addToCart(product._id, +quantityInput.value)"
+                    >
+                      <ng-container *ngIf="!addingToCart[product._id]">
+                        <i class="fas fa-shopping-cart me-2"></i> Add
+                      </ng-container>
+                      <ng-container *ngIf="addingToCart[product._id]">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      </ng-container>
+                    </button>
+                    <a href="#" class="btn btn-outline-dark rounded-1 d-flex justify-content-center align-items-center px-3 py-2" (click)="$event.preventDefault()">
+                      <i class="far fa-heart"></i>
+                    </a>
                   </div>
                 </div>
               </div>

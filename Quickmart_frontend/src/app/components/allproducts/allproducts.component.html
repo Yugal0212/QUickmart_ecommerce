@@ -1,4 +1,4 @@
-﻿<!-- All Products Page -->
+<!-- All Products Page -->
 <section class="product-showcase">
 
   <!-- Toast Notification -->
@@ -31,7 +31,8 @@
 
       <!-- ── Category Sidebar ── -->
       <div class="col-12 col-md-3 col-lg-2">
-        <div class="category-sidebar">
+        <!-- Desktop Sidebar -->
+        <div class="category-sidebar d-none d-md-block">
           <h6 class="sidebar-title">Categories</h6>
 
           <div class="sidebar-list">
@@ -61,6 +62,32 @@
               <svg *ngIf="selectedCategoryId === cat._id" class="ms-auto check-icon" width="13" height="13"
                    viewBox="0 0 24 24"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </button>
+          </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div class="d-md-none sticky-top" style="top: 55px; z-index: 1020; background: #f6f9f3; margin: -10px -15px 15px -15px; padding: 10px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+          <!-- Backdrop to close dropdown -->
+          <div *ngIf="isDropdownOpen" (click)="closeDropdown()" style="position: fixed; inset: 0; z-index: 1;"></div>
+          
+          <div class="dropdown w-100" [class.show]="isDropdownOpen" style="position: relative; z-index: 2;">
+            <button class="btn w-100 text-start fw-bold shadow-sm d-flex justify-content-between align-items-center" 
+                    type="button" 
+                    id="mobileCategoryDropdown" 
+                    (click)="toggleDropdown()"
+                    [disabled]="categoriesLoading"
+                    style="border-radius: 12px; height: 48px; background-color: #fff; color: #2f7d32; border: 1px solid #e5e7eb; padding-left: 20px;">
+              <span>{{ selectedCategoryId === null ? 'Explore: All Products' : 'Category: ' + selectedCategoryName }}</span>
+              <i class="fas fa-chevron-down text-secondary"></i>
+            </button>
+            <ul class="dropdown-menu w-100 shadow border-0" [class.show]="isDropdownOpen" style="border-radius: 12px; max-height: 60vh; overflow-y: auto; position: absolute; top: 100%; left: 0; margin-top: 4px;">
+              <li>
+                <a class="dropdown-item py-2" [class.active]="selectedCategoryId === null" (click)="filterByCategory(null)" style="cursor: pointer;">Explore: All Products</a>
+              </li>
+              <li *ngFor="let cat of categories">
+                <a class="dropdown-item py-2" [class.active]="selectedCategoryId === cat._id" (click)="filterByCategory(cat._id)" style="cursor: pointer;">Category: {{ cat.name }}</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

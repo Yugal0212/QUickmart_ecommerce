@@ -1,6 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
   hideHeaderFooter: boolean = false;
   showSplash: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private viewportScroller: ViewportScroller) {}
 
   ngOnInit() {
     this.updateLayout(this.router.url);
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
         this.updateLayout(this.router.url);
-        this.scrollToTop();
+        setTimeout(() => this.scrollToTop(), 50); // Delay allows DOM to render new page before scrolling
       });
 
     // Hide splash screen after components have time to fetch data
@@ -44,7 +45,11 @@ export class AppComponent implements OnInit {
   }
 
   private scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Ultra-aggressive scrolling to catch all edge cases
+    this.viewportScroller.scrollToPosition([0, 0]);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }
 
 }

@@ -56,12 +56,25 @@ const getAdminAnalytics = async (req, res) => {
       date: order.createdAt
     }));
 
+    const currentMonthIndex = new Date().getMonth();
+    const previousMonthIndex = currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
+    
+    const currentMonthRev = monthlyRevenue[currentMonthIndex];
+    const previousMonthRev = monthlyRevenue[previousMonthIndex];
+    const revenueGrowth = previousMonthRev > 0 ? ((currentMonthRev - previousMonthRev) / previousMonthRev) * 100 : (currentMonthRev > 0 ? 100 : 0);
+    
+    const currentMonthOrders = monthlySales[currentMonthIndex];
+    const previousMonthOrders = monthlySales[previousMonthIndex];
+    const ordersGrowth = previousMonthOrders > 0 ? ((currentMonthOrders - previousMonthOrders) / previousMonthOrders) * 100 : (currentMonthOrders > 0 ? 100 : 0);
+
     res.json({
       totalUsers,
       totalSellers,
       totalProducts,
       totalOrders,
       totalRevenue,
+      revenueGrowth: revenueGrowth.toFixed(1),
+      ordersGrowth: ordersGrowth.toFixed(1),
       pendingSellerApprovals,
       totalReturns,
       totalRefunds,
@@ -221,9 +234,9 @@ const getGlobalOrders = async (req, res) => {
     const limit = parseInt(req.query.limit) || 50;
     
     const orders = await Order.find()
-      .select('totalAmount paymentStatus orderStatus createdAt user items')
+      .select('totalAmount paymentStatus orderStatus createdAt user items shippingAddress paymentMethod')
       .populate('user', 'username email')
-      .populate('items.product', 'name price')
+      .populate('items.product', 'name price images')
       .sort({ createdAt: -1 })
       .lean()
       .skip((page - 1) * limit)
@@ -433,7 +446,7 @@ const getAiInsights = async (req, res) => {
 
 const getAuditLogs = async (req, res) => {
   try {
-    const logs = await AuditLog.find().sort({ createdAt: -1 }).limit(50);
+    const logs = await AuditLog.find().sort({ createdAt: -1 }).limit(200);
     // If empty, let's provide a mock system initialization log so it's not totally blank
     if (logs.length === 0) {
       return res.json([

@@ -35,17 +35,15 @@ export class BestSellingComponent implements OnInit {
   fetchBestSellingProducts(): void {
     this.productService.getAllProducts().subscribe(
       (data: Product[]) => {
-        // Add random rating, review count, and discount to each product
+        // Add a random discount for display purposes (since discount isn't in backend yet)
         this.bestSellingProducts = data.map((product, index) => {
           return {
             ...product,
-            rating: this.getRandomRating(),
-            reviewCount: this.getRandomReviewCount(),
-            discount: index === 0 ? 10 : this.getRandomDiscount() // First product has 10% discount, others random
+            discount: index === 0 ? 10 : this.getRandomDiscount()
           };
         });
 
-        // Sort and get the top 10 best-selling products
+        // Sort and get the top 10 best-selling products based on real ratings!
         this.bestSellingProducts = this.getTop10BestSellingProducts(this.bestSellingProducts);
         this.isLoading = false;
       },
@@ -56,16 +54,6 @@ export class BestSellingComponent implements OnInit {
     );
   }
 
-  // Generate a random rating between 1.0 and 5.0
-  getRandomRating(): number {
-    return Math.floor(Math.random() * 50) / 10 + 1;
-  }
-
-  // Generate a random review count between 50 and 500
-  getRandomReviewCount(): number {
-    return Math.floor(Math.random() * 450) + 50;
-  }
-
   // Generate a random discount between 10% and 50%
   getRandomDiscount(): number {
     return Math.floor(Math.random() * 40) + 10;
@@ -73,9 +61,9 @@ export class BestSellingComponent implements OnInit {
 
   // Method to get the top 10 best-selling products
   getTop10BestSellingProducts(products: Product[]): Product[] {
-    // Sort products by a criterion (e.g., sales count, rating, or discount)
+    // Sort products by REAL rating (highest first)
     return products
-      .sort((a, b) => b.rating - a.rating) // Sort by rating (highest first)
+      .sort((a, b) => (b.rating || 0) - (a.rating || 0)) 
       .slice(0, 10); // Get the top 10 products
   }
 

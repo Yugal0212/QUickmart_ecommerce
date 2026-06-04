@@ -25,6 +25,9 @@ export class AuthService {
   private tokenSubject: BehaviorSubject<string | null>;
   public token: Observable<string | null>;
 
+  private profileUpdatedSubject = new BehaviorSubject<boolean>(true);
+  public profileUpdated = this.profileUpdatedSubject.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {
     this.tokenSubject = new BehaviorSubject<string | null>(
       localStorage.getItem('accessToken')
@@ -102,6 +105,7 @@ export class AuthService {
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('username', response.username);
         localStorage.setItem('email', response.email);
+        if (response.avatar) localStorage.setItem('avatar', response.avatar);
         localStorage.setItem('roles', JSON.stringify(response.roles)); // Store the roles array
 
         // Update the tokenSubject with the new accessToken
@@ -175,6 +179,7 @@ export class AuthService {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         localStorage.removeItem('email');
+        localStorage.removeItem('avatar');
         localStorage.removeItem('roles');
         this.tokenSubject.next(null);
         this.router.navigate(['/login']); // Redirect to login page
@@ -188,6 +193,7 @@ export class AuthService {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         localStorage.removeItem('email');
+        localStorage.removeItem('avatar');
         localStorage.removeItem('roles');
         this.tokenSubject.next(null);
         this.router.navigate(['/login']);
@@ -223,6 +229,31 @@ export class AuthService {
       })
     );
 }
+
+  updateProfile(formData: FormData): Observable<any> {
+    const accessToken = this.getAccessToken();
+    if (!accessToken) {
+      return throwError('No access token found. Please log in again.');
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`
+    });
+
+    return this.http.put(`${environment.apiUrl}/auth/profile`, formData, { headers }).pipe(
+      map((response: any) => {
+        // Update local storage
+        if (response.user.username) localStorage.setItem('username', response.user.username);
+        if (response.user.email) localStorage.setItem('email', response.user.email);
+        if (response.user.avatar) localStorage.setItem('avatar', response.user.avatar);
+        this.profileUpdatedSubject.next(true); // Notify listeners
+        return response;
+      }),
+      catchError((error) => {
+        return throwError(error.error?.message || 'Failed to update profile');
+      })
+    );
+  }
 
   becomeSeller(sellerDetails: {
     storeName: string;

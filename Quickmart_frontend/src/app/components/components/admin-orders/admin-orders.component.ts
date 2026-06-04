@@ -54,7 +54,7 @@ export class AdminOrdersComponent implements OnInit {
     
     // Status Filter
     if (this.statusFilter !== 'all') {
-      filtered = filtered.filter(o => o.status === this.statusFilter);
+      filtered = filtered.filter(o => o.orderStatus?.toLowerCase() === this.statusFilter.toLowerCase());
     }
     
     // Search Query

@@ -45,12 +45,10 @@ export class JustArrivedComponent implements OnInit, AfterViewInit {
         // Sort products by creation date (newest first)
         const sortedProducts = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-        // Add random rating, review count, and discount to each product
+        // Add random discount for display purposes
         this.justArrivedProducts = sortedProducts.map((product, index) => {
           return {
             ...product,
-            rating: this.getRandomRating(),
-            reviewCount: this.getRandomReviewCount(),
             discount: index === 0 ? 10 : this.getRandomDiscount(), // First product has 10% discount, others random
           };
         });
@@ -67,16 +65,6 @@ export class JustArrivedComponent implements OnInit, AfterViewInit {
         this.isLoading = false;
       }
     );
-  }
-
-  // Generate a random rating between 1.0 and 5.0
-  getRandomRating(): number {
-    return Math.floor(Math.random() * 50) / 10 + 1;
-  }
-
-  // Generate a random review count between 50 and 500
-  getRandomReviewCount(): number {
-    return Math.floor(Math.random() * 450) + 50;
   }
 
   // Generate a random discount between 10% and 50%

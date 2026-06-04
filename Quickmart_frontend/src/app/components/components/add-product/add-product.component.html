@@ -1,4 +1,4 @@
-<div class="p-6 lg:p-12 max-w-4xl mx-auto">
+<div class="p-4 md:p-6 lg:p-12 max-w-4xl mx-auto">
   <app-preloader *ngIf="showPreloader"></app-preloader>
 
   <div class="bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 overflow-hidden relative">
@@ -7,7 +7,7 @@
     <div class="absolute -top-24 -right-24 w-48 h-48 bg-green-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
     <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
 
-    <div class="p-8 lg:p-10 relative z-10">
+    <div class="p-4 md:p-8 lg:p-10 relative z-10">
       <div class="mb-8 text-center">
         <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-blue-600 tracking-tight">
           {{ isEditMode ? 'Edit Product' : 'Add New Product' }}

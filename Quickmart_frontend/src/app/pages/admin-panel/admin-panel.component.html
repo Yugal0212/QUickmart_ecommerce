@@ -1,7 +1,11 @@
 <div class="flex h-screen bg-gray-50 font-sans overflow-hidden">
     
+  <!-- Backdrop overlay for mobile sidebar -->
+  <div *ngIf="isMobileMenuOpen" class="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm" (click)="closeMobileMenu()"></div>
+
   <!-- Sidebar -->
-  <aside class="w-72 bg-gray-900 border-r border-gray-800 flex flex-col shadow-2xl hidden md:flex transition-all duration-300 z-30 text-gray-300">
+  <aside class="w-72 bg-gray-900 border-r border-gray-800 flex flex-col shadow-2xl transition-all duration-300 z-50 text-gray-300 shrink-0 fixed inset-y-0 left-0 transform md:relative md:translate-x-0"
+         [ngClass]="isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'">
     
     <!-- Logo Area (Fixed Top) -->
     <div class="h-20 flex items-center px-6 border-b border-gray-800 shrink-0 bg-gray-950">
@@ -16,14 +20,9 @@
       <div>
         <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Core</p>
         <div class="space-y-1">
-          <a routerLink="/admin-dashboard/overview" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/overview" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-chart-pie text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Dashboard</span>
-          </a>
-          <a routerLink="/admin-dashboard/ai-insights" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-brain text-lg w-6 text-center group-hover:scale-110 transition-transform text-purple-400"></i>
-            <span class="font-medium text-sm">AI Insights Dashboard</span>
-            <span class="ml-auto bg-purple-500/20 text-purple-400 py-0.5 px-2 rounded-full text-[10px] font-bold">NEW</span>
           </a>
         </div>
       </div>
@@ -32,15 +31,15 @@
       <div>
         <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">People</p>
         <div class="space-y-1">
-          <a routerLink="/admin-dashboard/users" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/users" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-users text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Users Management</span>
           </a>
-          <a routerLink="/admin-dashboard/sellers" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/sellers" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-store text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Sellers Management</span>
           </a>
-          <a routerLink="/admin-dashboard/seller-requests" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/seller-requests" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-clipboard-check text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Seller Approvals</span>
           </a>
@@ -51,11 +50,11 @@
       <div>
         <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Catalog</p>
         <div class="space-y-1">
-          <a routerLink="/admin-dashboard/products" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/products" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-box-open text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Products Management</span>
           </a>
-          <a routerLink="/admin-dashboard/categories" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/categories" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-sitemap text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Categories Management</span>
           </a>
@@ -66,36 +65,9 @@
       <div>
         <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Sales & Finance</p>
         <div class="space-y-1">
-          <a routerLink="/admin-dashboard/orders" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/orders" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-shopping-cart text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
             <span class="font-medium text-sm">Orders Management</span>
-          </a>
-          <a routerLink="/admin-dashboard/coupons" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-ticket-alt text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Coupons Management</span>
-          </a>
-          <a routerLink="/admin-dashboard/wallet" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-wallet text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Wallet Management</span>
-          </a>
-          <a routerLink="/admin-dashboard/payouts" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-money-check-alt text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Payout Management</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Marketing & Content -->
-      <div>
-        <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Marketing</p>
-        <div class="space-y-1">
-          <a routerLink="/admin-dashboard/banners" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-images text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Banner Management</span>
-          </a>
-          <a routerLink="/admin-dashboard/campaigns" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-bullhorn text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Marketing Campaigns</span>
           </a>
         </div>
       </div>
@@ -104,17 +76,9 @@
       <div class="pb-4">
         <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">System</p>
         <div class="space-y-1">
-          <a routerLink="/admin-dashboard/reports" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-file-contract text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Reports & Analytics</span>
-          </a>
-          <a routerLink="/admin-dashboard/audit-logs" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
+          <a routerLink="/admin-dashboard/audit-logs" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group" (click)="closeMobileMenu()">
             <i class="fas fa-clipboard-list text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">Audit Logs</span>
-          </a>
-          <a routerLink="/admin-dashboard/system-settings" routerLinkActive="bg-green-600/10 text-green-400 border-r-2 border-green-500" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-800 hover:text-white transition-all group">
-            <i class="fas fa-sliders-h text-lg w-6 text-center group-hover:scale-110 transition-transform"></i>
-            <span class="font-medium text-sm">System Settings</span>
+            <span class="font-medium text-sm">Audit & Activity Logs</span>
           </a>
         </div>
       </div>
@@ -122,7 +86,7 @@
     </nav>
     
     <!-- Bottom Profile Area (Fixed Bottom) -->
-    <div class="h-20 shrink-0 border-t border-gray-800 bg-gray-950 p-4 flex items-center justify-between">
+    <div class="h-20 shrink-0 border-t border-gray-800 bg-gray-950 p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div class="flex items-center gap-3 overflow-hidden">
         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold shadow-md shrink-0">
           <span class="text-sm uppercase">{{ username.charAt(0) }}</span>
@@ -139,13 +103,18 @@
   </aside>
 
   <!-- Main Content Wrapper -->
-  <main class="flex-1 flex flex-col h-screen bg-gray-50/50">
+  <main class="flex-1 flex flex-col h-screen bg-gray-50/50 w-full overflow-hidden">
     
     <!-- Top Header (Fixed Height) -->
-    <header class="h-20 bg-white/80 backdrop-blur-xl border-b border-gray-200 flex items-center justify-between px-6 lg:px-10 shadow-sm shrink-0 z-20">
+    <header class="h-20 bg-white/80 backdrop-blur-xl border-b border-gray-200 flex flex-row items-center justify-between gap-2 md:gap-4 px-4 lg:px-10 shadow-sm shrink-0 z-20 w-full">
       
+      <!-- Mobile Menu Toggle Button -->
+      <button class="md:hidden text-gray-500 hover:text-green-600 focus:outline-none mr-4" (click)="toggleMobileMenu()">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
       <!-- Search -->
-      <div class="flex items-center gap-6 flex-1">
+      <div class="flex items-center justify-center flex-1">
         <div class="relative hidden lg:block w-96 group">
           <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-green-500 transition-colors"></i>
           <input type="text" placeholder="Search across dashboard (Cmd+K)" 
@@ -158,9 +127,9 @@
       </div>
       
       <!-- Right Controls -->
-      <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3 md:gap-5">
         <!-- Notification Bell -->
-        <button class="relative p-2.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-green-600 transition-all">
+        <button class="relative p-2 md:p-2.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-green-600 transition-all">
           <i class="fas fa-bell"></i>
           <span class="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
         </button>
@@ -179,7 +148,7 @@
     </header>
     
     <!-- Dynamic Content Area (Scrollable) -->
-    <div class="flex-1 p-6 lg:p-8 overflow-y-auto custom-scrollbar relative">
+    <div class="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto overflow-x-hidden custom-scrollbar relative min-w-0">
       <router-outlet></router-outlet>
     </div>
     

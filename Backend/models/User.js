@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     role: { type: String, default: "customer" },
     roles: { type: [String], default: ["customer"] },
+    avatar: { type: String, default: null },
     sellerStatus: { type: String, enum: ["none", "pending", "approved", "rejected"], default: "none" },
     addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
     refreshToken: { type: String, default: null },

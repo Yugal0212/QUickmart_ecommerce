@@ -34,40 +34,45 @@
   <!-- Body -->
   <div class="offcanvas-body">
 
-    <!-- Main links -->
     <div class="mobile-nav-item">
-      <a class="mobile-nav-link" routerLink="/home" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/home" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">🏠</span>
         Home
       </a>
     </div>
     <div class="mobile-nav-item">
-      <a class="mobile-nav-link" routerLink="/allproducts" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/allproducts" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">🛍️</span>
         All Products
       </a>
     </div>
     <div class="mobile-nav-item" *ngIf="username">
-      <a class="mobile-nav-link" routerLink="/cart" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/cart" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">🛒</span>
         My Cart
-        <span class="mobile-cart-badge ms-auto" *ngIf="cartCount > 0">{{ cartCount }}</span>
+        <span class="mobile-cart-badge ms-auto">{{ cartCount }}</span>
       </a>
     </div>
     <div class="mobile-nav-item" *ngIf="username">
-      <a class="mobile-nav-link" routerLink="/history" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/history" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">📦</span>
         My Orders
       </a>
     </div>
     <div class="mobile-nav-item" *ngIf="authService.getUserRoles().includes('seller')">
-      <a class="mobile-nav-link" routerLink="/sheller-dashboard" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/sheller-dashboard" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">🏪</span>
         Seller Dashboard
       </a>
     </div>
+    <div class="mobile-nav-item" *ngIf="authService.getUserRoles().includes('seller')">
+      <a class="mobile-nav-link" routerLink="/home" (click)="closeMobileMenu()">
+        <span class="mobile-nav-icon">👤</span>
+        Switch to Customer View
+      </a>
+    </div>
     <div class="mobile-nav-item" *ngIf="authService.getUserRoles().includes('admin')">
-      <a class="mobile-nav-link" routerLink="/admin-dashboard" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/admin-dashboard" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">⚙️</span>
         Admin Dashboard
       </a>
@@ -84,7 +89,7 @@
     <a
       class="mobile-cat-item"
       routerLink="/allproducts"
-      data-bs-dismiss="offcanvas"
+      (click)="closeMobileMenu()"
     >
       <span class="mobile-cat-dot"></span>
       All Products
@@ -94,7 +99,7 @@
       class="mobile-cat-item"
       *ngFor="let category of categories"
       [routerLink]="['/category-details', category._id]"
-      data-bs-dismiss="offcanvas"
+      (click)="closeMobileMenu()"
     >
       <span class="mobile-cat-dot"></span>
       {{ category.name }}
@@ -103,16 +108,29 @@
     <!-- Auth section -->
     <div class="mobile-nav-section">Account</div>
 
+    <div class="mobile-nav-item" *ngIf="username">
+      <a class="mobile-nav-link" routerLink="/profile" (click)="closeMobileMenu()">
+        <span class="mobile-nav-icon">👤</span>
+        My Profile
+      </a>
+    </div>
+
     <div class="mobile-nav-item" *ngIf="!username">
-      <a class="mobile-nav-link" routerLink="/login" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/login" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">👤</span>
         Sign In
       </a>
     </div>
     <div class="mobile-nav-item" *ngIf="!username">
-      <a class="mobile-nav-link" routerLink="/login/sign-up" data-bs-dismiss="offcanvas">
+      <a class="mobile-nav-link" routerLink="/login/sign-up" (click)="closeMobileMenu()">
         <span class="mobile-nav-icon">📝</span>
         Register
+      </a>
+    </div>
+    <div class="mobile-nav-item" *ngIf="!authService.getUserRoles().includes('seller') && !authService.getUserRoles().includes('admin')">
+      <a class="mobile-nav-link" routerLink="/become-seller" (click)="closeMobileMenu()">
+        <span class="mobile-nav-icon">🤝</span>
+        Become a Seller
       </a>
     </div>
     <div class="mobile-nav-item" *ngIf="username">
@@ -333,46 +351,21 @@
           <a class="btn btn-primary rounded-pill px-4" routerLink="/login/sign-up" style="font-weight: 600;">Sign Up</a>
         </div>
 
-        <div class="dropdown account-dropdown" [class.d-lg-none]="!username">
-          <button
-            class="account-trigger dropdown-toggle"
-            id="accountMenu"
-            data-bs-toggle="dropdown"
-            data-bs-auto-close="true"
-            aria-expanded="false"
-            type="button"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-            <span class="account-text">
-              <span class="account-greeting">Hi, {{ username || 'Guest' }}</span>
-              <span class="account-action">Account</span>
-            </span>
-          </button>
-
-          <ul class="dropdown-menu dropdown-menu-end account-menu" aria-labelledby="accountMenu">
-            <li *ngIf="!username">
-              <a class="dropdown-item" routerLink="/login">👤 Sign In</a>
-            </li>
-            <li *ngIf="!username">
-              <a class="dropdown-item" routerLink="/login/sign-up">📝 Register</a>
-            </li>
-            <li *ngIf="username"><a class="dropdown-item" routerLink="/history">📦 My Orders</a></li>
-            <li *ngIf="username"><a class="dropdown-item" routerLink="/cart">🛒 Cart</a></li>
-            <li *ngIf="authService.getUserRoles().includes('seller')">
-              <a class="dropdown-item" routerLink="/sheller-dashboard">🏪 Seller Dashboard</a>
-            </li>
-            <li *ngIf="authService.getUserRoles().includes('admin')">
-              <a class="dropdown-item" routerLink="/admin-dashboard">⚙️ Admin Dashboard</a>
-            </li>
-            <li *ngIf="username"><hr class="dropdown-divider"></li>
-            <li *ngIf="username">
-              <button class="dropdown-item text-danger" type="button" (click)="logout()">🚪 Logout</button>
-            </li>
-          </ul>
-        </div>
+        <a
+          class="account-trigger text-decoration-none"
+          [routerLink]="username ? '/profile' : '/login'"
+        >
+          <img *ngIf="avatar" [src]="avatar" alt="Profile" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid #2f7d32;" />
+          <svg *ngIf="!avatar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="account-text d-none d-md-flex">
+            <span class="account-greeting">Hi, {{ username || 'Guest' }}</span>
+            <span class="account-action" *ngIf="username">Profile</span>
+            <span class="account-action" *ngIf="!username">Sign In</span>
+          </span>
+        </a>
 
         <!-- Cart Button -->
         <a class="cart-btn" routerLink="/cart" aria-label="View cart">
@@ -381,7 +374,7 @@
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
           </svg>
           <span class="d-none d-md-inline">Cart</span>
-          <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+          <span class="cart-badge">{{ cartCount }}</span>
         </a>
 
         <!-- Become a Seller (Desktop only) -->

@@ -8,6 +8,8 @@ const productSchema = new mongoose.Schema({
   seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false }, 
   images: [String],  // Cloudinary image URLs
   stockQuantity: { type: Number, required: true },
+  rating: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
   approvalStatus: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'approved' },
   rejectionReason: { type: String },
   seo: {

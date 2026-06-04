@@ -2,6 +2,7 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { uploadOnCloudinary } = require("../utils/cloudinary");
 
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
@@ -78,6 +79,7 @@ exports.login = async (req, res) => {
       username: user.username,
       email: user.email,
       roles: user.roles,
+      avatar: user.avatar,
       message: "Login successful",
     });
   } catch (error) {
@@ -260,5 +262,50 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({ message: "User deleted successfully!" });
   } catch (error) {
     res.status(500).json({ message: error.message || "Failed to delete user!" });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const { username, email } = req.body;
+
+    // Check if new username/email is already taken by someone else
+    if (username && username !== user.username) {
+      const existingUser = await User.findOne({ username });
+      if (existingUser) return res.status(400).json({ message: "Username already exists" });
+      user.username = username;
+    }
+
+    if (email && email !== user.email) {
+      const existingEmail = await User.findOne({ email });
+      if (existingEmail) return res.status(400).json({ message: "Email already exists" });
+      user.email = email;
+    }
+
+    // Handle avatar upload
+    if (req.file) {
+      const uploadResult = await uploadOnCloudinary(req.file.buffer);
+      if (uploadResult) {
+        user.avatar = uploadResult;
+      }
+    }
+
+    await user.save();
+
+    res.json({
+      message: "Profile updated successfully",
+      user: {
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar
+      }
+    });
+
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Failed to update profile", error: error.message });
   }
 };

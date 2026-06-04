@@ -1,4 +1,4 @@
-﻿<div class="p-6 lg:p-8 max-w-7xl mx-auto">
+﻿<div class="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
   <div class="mb-8 flex justify-between items-end">
     <div>
       <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Your Wallet</h1>
@@ -25,7 +25,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       
       <!-- Available Balance -->
-      <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-3xl p-6 text-white shadow-xl shadow-green-900/20 relative overflow-hidden group">
+      <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-3xl p-4 md:p-6 text-white shadow-xl shadow-green-900/20 relative overflow-hidden group">
         <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
         <p class="text-green-100 font-medium uppercase tracking-wider text-xs mb-1 relative z-10">Available to Withdraw</p>
         <h2 class="text-4xl font-black relative z-10">₹{{ wallet.availableBalance | number:'1.2-2' }}</h2>
@@ -35,7 +35,7 @@
       </div>
 
       <!-- Pending Clearance -->
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-4 md:p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
         <p class="text-gray-400 font-bold uppercase tracking-wider text-xs mb-1">Pending Clearance</p>
         <h2 class="text-4xl font-black text-gray-900">₹{{ wallet.pendingClearance | number:'1.2-2' }}</h2>
         <p class="text-xs text-yellow-600 mt-2 font-medium flex items-center">
@@ -44,7 +44,7 @@
       </div>
 
       <!-- Total Earned -->
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-4 md:p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
         <p class="text-gray-400 font-bold uppercase tracking-wider text-xs mb-1">Total Lifetime Earnings</p>
         <h2 class="text-4xl font-black text-gray-900">₹{{ wallet.totalEarned | number:'1.2-2' }}</h2>
         <p class="text-xs text-blue-600 mt-2 font-medium flex items-center">
@@ -63,17 +63,17 @@
 
     <!-- Transaction History -->
     <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden">
-      <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+      <div class="px-6 py-5 border-b border-gray-100 flex flex-col md:flex-row md:justify-between md:items-center gap-4 bg-gray-50/50">
         <h3 class="text-lg font-bold text-gray-900">Recent Transactions</h3>
         <button class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">View All</button>
       </div>
       
-      <div class="p-6" *ngIf="wallet.transactions.length === 0">
+      <div class="p-4 md:p-6" *ngIf="wallet.transactions.length === 0">
         <p class="text-center text-gray-500 py-8">No transactions found.</p>
       </div>
 
       <div class="overflow-x-auto" *ngIf="wallet.transactions.length > 0">
-        <table class="min-w-full divide-y divide-gray-100">
+        <div class="overflow-x-auto w-full pb-4"><table class="min-w-full divide-y divide-gray-100">
           <tbody class="divide-y divide-gray-100">
             <tr *ngFor="let tx of wallet.transactions" class="hover:bg-gray-50/50 transition-colors">
               <td class="px-6 py-4 whitespace-nowrap">
@@ -100,8 +100,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
-      </div>
+        </table></div>
     </div>
 
   </div>

@@ -55,9 +55,15 @@
                   {{ order.orderStatus }}
                 </span>
               </h5>
-              <div class="ms-2">
+              <div class="ms-2 d-flex flex-wrap gap-2 justify-content-end mt-2 mt-sm-0">
+                <button class="btn btn-sm btn-outline-primary" (click)="viewReceipt(order)" data-bs-toggle="modal" data-bs-target="#receiptModal">
+                  <i class="fas fa-eye me-1"></i> View Receipt
+                </button>
+                <button class="btn btn-sm btn-primary" (click)="downloadReceipt(order)">
+                  <i class="fas fa-download me-1"></i> Download
+                </button>
                 <button class="btn btn-sm btn-outline-danger" (click)="cancelOrder(order._id)" *ngIf="order.orderStatus === 'Processing'">
-                  Cancel Order
+                  <i class="fas fa-times me-1"></i> Cancel Order
                 </button>
               </div>
             </div>
@@ -100,5 +106,103 @@
   <!-- No Orders Found -->
   <div *ngIf="!isLoading && orders.length === 0" class="text-center">
     <p class="text-muted">No orders found.</p>
+  </div>
+</div>
+
+<!-- Receipt Modal -->
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" *ngIf="selectedOrder">
+      <div class="modal-header bg-light border-0">
+        <h5 class="modal-title fw-bold text-primary" id="receiptModalLabel">
+          <i class="fas fa-receipt me-2"></i> Order Receipt
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4" id="print-receipt-section">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+          <div>
+            <h2 class="text-primary fw-bolder mb-0">QuickmartNexa</h2>
+            <p class="text-muted mb-0" style="font-size: 0.9rem;">The best ecommerce destination</p>
+          </div>
+          <div class="text-end">
+            <h4 class="fw-bold mb-1">INVOICE</h4>
+            <p class="mb-0 text-muted"><strong>ID:</strong> #{{ selectedOrder._id }}</p>
+            <p class="mb-0 text-muted"><strong>Date:</strong> {{ selectedOrder.createdAt | date: 'medium' }}</p>
+          </div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="row mb-4">
+          <div class="col-sm-6 mb-3 mb-sm-0">
+            <h6 class="fw-bold text-secondary text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Payment Details</h6>
+            <p class="mb-1"><strong>Method:</strong> {{ selectedOrder.paymentMethod }}</p>
+            <p class="mb-1"><strong>Status:</strong> 
+              <span class="badge" [ngClass]="{'bg-success': selectedOrder.paymentStatus === 'Paid', 'bg-warning text-dark': selectedOrder.paymentStatus === 'Pending'}">
+                {{ selectedOrder.paymentStatus }}
+              </span>
+            </p>
+            <p class="mb-0"><strong>Order Status:</strong> {{ selectedOrder.orderStatus }}</p>
+          </div>
+          <div class="col-sm-6 text-sm-end">
+            <h6 class="fw-bold text-secondary text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">Shipping Address</h6>
+            <p class="mb-0 fw-bold">{{ selectedOrder.shippingAddress.fullName }}</p>
+            <p class="mb-0 text-muted">{{ selectedOrder.shippingAddress.addressLine1 }}</p>
+            <p class="mb-0 text-muted" *ngIf="selectedOrder.shippingAddress.addressLine2">{{ selectedOrder.shippingAddress.addressLine2 }}</p>
+            <p class="mb-0 text-muted">{{ selectedOrder.shippingAddress.city }}, {{ selectedOrder.shippingAddress.state }} {{ selectedOrder.shippingAddress.zipCode }}</p>
+            <p class="mb-0 text-muted">{{ selectedOrder.shippingAddress.phone }}</p>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered table-striped align-middle">
+            <thead class="table-light text-secondary" style="font-size: 0.9rem;">
+              <tr>
+                <th>Item Description</th>
+                <th class="text-center">Qty</th>
+                <th class="text-end">Unit Price</th>
+                <th class="text-end">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedOrder.items">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img loading="lazy" [src]="item.images[0]" alt="{{ item.name }}" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                    <span class="fw-semibold">{{ item.name }}</span>
+                  </div>
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-end text-muted">₹{{ item.price ? item.price : (item.totalPrice / item.quantity).toFixed(2) }}</td>
+                <td class="text-end fw-bold">₹{{ item.totalPrice }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Total Area -->
+        <div class="row justify-content-end">
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <div class="d-flex justify-content-between align-items-center border-top pt-2">
+              <span class="fw-bold fs-5">Grand Total:</span>
+              <span class="fw-bold fs-4 text-primary">₹{{ selectedOrder.totalAmount }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer border-0 bg-light d-flex justify-content-between">
+        <p class="text-muted mb-0 ms-2" style="font-size: 0.85rem;"><i class="fas fa-heart text-danger"></i> Thank you for shopping with us!</p>
+        <div>
+          <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="downloadReceipt(selectedOrder)">
+            <i class="fas fa-download me-1"></i> Download PDF
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -25,6 +25,17 @@ export class ProductService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  private buildAuthHeaders(): HttpHeaders | undefined {
+    const accessToken = this.authService.getAccessToken();
+    if (!accessToken) {
+      return undefined;
+    }
+
+    return new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+  }
+
   // Create a new product
   createProduct(formData: FormData): Observable<Product> {
     const accessToken = this.authService.getAccessToken();
@@ -42,12 +53,10 @@ export class ProductService {
 
   // Get all products
   getAllProducts(): Observable<Product[]> {
-    const accessToken = this.authService.getAccessToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-    });
-  
-    return this.http.get<Product[]>(`${this.apiUrl}/products`, { headers }).pipe(
+    const headers = this.buildAuthHeaders();
+    const options = headers ? { headers } : {};
+
+    return this.http.get<Product[]>(`${this.apiUrl}/products`, options).pipe(
       catchError((error) => {
         console.error('Error fetching all products:', error);
         throw error;
@@ -57,12 +66,10 @@ export class ProductService {
 
   // Get a single product by ID
   getProductById(productId: string): Observable<Product> {
-    const accessToken = this.authService.getAccessToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-    });
+    const headers = this.buildAuthHeaders();
+    const options = headers ? { headers } : {};
 
-    return this.http.get<Product>(`${this.apiUrl}/products/${productId}`, { headers }).pipe(
+    return this.http.get<Product>(`${this.apiUrl}/products/${productId}`, options).pipe(
       catchError((error) => {
         console.error('Error fetching product by ID:', error);
         throw error;
@@ -116,11 +123,9 @@ export class ProductService {
   }
 
   searchProducts(query: string): Observable<Product[]> {
-    const accessToken = this.authService.getAccessToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-    });
+    const headers = this.buildAuthHeaders();
+    const options = headers ? { headers } : {};
 
-    return this.http.get<Product[]>(`${this.apiUrl}/products/search?query=${query}`, { headers });
+    return this.http.get<Product[]>(`${this.apiUrl}/products/search?query=${query}`, options);
   }
 }

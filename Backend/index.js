@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { compressResponses, secureHeaders, apiLimiter } = require('./middleware/performance');
+const activityLogger = require('./middleware/activityLogger');
 
 const connectDB = require('./config/db'); // Import database connection
 const cookieParser = require("cookie-parser");
@@ -33,12 +34,26 @@ app.use(express.json());
 app.use(secureHeaders);
 app.use(compressResponses);
 app.use('/api', apiLimiter); // Apply rate limiting only to API routes
+app.use(activityLogger); // Apply global activity logging
 
-// Configure CORS to allow credentials (cookies) and to accept a frontend origin from env
-const allowedOrigin = process.env.FRONTEND_URL || true; // if FRONTEND_URL not set, allow all (change in production)
+// Configure CORS to allow credentials (cookies) and to accept known frontend origins
+const allowedOrigins = [
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
   })
 );
